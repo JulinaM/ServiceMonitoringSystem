@@ -16,12 +16,12 @@ import java.util.Date;
 
 
 public class UserDAO implements IUserDAO {
-    Date date = new Date();
     private IUser user;
     private MySql sql;
     private MySqlQuery mySqlQuery;
     private String query;
     private String TABLE_NAME = "userDetail";
+    Date date = new Date();
 
     /**
      *

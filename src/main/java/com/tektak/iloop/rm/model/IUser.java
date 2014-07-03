@@ -6,36 +6,21 @@ import java.util.Date;
  * Created by tektak on 7/2/14.
  */
 public interface IUser {
-    public String getUserId();
-
     public void setUserId(String userId);
-
-    public String getUserEmail();
-
+    public String getUserId();
     public void setUserEmail(String userEmail);
-
-    public String getUserName();
-
+    public String getUserEmail();
     public void setUserName(String userName);
-
-    public String getUserPassword();
-
+    public String getUserName();
     public void setUserPassword(String userPassword);
-
-    public String getUserStatus();
-
+    public String getUserPassword();
     public void setUserStatus(String userStatus);
-
-    public String getUserType();
-
+    public String getUserStatus();
     public void setUserType(String userType);
-
-    public String getUserRole();
-
+    public String getUserType();
     public void setUserRole(String userRole);
-
-    public Date getJoinDate();
-
+    public String getUserRole();
     public void setJoinDate(Date joinDate);
+    public Date getJoinDate();
 
 }

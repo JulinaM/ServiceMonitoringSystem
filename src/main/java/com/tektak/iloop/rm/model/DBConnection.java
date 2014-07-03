@@ -9,7 +9,7 @@ import com.tektak.iloop.rmodel.driver.MySql;
  */
 public class DBConnection {
 
-    public MySql Connect() {
+    public MySql Connect(){
         MySqlConnection connection = new MySqlConnection();
         connection.setDatabaseName("rmmodel");
         connection.setDriver("com.mysql.jdbc.Driver");

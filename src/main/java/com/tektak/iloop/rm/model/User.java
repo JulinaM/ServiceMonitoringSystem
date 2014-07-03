@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by tektak on 7/2/14.
  */
-public class User implements IUser {
+public class User implements  IUser{
     private String userId;
     private String userEmail;
     private String userName;
@@ -14,20 +14,14 @@ public class User implements IUser {
     private String userType;
     private String userRole;
     private Date joinDate;
-
-    @Override
-    public String getUserId() {
-        return this.userId;
-    }
-
     @Override
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
     @Override
-    public String getUserEmail() {
-        return this.userEmail;
+    public String getUserId() {
+        return this.userId;
     }
 
     @Override
@@ -36,8 +30,8 @@ public class User implements IUser {
     }
 
     @Override
-    public String getUserName() {
-        return this.userName;
+    public String getUserEmail() {
+        return this.userEmail;
     }
 
     @Override
@@ -46,8 +40,8 @@ public class User implements IUser {
     }
 
     @Override
-    public String getUserPassword() {
-        return this.userPassword;
+    public String getUserName() {
+        return this.userName;
     }
 
     @Override
@@ -56,8 +50,8 @@ public class User implements IUser {
     }
 
     @Override
-    public String getUserStatus() {
-        return this.userStatus;
+    public String getUserPassword() {
+        return this.userPassword;
     }
 
     @Override
@@ -66,8 +60,8 @@ public class User implements IUser {
     }
 
     @Override
-    public String getUserType() {
-        return this.userType;
+    public String getUserStatus() {
+        return this.userStatus;
     }
 
     @Override
@@ -76,8 +70,8 @@ public class User implements IUser {
     }
 
     @Override
-    public String getUserRole() {
-        return this.userRole;
+    public String getUserType() {
+        return this.userType;
     }
 
     @Override
@@ -86,12 +80,17 @@ public class User implements IUser {
     }
 
     @Override
-    public Date getJoinDate() {
-        return this.joinDate;
+    public String getUserRole() {
+        return this.userRole;
     }
 
     @Override
     public void setJoinDate(Date joinDate) {
         this.joinDate = joinDate;
+    }
+
+    @Override
+    public Date getJoinDate() {
+        return this.joinDate;
     }
 }
