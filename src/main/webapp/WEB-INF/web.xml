@@ -3,4 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.tektak.iLoop.Rm.view.loginSystem.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ActivityLogServlet</servlet-name>
+        <servlet-class>com.tektak.iLoop.Rm.view.loggingSystem.ActivityLogServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActivityLogServlet</servlet-name>
+        <url-pattern>/activitylog</url-pattern>
+    </servlet-mapping>
 </web-app>
