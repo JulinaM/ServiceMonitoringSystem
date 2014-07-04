@@ -37,6 +37,7 @@
                 <div class="form-group">
                     <label>User Role</label>
                     <select class="form-control" name="userrole">
+                        <option value="1">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                     </select>

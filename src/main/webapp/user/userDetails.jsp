@@ -13,7 +13,11 @@
 
 </head>
 <body>
-
+${userDetails}
+next
+<c:forEach items="${userDetails}" var="detail">
+    ${userDetails}
+</c:forEach>
 <table class="table table-bordered">
     <thead>
     <tr>

@@ -14,26 +14,24 @@ import java.io.IOException;
  * Created by tektak on 7/3/14.
  */
 public class AddUser extends HttpServlet {
-    String page;
-    Integer result;
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("username");
-        String email = request.getParameter("useremail");
-        String status = request.getParameter("userstatus");
-        String role = request.getParameter("userrole");
+        String page;
+        Integer result = null;
 
         User user = new User();
-        user.setUserName(name);
-        user.setUserEmail(email);
-        user.setUserStatus(status);
-        user.setUserRole(role);
+        user.setUserName(request.getParameter("username"));
+        user.setUserEmail(request.getParameter("useremail"));
+        user.setUserStatus(Integer.parseInt(request.getParameter("userstatus")));
+        user.setUserRole(Integer.parseInt(request.getParameter("userrole")));
 
         UserDAO userDAO = new UserDAO();
 
         try {
             userDAO.createUserTable();
             result = userDAO.putUser(user);
+            userDAO.closeConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
