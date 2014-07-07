@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * Created by tektak on 7/7/14.
  */
 public class LogGenerator_Test {
-    @Test
+    //@Test
     public void generate_Test(){
         try {
             LogGenerator.generateLog(101, "10.10.10.111", "Log generator method tested successfully");
