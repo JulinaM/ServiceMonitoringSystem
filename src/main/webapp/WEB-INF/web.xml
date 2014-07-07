@@ -6,11 +6,11 @@
 
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.tektak.iLoop.Rm.view.loginSystem.LoginServlet</servlet-class>
+        <servlet-class>com.tektak.iLoop.Rm.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ActivityLogServlet</servlet-name>
-        <servlet-class>com.tektak.iLoop.Rm.view.loggingSystem.ActivityLogServlet</servlet-class>
+        <servlet-class>com.tektak.iLoop.Rm.servlet.ActivityLogServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>

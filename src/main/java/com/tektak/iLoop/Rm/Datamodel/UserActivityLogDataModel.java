@@ -1,6 +1,5 @@
-package com.tektak.iLoop.Rm.view.loggingSystem;
+package com.tektak.iLoop.Rm.Datamodel;
 
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 /**
@@ -10,11 +9,15 @@ import java.sql.Timestamp;
 /**
  * Datamodel for User Activity Log
  */
-public class LogDataModel {
+public class UserActivityLogDataModel {
     /**
      * Store User Id
      */
-    private String UID;
+    private int UId;
+    /**
+     * Store IP address of user
+     */
+    private String IPaddress;
     /**
      * Store User Activity
      */
@@ -28,16 +31,16 @@ public class LogDataModel {
      *
      * @return UID
      */
-    public String getUID() {
-        return UID;
+    public int getUID() {
+        return UId;
     }
 
     /**
      * set UID
-     * @param UID
+     * @param UId
      */
-    public void setUID(String UID) {
-        this.UID = UID;
+    public void setUID(int UId) {
+        this.UId = UId;
     }
 
     /**
@@ -72,5 +75,19 @@ public class LogDataModel {
         this.timestamp = timestamp;
     }
 
+    /**
+     *
+     * @return IP address
+     */
+    public String getIPaddress() {
+        return IPaddress;
+    }
 
+    /**
+     * Set IP address of user
+     * @param IPaddress
+     */
+    public void setIPaddress(String IPaddress) {
+        this.IPaddress = IPaddress;
+    }
 }

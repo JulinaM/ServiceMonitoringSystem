@@ -29,9 +29,9 @@
         </form>
     </div><!-- /container -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="<%=request.getContextPath()%>/loginSystem/bootstrap/js/jquery-1.11.1.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="<%=request.getContextPath()%>/loginSystem/bootstrap/js/bootstrap.min.js"></script>
+    <script src="<%=request.getContextPath()%>/assets/bootstrap/js/bootstrap.min.js"></script>
     <%--- See more at: http://www.w3resource.com/twitter-bootstrap/tutorial.php#sthash.jOx9N4uP.dpuf--%>
 </body>
 </html>

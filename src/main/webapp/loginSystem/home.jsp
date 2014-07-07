@@ -11,6 +11,11 @@
     <title>Home</title>
 </head>
 <body>
+        <%
+            String name = "das";
+        %>
+
+
     <h1>Welcome To the home page of Service Monitoring System.</h1>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     Email:<c:out value="${email}"/><br>
