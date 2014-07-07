@@ -14,7 +14,7 @@ public class LogGenerator_Test {
     @Test
     public void generate_Test(){
         try {
-            LogGenerator.generate(101, "10.10.10.10", "Log generator method tested successfully");
+            LogGenerator.generateLog(101, "10.10.10.111", "Log generator method tested successfully");
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
         } catch (RmodelException.SqlException e) {

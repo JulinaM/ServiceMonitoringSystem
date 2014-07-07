@@ -11,7 +11,7 @@
     <title>Login Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="<%=request.getContextPath()%>/loginSystem/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="<%=request.getContextPath()%>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<%=request.getContextPath()%>/loginSystem/css/signin.css" rel="stylesheet">
     <%System.out.println(request.getContextPath());%>
 </head>
