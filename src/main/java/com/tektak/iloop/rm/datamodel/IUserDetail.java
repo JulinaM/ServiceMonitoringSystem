@@ -1,13 +1,13 @@
-package com.tektak.iloop.rm.model;
+package com.tektak.iloop.rm.datamodel;
 
 import java.util.Date;
 
 /**
  * Created by tektak on 7/2/14.
  */
-public interface IUser {
-    public void setUserId(String userId);
-    public String getUserId();
+public interface IUserDetail {
+    public void setUserId(Integer userId);
+    public Integer getUserId();
     public void setUserEmail(String userEmail);
     public String getUserEmail();
     public void setUserName(String userName);

@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
 
-            <form role="form" action="add" method="post">
+            <form role="form" action="adduser" method="post">
                 <div class="form-group">
                     <label for="nameInput">Name</label>
                     <input type="text" name="username" class="form-control" id="nameInput" placeholder="Name">

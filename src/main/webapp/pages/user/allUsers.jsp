@@ -9,15 +9,11 @@
 <html>
 <head>
     <link href="<%request.getContextPath();%>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title>User Detail</title>
 
 </head>
 <body>
-${userDetails}
-next
-<c:forEach items="${userDetails}" var="detail">
-    ${userDetails}
-</c:forEach>
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -27,22 +23,26 @@ next
         <th>Status</th>
         <th>Role</th>
         <th>Join Date</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>1</td>
-        <td>Thomas bell</td>
-        <td>thomas@yahoo.com</td>
-        <td>Active</td>
-        <td>Admin</td>
-        <td>Date</td>
-    </tr>
+
+    <c:forEach items="${requestScope['UList']}" var="list">
+        <tr>
+            <td>${list.userId}</td>
+            <td>${list.userName}</td>
+            <td>${list.userEmail}</td>
+            <td>${list.userStatus}</td>
+            <td>${list.userRole}</td>
+            <td>${list.joinDate}</td>
+            <td><a href="">Disable/Enable</a> <a href="">Delete</a> <a href="<%request.getContextPath();%>/usersdetail?uid=${list.userId}">Edit</a></td>
+        </tr>
+    </c:forEach>
+
     </tbody>
 </table>
-<form role="form">
 
-</form>
 
 </body>
 </html>

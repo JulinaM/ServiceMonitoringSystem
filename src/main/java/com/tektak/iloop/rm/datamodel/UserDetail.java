@@ -1,12 +1,12 @@
-package com.tektak.iloop.rm.model;
+package com.tektak.iloop.rm.datamodel;
 
 import java.util.Date;
 
 /**
  * Created by tektak on 7/2/14.
  */
-public class User implements  IUser{
-    private String userId;
+public class UserDetail implements IUserDetail {
+    private Integer userId;
     private String userEmail;
     private String userName;
     private String userPassword;
@@ -14,12 +14,12 @@ public class User implements  IUser{
     private Integer userRole;
     private Date joinDate;
     @Override
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
     @Override
-    public String getUserId() {
+    public Integer getUserId() {
         return this.userId;
     }
 
@@ -83,3 +83,5 @@ public class User implements  IUser{
         return this.joinDate;
     }
 }
+
+
