@@ -1,13 +1,11 @@
 package com.tektak.iloop.rm.dao;
 
-import com.tektak.iLoop.rm.common.DBConnection;
-import com.tektak.iLoop.rm.common.RmException;
-import com.tektak.iLoop.rm.dao.DAOCommon;
+import com.tektak.iloop.rm.common.DBConnection;
+import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
 import com.tektak.iloop.util.common.BaseException;
-import org.junit.Test;
 
 import java.sql.ResultSet;
 

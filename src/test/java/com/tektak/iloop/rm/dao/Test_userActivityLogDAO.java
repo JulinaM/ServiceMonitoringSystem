@@ -1,15 +1,12 @@
 package com.tektak.iloop.rm.dao;
 
-import com.tektak.iLoop.rm.common.DateTime;
-import com.tektak.iLoop.rm.common.RmException;
-import com.tektak.iLoop.rm.dao.userActivityLogDAO;
-import com.tektak.iLoop.rm.datamodel.UserActivityLogDataModel;
+import com.tektak.iloop.rm.common.DateTime;
+import com.tektak.iloop.rm.common.RmException;
+import com.tektak.iloop.rm.datamodel.UserActivityLogDataModel;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.sql.SQLException;
 
 /**
  * Created by tektak on 7/7/14.

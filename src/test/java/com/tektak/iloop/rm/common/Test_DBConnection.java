@@ -1,11 +1,8 @@
 package com.tektak.iloop.rm.common;
 
-import com.tektak.iLoop.rm.common.DBConnection;
-import com.tektak.iLoop.rm.common.RmException;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.util.common.BaseException;
-import org.junit.Test;
 
 import java.io.IOException;
 
