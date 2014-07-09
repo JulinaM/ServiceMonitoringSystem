@@ -1,4 +1,4 @@
-package com.tektak.iLoop.rm.common;
+package com.tektak.iloop.rm.common;
 
 import java.sql.Timestamp;
 

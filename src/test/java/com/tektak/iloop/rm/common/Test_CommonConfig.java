@@ -1,5 +1,6 @@
-package com.tektak.iLoop.rm.common;
+package com.tektak.iloop.rm.common;
 
+import com.tektak.iLoop.rm.common.CommonConfig;
 import com.tektak.iloop.util.common.BaseException;
 import com.tektak.iloop.util.configuration.ApacheConfig;
 import com.tektak.iloop.util.configuration.Config;

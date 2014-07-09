@@ -1,7 +1,8 @@
-package com.tektak.iLoop.rm.dao;
+package com.tektak.iloop.rm.dao;
 
 import com.tektak.iLoop.rm.common.DateTime;
 import com.tektak.iLoop.rm.common.RmException;
+import com.tektak.iLoop.rm.dao.userActivityLogDAO;
 import com.tektak.iLoop.rm.datamodel.UserActivityLogDataModel;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;

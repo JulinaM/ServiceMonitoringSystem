@@ -1,8 +1,8 @@
-package com.tektak.iLoop.rm.servlet;
+package com.tektak.iloop.rm.servlet;
 
-import com.tektak.iLoop.rm.application.loginSystem.AuthenticateUser;
-import com.tektak.iLoop.rm.common.CommonConfig;
-import com.tektak.iLoop.rm.common.RmException;
+import com.tektak.iloop.rm.application.loginSystem.AuthenticateUser;
+import com.tektak.iloop.rm.common.CommonConfig;
+import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
 import com.tektak.iloop.util.configuration.Config;

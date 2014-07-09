@@ -1,4 +1,4 @@
-package com.tektak.iLoop.rm.dao;
+package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rmodel.RmodelException;
 

@@ -1,7 +1,8 @@
-package com.tektak.iLoop.rm.dao;
+package com.tektak.iloop.rm.dao;
 
 import com.tektak.iLoop.rm.common.DBConnection;
 import com.tektak.iLoop.rm.common.RmException;
+import com.tektak.iLoop.rm.dao.DAOCommon;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -24,7 +25,7 @@ public class Test_DAOCommon {
             mySqlQuery.InitPreparedStatement();
             ResultSet rs=mySqlQuery.Drl();
             mySqlQuery.Close();
-            int RowCount=DAOCommon.countRows(rs);
+            int RowCount= DAOCommon.countRows(rs);
             System.out.println("No. of Rows returned::"+RowCount);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();

@@ -1,8 +1,8 @@
-package com.tektak.iLoop.rm.dao;
+package com.tektak.iloop.rm.dao;
 
-import com.tektak.iLoop.rm.common.DBConnection;
-import com.tektak.iLoop.rm.common.RmException;
-import com.tektak.iLoop.rm.datamodel.UserActivityLogDataModel;
+import com.tektak.iloop.rm.common.DBConnection;
+import com.tektak.iloop.rm.common.RmException;
+import com.tektak.iloop.rm.datamodel.UserActivityLogDataModel;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -27,7 +27,7 @@ public class userActivityLogDAO {
 
     /**
      * Constructor to instantiate DBConnection and getMySql object
-     * @throws RmException.DBConnectionError
+     * @throws com.tektak.iloop.rm.common.RmException.DBConnectionError
      * @throws BaseException.ConfigError
      * @throws RmodelException.SqlException
      * @throws RmodelException.CommonException

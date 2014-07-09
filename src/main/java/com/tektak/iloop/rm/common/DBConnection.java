@@ -1,4 +1,4 @@
-package com.tektak.iLoop.rm.common;
+package com.tektak.iloop.rm.common;
 
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.connection.MySqlConnection;

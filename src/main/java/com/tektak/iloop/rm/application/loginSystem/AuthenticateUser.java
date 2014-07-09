@@ -1,8 +1,8 @@
-package com.tektak.iLoop.rm.application.loginSystem;
+package com.tektak.iloop.rm.application.loginSystem;
 
-import com.tektak.iLoop.rm.common.DBConnection;
-import com.tektak.iLoop.rm.common.RmException;
-import com.tektak.iLoop.rm.dao.DAOCommon;
+import com.tektak.iloop.rm.common.DBConnection;
+import com.tektak.iloop.rm.common.RmException;
+import com.tektak.iloop.rm.dao.DAOCommon;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -20,7 +20,7 @@ public class AuthenticateUser {
 
     /**
      * Constructor to instantiate mysql connection
-     * @throws RmException.DBConnectionError
+     * @throws com.tektak.iloop.rm.common.RmException.DBConnectionError
      * @throws BaseException.ConfigError
      * @throws RmodelException.SqlException
      */

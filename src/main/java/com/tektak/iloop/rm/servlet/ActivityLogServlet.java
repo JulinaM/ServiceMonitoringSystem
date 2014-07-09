@@ -1,4 +1,4 @@
-package com.tektak.iLoop.rm.servlet;
+package com.tektak.iloop.rm.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

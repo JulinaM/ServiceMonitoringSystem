@@ -1,5 +1,6 @@
-package com.tektak.iLoop.rm.application.loginSystem;
+package com.tektak.iloop.rm.application.loginSystem;
 
+import com.tektak.iLoop.rm.application.loginSystem.AuthenticateUser;
 import com.tektak.iLoop.rm.common.RmException;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;

@@ -1,4 +1,4 @@
-package com.tektak.iLoop.rm.common;
+package com.tektak.iloop.rm.common;
 
 /**
  * Created by tektak on 7/4/14.
