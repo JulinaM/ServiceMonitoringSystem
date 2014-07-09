@@ -28,7 +28,7 @@ public class LogGenerator {
      * @throws BaseException.ConfigError
      * @throws SQLException
      */
-    public static void generateLog(int UId, String IPaddress, String UserActivity) throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError, SQLException{
+    public static int generateLog(int UId, String IPaddress, String UserActivity) throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError, SQLException{
         UserActivityLogDataModel log=new UserActivityLogDataModel();
         log.setUID(UId);
         log.setIPaddress(IPaddress);
@@ -36,7 +36,9 @@ public class LogGenerator {
         log.setTimestamp(DateTime.getTimestamp());
 
         userActivityLogDAO DAO=new userActivityLogDAO();
-        DAO.WriteLog(log);
+
+        int AffectedRows = DAO.WriteLog(log);
         DAO.closeDbConnection();
+        return AffectedRows;
     }
 }

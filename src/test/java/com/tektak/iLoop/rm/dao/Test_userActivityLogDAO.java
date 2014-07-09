@@ -5,6 +5,7 @@ import com.tektak.iLoop.rm.common.RmException;
 import com.tektak.iLoop.rm.datamodel.UserActivityLogDataModel;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -35,16 +36,15 @@ public class Test_userActivityLogDAO {
     }
     @Test
     public void Test_WriteLog(){
-        System.out.println("<<<<<<<<<<<<Running Test_WriteLog()>>>>>>>>>>>>>>");
         UserActivityLogDataModel log=new UserActivityLogDataModel();
         log.setUID(3333);
         log.setIPaddress("170.0.33.1");
         log.setUserActivity("Delete of log operation testing");
         log.setTimestamp(DateTime.getTimestamp());
-
         int insertedRows= 0;
         try {
             insertedRows = new userActivityLogDAO().WriteLog(log);
+            Assert.assertEquals(1, insertedRows);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -54,9 +54,7 @@ public class Test_userActivityLogDAO {
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }
-        System.out.println("=====================================================");
-        System.out.println("Inserted Rows::"+insertedRows);
-        System.out.println("=====================================================");
+
     }
 
     //@Test
@@ -66,14 +64,7 @@ public class Test_userActivityLogDAO {
             userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
             UserActivityLogDataModel[] log=userActivityLogDAO.ReadAllLog();
             userActivityLogDAO.closeDbConnection();
-            System.out.println("=====================================================");
-            for(int i=0;i<log.length;i++){
-                System.out.println("UId::"+log[i].getUID());
-                System.out.println("IPaddress::"+log[i].getIPaddress());
-                System.out.println("UserActivity::"+log[i].getUserActivity());
-                System.out.println("Timestamp::"+log[i].getTimestamp());
-                System.out.println("=====================================================");
-            }
+
 
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();

@@ -62,6 +62,8 @@ public class userActivityLogDAO {
      */
     public int WriteLog(UserActivityLogDataModel log) throws RmodelException.SqlException, RmodelException.CommonException{
         if(mySqlQuery!=null&&mySql!=null) {
+
+        }
             try {
                 this.mySqlQuery.setQuery("INSERT INTO UserActivityLog (UId,IPaddress,Activity,Timestamp) VALUES(?,?,?,?)");
                 this.mySqlQuery.InitPreparedStatement();
@@ -76,8 +78,8 @@ public class userActivityLogDAO {
 
 
             return this.mySqlQuery.Dml();
-        }
-        return 0;
+
+
     }
 
     /**
@@ -220,7 +222,7 @@ public class userActivityLogDAO {
     }
 
     public int deleteLogByUser(String UId) throws RmodelException.SqlException, RmodelException.CommonException {
-        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId LIKE ?");
+        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId= ?");
         this.mySqlQuery.InitPreparedStatement();
         PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
         try {
@@ -232,7 +234,7 @@ public class userActivityLogDAO {
     }
 
     public int deleteLogByDateTime(String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
-        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE Timestamp LIKE ?");
+        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE Timestamp= ?");
         this.mySqlQuery.InitPreparedStatement();
         PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
         try {

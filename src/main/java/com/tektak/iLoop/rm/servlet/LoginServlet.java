@@ -24,6 +24,7 @@ import java.sql.SQLException;
  * Created by tektak on 7/2/14.
  */
 public class LoginServlet extends HttpServlet {
+
     public void init(ServletConfig servletConfig){
         String RealPath=servletConfig.getServletContext().getRealPath("WEB-INF/classes/configuration.properties");
         try {
@@ -70,6 +71,7 @@ public class LoginServlet extends HttpServlet {
                     httpSession.setAttribute("password",password);
                     request.setAttribute("password",password);
                 }else{
+                    request.setAttribute("msg","Invalid Username or Password!!");
                     System.out.println("Not Authenticate user!! navigting to Login page!!");
                     PrintWriter ps=response.getWriter();
                     ps.append("Not Authenticate user!! navigting to Login page!!....");
