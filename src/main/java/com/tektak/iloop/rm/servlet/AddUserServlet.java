@@ -20,8 +20,9 @@ public class AddUserServlet extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page;
+        String page = null;
         Integer result = null;
+        String error = null;
 
         UserDetail userDetail = new com.tektak.iloop.rm.datamodel.UserDetail();
         userDetail.setUserName(request.getParameter("username"));
@@ -33,12 +34,22 @@ public class AddUserServlet extends HttpServlet {
 
         try {
             userDetailDAO.createUserTable();
-            result = userDetailDAO.putUser(userDetail);
-            userDetailDAO.closeConnection();
+            result = userDetailDAO.checkAvailability(userDetail.getUserEmail());
+            if (result == 1) {
+                userDetailDAO.putUser(userDetail);
+                page = "/allusers";
+            }
+            else {
+                page = "/adduser";
+                error = "?err=This email is already registered";
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            userDetailDAO.closeConnection();
+            response.sendRedirect(page+error);
         }
-        response.sendRedirect("/allusers");
+
         /*if (result == 1) {
             page = ("/pages/user/allUsers.jsp");
         } else {
@@ -51,6 +62,8 @@ public class AddUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.setAttribute("error",request.getParameter("err"));
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");
         dispatcher.forward(request, response);
     }

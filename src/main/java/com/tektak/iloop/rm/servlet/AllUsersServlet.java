@@ -2,6 +2,7 @@ package com.tektak.iloop.rm.servlet;
 
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
+import com.tektak.iloop.rmodel.RmodelException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,13 +27,16 @@ public class AllUsersServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
         UserDetail[] list = null;
-        list = userDetailDAO.fetchUser();
-        userDetailDAO.closeConnection();
-        ArrayList<UserDetail> UList=new ArrayList<UserDetail>();
-        for(int i=0;i<list.length;i++){
-            UList.add(list[i]);
+        try {
+            list = userDetailDAO.fetchUser();
+            request.setAttribute("ulist",list);
+        }catch (Exception e){
+            request.setAttribute("error","Error while fetching");
+        }finally {
+            userDetailDAO.closeConnection();
         }
-        request.setAttribute("UList",UList);
+
+
 
         RequestDispatcher dispatch=request.getRequestDispatcher("/pages/user/allUsers.jsp");
         dispatch.forward(request,response);

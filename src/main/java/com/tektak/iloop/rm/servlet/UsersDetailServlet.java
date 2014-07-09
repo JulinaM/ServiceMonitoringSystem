@@ -22,14 +22,27 @@ public class UsersDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int uId = Integer.parseInt((request.getParameter("uid")));
-        UserDetailDAO userDetailDAO = new UserDetailDAO();
-        UserDetail detail = null;
-        detail = userDetailDAO.fetchUser(uId);
-        userDetailDAO.closeConnection();
-        if (detail != null){
-
+        Integer  uId=null;
+        try {
+            uId = Integer.parseInt((request.getParameter("uid")));
+        }catch (Exception e){
+            request.setAttribute("error","User not Selected");
         }
+        if (uId != null) {
+            UserDetailDAO userDetailDAO = new UserDetailDAO();
+            UserDetail detail = null;
+            try {
+                detail = userDetailDAO.fetchUser(uId);
+                request.setAttribute("detail",detail);
+            }catch (Exception e){
+                request.setAttribute("error","No such user");
+            }finally {
+                userDetailDAO.closeConnection();
+            }
+        }
+
+
+
         RequestDispatcher dispatch=request.getRequestDispatcher("/pages/user/usersDetail.jsp");
         dispatch.forward(request,response);
     }

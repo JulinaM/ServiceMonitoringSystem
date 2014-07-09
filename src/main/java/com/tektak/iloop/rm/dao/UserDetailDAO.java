@@ -55,8 +55,10 @@ public class UserDetailDAO {
             this.statement.setInt(4, userDetail.getUserStatus());
             this.statement.setInt(5, userDetail.getUserRole());
             this.statement.setTimestamp(6, new Timestamp(date.getTime()));
-            return dmlQuery();
+            return mySqlQuery.Dml();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         }
         return -1;
@@ -79,34 +81,7 @@ public class UserDetailDAO {
     }
 
     /**
-     * @return
-     */
-    public Integer dmlQuery() {
-        try {
-            return mySqlQuery.Dml();
-        } catch (RmodelException.SqlException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    /**
-     * @param query
-     * @return
-     */
-    public ResultSet drlQuery(String query) {
-        try {
-            return mySqlQuery.Drl();
-        } catch (RmodelException.SqlException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-
-    /**
-     * This method creates UserDetailDetail table if it doesnot exist in the databse;
+     * Creates userDetail table if it doesnot exist in the database;
      *
      * @return
      */
@@ -121,28 +96,35 @@ public class UserDetailDAO {
                 "joinDate timestamp)";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
-        return dmlQuery();
+        try {
+            return mySqlQuery.Dml();
+        } catch (RmodelException.SqlException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public UserDetail fetchUser(int userId) {
         query = "SELECT * FROM %s WHERE userId=?";
-        query = String.format(query,TABLE_NAME);
+        query = String.format(query, TABLE_NAME);
         this.prepare(query);
         try {
-            this.statement.setInt(1,userId);
-            ResultSet rs = drlQuery(query);
-
-            while (rs.next()){
-                this.userDetail.setUserId(rs.getInt("userId"));
-                this.userDetail.setUserEmail(rs.getString("email"));
-                this.userDetail.setUserName(rs.getString("name"));
-                this.userDetail.setUserStatus(rs.getInt("userStatus"));
-                this.userDetail.setUserRole(rs.getInt("userRole"));
-                this.userDetail.setJoinDate(rs.getDate("joinDate"));
+            this.statement.setInt(1, userId);
+            ResultSet rs = mySqlQuery.Drl();
+            UserDetail detail = new UserDetail();
+            while (rs.next()) {
+                detail.setUserId(rs.getInt("userId"));
+                detail.setUserEmail(rs.getString("email"));
+                detail.setUserName(rs.getString("name"));
+                detail.setUserStatus(rs.getInt("userStatus"));
+                detail.setUserRole(rs.getInt("userRole"));
+                detail.setJoinDate(rs.getDate("joinDate"));
 
             }
-            return this.userDetail;
+            return detail;
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         }
         return null;
@@ -153,9 +135,8 @@ public class UserDetailDAO {
         query = "SELECT * FROM %s";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
-        ResultSet rs = drlQuery(query);
-
         try {
+            ResultSet rs = mySqlQuery.Drl();
             int numRows = DAOCommon.countRows(rs);
             UserDetail[] list = new UserDetail[numRows];
             int i = 0;
@@ -208,27 +189,40 @@ public class UserDetailDAO {
         try {
             this.statement.setString(1, email);
             this.statement.setString(2, password);
+            ResultSet rs = mySqlQuery.Drl();
+            int numRows = DAOCommon.countRows(rs);
+            if (numRows == 1) {
+                try {
+                    while (rs.next())
+                        if (email.equals(rs.getString("email")) && password.equals(rs.getString("password"))) {
+                            return 1;
+                        }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
+    }
 
-        ResultSet rs = drlQuery(query);
-        int numRows = DAOCommon.countRows(rs);
-        if (numRows == 1) {
-            try {
-                while (rs.next())
-                    if (email.equals(rs.getString("email")) && password.equals(rs.getString("password"))) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public int checkAvailability(String userEmail) {
+        query = "SELECT email FROM %s WHERE email=?";
+        query = String.format(query, TABLE_NAME);
+        this.prepare(query);
+        try {
+            this.statement.setString(1, userEmail);
+            ResultSet rs = mySqlQuery.Drl();
+            int numRows = DAOCommon.countRows(rs);
+            if (numRows == 0) {
+                return 1;
             }
-        } else {
-            return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (RmodelException.SqlException e) {
+            e.printStackTrace();
         }
         return -1;
-
     }
 }

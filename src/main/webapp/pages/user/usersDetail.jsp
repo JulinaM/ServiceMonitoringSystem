@@ -1,3 +1,4 @@
+<%--@elvariable id="alert" type=""--%>
 <%--
   Created by IntelliJ IDEA.
   User: tektak
@@ -14,35 +15,50 @@
 
 </head>
 <body>
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Status</th>
-        <th>Role</th>
-        <th>Join Date</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <c:forEach items="${requestScope['UList']}" var="list">
-        <tr>
-            <td>${list.userId}</td>
-            <td>${list.userName}</td>
-            <td>${list.userEmail}</td>
-            <td>${list.userStatus}</td>
-            <td>${list.userRole}</td>
-            <td>${list.joinDate}</td>
-            <td><a href="">Disable/Enable</a> <a href="">Delete</a> <a href="<%request.getContextPath();%>/usersdetail?uid=${list.userId}">Edit</a></td>
-        </tr>
-    </c:forEach>
-
-    </tbody>
-</table>
 
 
+<c:if test="${error != null}">
+    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong></div>
+</c:if>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+
+            <form role="form" action="adduser" method="post">
+                <div class="form-group">
+                    <label for="nameInput">Name</label>
+                    <input type="text" name="username" class="form-control" id="nameInput" placeholder="Name" value="${detail.userName}">
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail1">Email address</label>
+                    <input type="email" name="useremail" class="form-control" id="inputEmail1" placeholder="Email" value="${detail.userEmail}">
+                </div>
+                <div class="form-group">
+                    <label>User Status</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="userstatus" id="active" value="1" checked>Active
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="userstatus" id="inactive" value="0">Inactive
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>User Role</label>
+                    <select class="form-control" name="userrole">
+                        <option value="1">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-default">Add</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="<%request.getContextPath();%>/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

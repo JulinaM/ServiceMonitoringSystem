@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
  * Created by tektak on 7/8/14.
  */
 public class PasswordEnc {
-    public static byte[] encrypt(String email, String password){
+    public static String encrypt(String email, String password){
         String raw = email+password;
         MessageDigest d = null;
         try {
@@ -18,6 +18,6 @@ public class PasswordEnc {
             e.printStackTrace();
         }
 
-        return d.digest() ;
+        return d.digest().toString() ;
     }
 }
