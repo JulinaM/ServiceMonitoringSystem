@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * Created by tektak on 7/8/14.
  */
-public class DAOCommon {
+public class CommonFunction {
     /**
      * count no. of Rows in ResultSet
      * @param resultSet

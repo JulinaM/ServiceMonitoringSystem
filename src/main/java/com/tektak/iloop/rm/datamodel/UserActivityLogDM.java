@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 /**
  * Datamodel for User Activity Log
  */
-public class UserActivityLogDataModel {
+public class UserActivityLogDM {
     /**
      * Store User Id
      */

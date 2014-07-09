@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class CommonConfig {
     private File file;
-    private static Config config = null;
+    private static com.tektak.iloop.util.configuration.Config config = null;
 
     /**
      * Constructor to load static properties file
@@ -24,7 +24,7 @@ public class CommonConfig {
             this.file=new File("src/main/resources/configuration.properties");
             ConfigProperty configProperty=new ConfigProperty();
             configProperty.setConfig(this.file);
-            this.config=new Config(new ApacheConfig(configProperty));
+            this.config=new com.tektak.iloop.util.configuration.Config(new ApacheConfig(configProperty));
         }
     }
 
@@ -39,15 +39,15 @@ public class CommonConfig {
             this.file=new File(filePath);
             ConfigProperty configProperty=new ConfigProperty();
             configProperty.setConfig(this.file);
-            this.config=new Config(new ApacheConfig(configProperty));
+            this.config=new com.tektak.iloop.util.configuration.Config(new ApacheConfig(configProperty));
         }
     }
 
     /**
-     * method to return Config object
+     * method to return CommonConfig object
      * @return
      */
-    public Config getConfig(){
+    public com.tektak.iloop.util.configuration.Config getConfig(){
         if(config==null){
             return null;
         }else{
