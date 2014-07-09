@@ -8,20 +8,18 @@ import com.tektak.iloop.util.common.BaseException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.sql.ResultSet;
+
 /**
  * Created by tektak on 7/7/14.
  */
 public class Test_userActivityLogDAO {
-    //@Test
+    @Test
     public void Test_CreateLogTable(){
-        System.out.println("<<<<<<<<<<<<Running Test_CreateLogTable()>>>>>>>>>>>>>>");
-
+        userActivityLogDAO uDAO=null;
         try {
-
-            new userActivityLogDAO().CreateLogTable();
-            System.out.println("Test_CreateLogTable()");
-            new userActivityLogDAO().closeDbConnection();
-
+            uDAO=new userActivityLogDAO();
+            uDAO.CreateLogTable();
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -30,18 +28,23 @@ public class Test_userActivityLogDAO {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
+        }finally {
+            try {
+                uDAO.closeDbConnection();
+            } catch (RmodelException.SqlException e) {
+                e.printStackTrace();
+            }
         }
     }
     @Test
     public void Test_WriteLog(){
         UserActivityLogDM log=new UserActivityLogDM();
         log.setUID(3333);
-        log.setIPaddress("170.0.33.1");
-        log.setUserActivity("Delete of log operation testing");
+        log.setIPaddress("170.0.0.2");
+        log.setUserActivity("WriteLog(log) is testing...");
         log.setTimestamp(DateTime.getTimestamp());
-        int insertedRows= 0;
         try {
-            insertedRows = new userActivityLogDAO().WriteLog(log);
+            int insertedRows = new userActivityLogDAO().WriteLog(log);
             Assert.assertEquals(1, insertedRows);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
@@ -55,14 +58,46 @@ public class Test_userActivityLogDAO {
 
     }
 
-    //@Test
+    @Test
+    void Test_fetchLog(){
+        UserActivityLogDM log=new UserActivityLogDM();
+        log.setUID(3333);
+        log.setIPaddress("170.0.0.3");
+        log.setUserActivity("Fetchlog() method is testing...");
+        log.setTimestamp(DateTime.getTimestamp());
+        ResultSet rs=null;
+        UserActivityLogDM[] userActivityLogDM= null;
+        try {
+            int insertedRows = new userActivityLogDAO().WriteLog(log);
+            userActivityLogDAO userActivityLogDAO=new userActivityLogDAO();
+            userActivityLogDM=userActivityLogDAO.fetchLog(rs);
+
+        } catch (RmException.DBConnectionError dbConnectionError) {
+            dbConnectionError.printStackTrace();
+        } catch (BaseException.ConfigError configError) {
+            configError.printStackTrace();
+        } catch (RmodelException.SqlException e) {
+            e.printStackTrace();
+        } catch (RmodelException.CommonException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void Test_ReadAllLog(){
         System.out.println("<<<<<<<<<<<<Running Test_ReadAllLog()>>>>>>>>>>>>>>");
         try {
             userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
             UserActivityLogDM[] log=userActivityLogDAO.ReadAllLog();
             userActivityLogDAO.closeDbConnection();
-
+            System.out.println("=====================================================");
+            for(int i=0;i<log.length;i++){
+                System.out.println("UId::"+log[i].getUID());
+                System.out.println("IPaddress::"+log[i].getIPaddress());
+                System.out.println("UserActivity::"+log[i].getUserActivity());
+                System.out.println("Timestamp::"+log[i].getTimestamp());
+                System.out.println("=====================================================");
+            }
 
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();

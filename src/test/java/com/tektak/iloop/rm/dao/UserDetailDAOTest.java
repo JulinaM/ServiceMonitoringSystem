@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class UserDetailDAOTest {
-    @Test
+    //@Test
     public void testPutUser() throws Exception {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
         UserDetail userDetail = new UserDetail();
@@ -18,23 +18,23 @@ public class UserDetailDAOTest {
         Assert.assertNotNull(userDetailDAO.putUser(userDetail));
     }
 
-    @Test
+    //@Test
     public void testPrepare() throws Exception {
 
     }
 
-    @Test
+    //@Test
     public void testDmlQuery() throws Exception {
     }
 
-    @Test
+    //@Test
     public void testCreateUserTable() throws Exception {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
         Assert.assertNotNull(userDetailDAO.createUserTable());
 
     }
 
-    @Test
+    //@Test
     public void testUserAuth() throws Exception{
         UserDetailDAO userDetailDAO = new UserDetailDAO();
         Assert.assertNotNull(userDetailDAO.userAuth("tes@123.com","test"));

@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * Created by tektak on 7/7/14.
  */
 public class Test_AuthenticateUser {
-    @Test
+    //@Test
     public void Test_getAuthenticateUser(){
         AuthenticateUser Au= null;
         try {

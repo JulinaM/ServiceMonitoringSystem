@@ -20,6 +20,8 @@ public class userActivityLogDAO {
      * Store mysql connection
      */
     private MySql mySql;
+    private int RowNo;
+    private int RowSize;
     /**
      * Store MySqlQuery operation
      */
@@ -36,66 +38,46 @@ public class userActivityLogDAO {
          this.mySql=new DBConnection().Connect();
          this.mySqlQuery=new MySqlQuery();
          this.mySqlQuery.setSql(this.mySql);
+        this.setRowNo(0);
+        this.setRowSize(100);
+    }
+
+    public int getRowNo() {
+        return RowNo;
+    }
+
+    public void setRowNo(int rowNo) {
+        RowNo = rowNo;
+    }
+
+    public int getRowSize() {
+        return RowSize;
+    }
+
+    public void setRowSize(int rowSize) {
+        RowSize = rowSize;
     }
 
     /**
-     * Method to Create UserActivityLog Table if not exist.
-     * @throws RmodelException.SqlException
-     * @throws RmodelException.CommonException
+     * Method to set Limit value for use on SELECT query
+     * @param rowNo
+     * @param rowSize
      */
-    public void CreateLogTable() throws RmodelException.SqlException, RmodelException.CommonException {
-        if(mySqlQuery!=null&&mySql!=null) {
-            this.mySqlQuery.setQuery("create table if not exists UserActivityLog( logId int(11) auto_increment, UId int(11) not null,IPaddress varchar(50),Activity varchar(255),Timestamp timestamp, primary key(logId) ); ");
-            this.mySqlQuery.InitPreparedStatement();
-            this.mySqlQuery.Dml();
-            System.out.println("-------------"+this.mySqlQuery.getQuery());
-        }
+    public void setLimit(int rowNo,int rowSize){
+       this.setRowNo(rowNo);
+        this.setRowSize(rowSize);
     }
 
     /**
-     * Method to Insert log data in Mysql Database
-     * @param log
-     * @return  integer value for rows inserted
+     * Method to fetch UserActivity log from ResultSet and return as ActivityLog array
+     * @param rs ResultSet type
+     * @return UserActiviyLog array
      * @throws RmodelException.SqlException
-     * @throws RmodelException.CommonException
-     *
      */
-    public int WriteLog(UserActivityLogDM log) throws RmodelException.SqlException, RmodelException.CommonException{
-        if(mySqlQuery!=null&&mySql!=null) {
-
-        }
-            try {
-                this.mySqlQuery.setQuery("INSERT INTO UserActivityLog (UId,IPaddress,Activity,Timestamp) VALUES(?,?,?,?)");
-                this.mySqlQuery.InitPreparedStatement();
-                PreparedStatement ps = mySqlQuery.getPreparedStatement();
-                ps.setInt(1, log.getUID());
-                ps.setString(2, log.getIPaddress());
-                ps.setString(3, log.getUserActivity());
-                ps.setTimestamp(4, log.getTimestamp());
-            } catch (SQLException e) {
-                throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
-            }
-
-
-            return this.mySqlQuery.Dml();
-
-
-    }
-
-    /**
-     * Method to Read User Activity Log information
-     * @return  UserActivityLogDM type object
-     * @throws RmodelException.SqlException
-     * @throws RmodelException.CommonException
-     *
-     */
-    public UserActivityLogDM[] ReadAllLog() throws RmodelException.SqlException, RmodelException.CommonException{
-          this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog");
-          this.mySqlQuery.InitPreparedStatement();
-          ResultSet rs=this.mySqlQuery.Drl();
-          int RowCount=this.getNumberRows(rs);
-          UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
-          int i=0;
+    public UserActivityLogDM[] fetchLog(ResultSet rs) throws RmodelException.SqlException {
+        int RowCount=this.getNumberRows(rs);
+        UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
+        int i=0;
         try {
             while(rs.next()) {
                 ActivityLog[i]=new UserActivityLogDM();
@@ -109,6 +91,62 @@ public class userActivityLogDAO {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
         return ActivityLog;
+    }
+
+    /**
+     * Method to Create UserActivityLog Table if not exist.
+     * @throws RmodelException.SqlException
+     * @throws RmodelException.CommonException
+     */
+    public void CreateLogTable() throws RmodelException.SqlException, RmodelException.CommonException {
+            this.mySqlQuery.setQuery("create table if not exists UserActivityLog( logId int(11) auto_increment, UId int(11) not null,IPaddress varchar(50),Activity varchar(255),Timestamp timestamp, primary key(logId) ); ");
+            this.mySqlQuery.InitPreparedStatement();
+            this.mySqlQuery.Dml();
+    }
+
+    /**
+     * Method to Insert log data in Mysql Database
+     * @param log
+     * @return  integer value for rows inserted
+     * @throws RmodelException.SqlException
+     * @throws RmodelException.CommonException
+     *
+     */
+    public int WriteLog(UserActivityLogDM log) throws RmodelException.SqlException, RmodelException.CommonException{
+            try {
+                this.mySqlQuery.setQuery("INSERT INTO UserActivityLog (UId,IPaddress,Activity,Timestamp) VALUES(?,?,?,?)");
+                this.mySqlQuery.InitPreparedStatement();
+                PreparedStatement ps = mySqlQuery.getPreparedStatement();
+                ps.setInt(1, log.getUID());
+                ps.setString(2, log.getIPaddress());
+                ps.setString(3, log.getUserActivity());
+                ps.setTimestamp(4, log.getTimestamp());
+                return this.mySqlQuery.Dml();
+            } catch (SQLException e) {
+                throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+            }
+    }
+
+    /**
+     * Method to Read User Activity Log information
+     * @return  UserActivityLogDM type object
+     * @throws RmodelException.SqlException
+     * @throws RmodelException.CommonException
+     *
+     */
+    public UserActivityLogDM[] ReadAllLog() throws RmodelException.SqlException, RmodelException.CommonException{
+        try {
+            this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog LIMIT ?,?");
+            this.mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+            ps.setInt(1,this.getRowNo());
+            ps.setInt(2,this.getRowSize());
+
+            ResultSet rs=this.mySqlQuery.Drl();
+            return fetchLog(rs);
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
     }
 
     /**
@@ -128,18 +166,7 @@ public class userActivityLogDAO {
             PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
             ps.setString(1, UId);
             ResultSet rs=this.mySqlQuery.Drl();
-            int RowCount=this.getNumberRows(rs);
-            UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
-            int i=0;
-            while(rs.next()) {
-                ActivityLog[i]=new UserActivityLogDM();
-                ActivityLog[i].setUID(rs.getInt("UId"));
-                ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
-                ActivityLog[i].setUserActivity(rs.getString("Activity"));
-                ActivityLog[i].setTimestamp(rs.getTimestamp("Timestamp"));
-                i++;
-            }
-            return ActivityLog;
+            return fetchLog(rs);
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
@@ -162,18 +189,7 @@ public class userActivityLogDAO {
         try {
             ps.setString(1, "%"+DateTime+"%");
             ResultSet rs=this.mySqlQuery.Drl();
-            int RowCount=this.getNumberRows(rs);
-            UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
-            int i=0;
-            while(rs.next()) {
-                ActivityLog[i] = new UserActivityLogDM();
-                ActivityLog[i].setUID(rs.getInt("UId"));
-                ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
-                ActivityLog[i].setUserActivity(rs.getString("Activity"));
-                ActivityLog[i].setTimestamp(rs.getTimestamp("Timestamp"));
-                i++;
-            }
-            return ActivityLog;
+            return fetchLog(rs);
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
@@ -198,18 +214,7 @@ public class userActivityLogDAO {
             ps.setString(1, "%"+UId+"%");
             ps.setString(2, "%"+DateTime+"%");
             ResultSet rs=this.mySqlQuery.Drl();
-            int RowCount=this.getNumberRows(rs);
-            UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
-            int i=0;
-            while(rs.next()) {
-                ActivityLog[i]=new UserActivityLogDM();
-                ActivityLog[i].setUID(rs.getInt("UId"));
-                ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
-                ActivityLog[i].setUserActivity(rs.getString("Activity"));
-                ActivityLog[i].setTimestamp(rs.getTimestamp("Timestamp"));
-                i++;
-            }
-            return ActivityLog;
+            return fetchLog(rs);
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
@@ -248,7 +253,7 @@ public class userActivityLogDAO {
     public int deleteLogByUserNDateTime(String UId, String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
 
         try {
-            this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId LIKE ? AND Timestamp LIKE ?");
+            this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId = ? AND Timestamp = ?");
             this.mySqlQuery.InitPreparedStatement();
             PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
             ps.setString(1, "%"+UId+"%");
@@ -277,5 +282,4 @@ public class userActivityLogDAO {
         this.mySqlQuery.Close();
         this.mySql.CloseConnection();
     }
-
 }

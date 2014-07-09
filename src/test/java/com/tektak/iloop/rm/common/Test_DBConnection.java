@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class Test_DBConnection {
     //@Test
-    public void Test_getMySql() throws IOException {
+    public void Test_Connect() throws IOException {
         DBConnection db=new DBConnection();
         MySql mySql= null;
         try {
@@ -24,6 +24,12 @@ public class Test_DBConnection {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                mySql.CloseConnection();
+            } catch (RmodelException.SqlException e) {
+                e.printStackTrace();
+            }
         }
         if(mySql==null){
             System.out.println("mySql==null");
