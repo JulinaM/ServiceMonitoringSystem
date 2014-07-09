@@ -23,7 +23,7 @@ public class Test_DAOCommon {
             mySqlQuery.InitPreparedStatement();
             ResultSet rs=mySqlQuery.Drl();
             mySqlQuery.Close();
-            int RowCount= DAOCommon.countRows(rs);
+            int RowCount= CommonFunction.countRows(rs);
             System.out.println("No. of Rows returned::"+RowCount);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();

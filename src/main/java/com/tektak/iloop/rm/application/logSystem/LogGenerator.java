@@ -3,7 +3,7 @@ package com.tektak.iloop.rm.application.logSystem;
 import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.dao.userActivityLogDAO;
-import com.tektak.iloop.rm.datamodel.UserActivityLogDataModel;
+import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
 
@@ -29,7 +29,7 @@ public class LogGenerator {
      * @throws SQLException
      */
     public static int generateLog(int UId, String IPaddress, String UserActivity) throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError, SQLException{
-        UserActivityLogDataModel log=new UserActivityLogDataModel();
+        UserActivityLogDM log=new UserActivityLogDM();
         log.setUID(UId);
         log.setIPaddress(IPaddress);
         log.setUserActivity(UserActivity);

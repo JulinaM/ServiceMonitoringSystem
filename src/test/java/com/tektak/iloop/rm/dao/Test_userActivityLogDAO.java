@@ -2,7 +2,7 @@ package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.datamodel.UserActivityLogDataModel;
+import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
 import org.junit.Assert;
@@ -34,7 +34,7 @@ public class Test_userActivityLogDAO {
     }
     @Test
     public void Test_WriteLog(){
-        UserActivityLogDataModel log=new UserActivityLogDataModel();
+        UserActivityLogDM log=new UserActivityLogDM();
         log.setUID(3333);
         log.setIPaddress("170.0.33.1");
         log.setUserActivity("Delete of log operation testing");
@@ -60,7 +60,7 @@ public class Test_userActivityLogDAO {
         System.out.println("<<<<<<<<<<<<Running Test_ReadAllLog()>>>>>>>>>>>>>>");
         try {
             userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDataModel[] log=userActivityLogDAO.ReadAllLog();
+            UserActivityLogDM[] log=userActivityLogDAO.ReadAllLog();
             userActivityLogDAO.closeDbConnection();
 
 
@@ -80,7 +80,7 @@ public class Test_userActivityLogDAO {
         System.out.println("<<<<<<<<<<<<Running Test_ReadLogByUser()>>>>>>>>>>>>>>");
         try {
             userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDataModel[] log=userActivityLogDAO.ReadLogByUser("101");
+            UserActivityLogDM[] log=userActivityLogDAO.ReadLogByUser("101");
             System.out.println("=====================================================");
             for(int i=0;i<log.length;i++){
                 System.out.println("UId::"+log[i].getUID());
@@ -105,7 +105,7 @@ public class Test_userActivityLogDAO {
         System.out.println("<<<<<<<<<<<<Running Test_ReadLogByDateTime()>>>>>>>>>>>>>>");
         try {
             userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDataModel[] log=userActivityLogDAO.ReadLogByDateTime("2014-07-08 11:12:10");
+            UserActivityLogDM[] log=userActivityLogDAO.ReadLogByDateTime("2014-07-08 11:12:10");
             System.out.println("=====================================================");
             for(int i=0;i<log.length;i++){
                 System.out.println("UId::"+log[i].getUID());
@@ -130,7 +130,7 @@ public class Test_userActivityLogDAO {
         System.out.println("<<<<<<<<<<<<Running Test_ReadLogByUserNDateTime()>>>>>>>>>>>>>>");
         try {
             userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDataModel[] log=userActivityLogDAO.ReadLogByUserNDateTime("102", "2014-07-08");
+            UserActivityLogDM[] log=userActivityLogDAO.ReadLogByUserNDateTime("102", "2014-07-08");
             System.out.println("=====================================================");
             for(int i=0;i<log.length;i++){
                 System.out.println("UId::"+log[i].getUID());

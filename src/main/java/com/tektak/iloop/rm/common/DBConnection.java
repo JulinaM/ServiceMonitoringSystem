@@ -4,7 +4,6 @@ import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.connection.MySqlConnection;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.util.common.BaseException;
-import com.tektak.iloop.util.configuration.Config;
 
 
 /**
@@ -16,8 +15,8 @@ public class DBConnection {
      * @return MySql object
      */
     public MySql getMySql() throws RmException.DBConnectionError, BaseException.ConfigError, RmodelException.SqlException, RmodelException.CommonException{
-        CommonConfig commonConfig=new CommonConfig();
-        Config config=commonConfig.getConfig();
+        CommonConfig commonCommonConfig =new CommonConfig();
+        com.tektak.iloop.util.configuration.Config config= commonCommonConfig.getConfig();
 
         MySqlConnection mySqlConnection = new MySqlConnection();
         mySqlConnection.setDatabaseName(config.ReadString("dbName"));

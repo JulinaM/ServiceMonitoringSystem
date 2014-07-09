@@ -5,7 +5,6 @@ import com.tektak.iloop.rm.common.CommonConfig;
 import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
-import com.tektak.iloop.util.configuration.Config;
 
 
 import javax.servlet.RequestDispatcher;
@@ -28,8 +27,8 @@ public class LoginServlet extends HttpServlet {
     public void init(ServletConfig servletConfig){
         String RealPath=servletConfig.getServletContext().getRealPath("WEB-INF/classes/configuration.properties");
         try {
-            CommonConfig commonConfig=new CommonConfig(RealPath);
-            Config config=commonConfig.getConfig();
+            CommonConfig commonCommonConfig =new CommonConfig(RealPath);
+            com.tektak.iloop.util.configuration.Config config= commonCommonConfig.getConfig();
             System.out.println("Username::"+config.ReadString("username"));
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();

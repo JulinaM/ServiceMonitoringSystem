@@ -2,7 +2,6 @@ package com.tektak.iloop.rm.common;
 
 import com.tektak.iloop.util.common.BaseException;
 import com.tektak.iloop.util.configuration.ApacheConfig;
-import com.tektak.iloop.util.configuration.Config;
 import com.tektak.iloop.util.configuration.ConfigProperty;
 
 import java.io.File;
@@ -18,7 +17,7 @@ public class Test_CommonConfig {
         configProperty.setConfig(file);
 
         try {
-            Config config = new Config(new ApacheConfig(configProperty));
+            com.tektak.iloop.util.configuration.Config config = new com.tektak.iloop.util.configuration.Config(new ApacheConfig(configProperty));
             System.out.println("Username::"+config.ReadString("username"));
             System.out.println("URL::"+config.ReadString("url"));
             System.out.println("Driver::"+config.ReadString("driver"));
@@ -29,7 +28,7 @@ public class Test_CommonConfig {
     //@Test
     public void Test_commonConfig(){
         try {
-            CommonConfig commonConfig=new CommonConfig();
+            CommonConfig commonConfig =new CommonConfig();
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }
@@ -37,13 +36,13 @@ public class Test_CommonConfig {
     }
     //@Test
     public void Test_getConfig(){
-        CommonConfig commonConfig= null;
+        CommonConfig commonCommonConfig = null;
         try {
-            commonConfig = new CommonConfig();
+            commonCommonConfig = new CommonConfig();
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }
-        Config config=commonConfig.getConfig();
+        com.tektak.iloop.util.configuration.Config config= commonCommonConfig.getConfig();
         System.out.println("===================================================================");
         System.out.println("URl::"+config.ReadString("url"));
         System.out.println("===================================================================");

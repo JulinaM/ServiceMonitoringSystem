@@ -2,7 +2,7 @@ package com.tektak.iloop.rm.application.loginSystem;
 
 import com.tektak.iloop.rm.common.DBConnection;
 import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.dao.DAOCommon;
+import com.tektak.iloop.rm.dao.CommonFunction;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -59,7 +59,7 @@ public class AuthenticateUser {
                 return -1;
             }
             else {
-                if(DAOCommon.countRows(resultSet)==1){
+                if(CommonFunction.countRows(resultSet)==1){
                     resultSet.next();
                     System.out.println("email::"+resultSet.getString("email"));
                     System.out.println("password::"+resultSet.getString("password"));

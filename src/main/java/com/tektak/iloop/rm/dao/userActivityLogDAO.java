@@ -2,7 +2,7 @@ package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.common.DBConnection;
 import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.datamodel.UserActivityLogDataModel;
+import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -60,7 +60,7 @@ public class userActivityLogDAO {
      * @throws RmodelException.CommonException
      *
      */
-    public int WriteLog(UserActivityLogDataModel log) throws RmodelException.SqlException, RmodelException.CommonException{
+    public int WriteLog(UserActivityLogDM log) throws RmodelException.SqlException, RmodelException.CommonException{
         if(mySqlQuery!=null&&mySql!=null) {
 
         }
@@ -84,21 +84,21 @@ public class userActivityLogDAO {
 
     /**
      * Method to Read User Activity Log information
-     * @return  UserActivityLogDataModel type object
+     * @return  UserActivityLogDM type object
      * @throws RmodelException.SqlException
      * @throws RmodelException.CommonException
      *
      */
-    public UserActivityLogDataModel[] ReadAllLog() throws RmodelException.SqlException, RmodelException.CommonException{
+    public UserActivityLogDM[] ReadAllLog() throws RmodelException.SqlException, RmodelException.CommonException{
           this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog");
           this.mySqlQuery.InitPreparedStatement();
           ResultSet rs=this.mySqlQuery.Drl();
           int RowCount=this.getNumberRows(rs);
-          UserActivityLogDataModel[] ActivityLog=new UserActivityLogDataModel[RowCount];
+          UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
           int i=0;
         try {
             while(rs.next()) {
-                ActivityLog[i]=new UserActivityLogDataModel();
+                ActivityLog[i]=new UserActivityLogDM();
                 ActivityLog[i].setUID(rs.getInt("UId"));
                 ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
                 ActivityLog[i].setUserActivity(rs.getString("Activity"));
@@ -120,7 +120,7 @@ public class userActivityLogDAO {
      *
      */
 
-    public UserActivityLogDataModel[] ReadLogByUser(String UId) throws RmodelException.SqlException, RmodelException.CommonException {
+    public UserActivityLogDM[] ReadLogByUser(String UId) throws RmodelException.SqlException, RmodelException.CommonException {
 
         try {
             this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId=?");
@@ -129,10 +129,10 @@ public class userActivityLogDAO {
             ps.setString(1, UId);
             ResultSet rs=this.mySqlQuery.Drl();
             int RowCount=this.getNumberRows(rs);
-            UserActivityLogDataModel[] ActivityLog=new UserActivityLogDataModel[RowCount];
+            UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
             int i=0;
             while(rs.next()) {
-                ActivityLog[i]=new UserActivityLogDataModel();
+                ActivityLog[i]=new UserActivityLogDM();
                 ActivityLog[i].setUID(rs.getInt("UId"));
                 ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
                 ActivityLog[i].setUserActivity(rs.getString("Activity"));
@@ -155,7 +155,7 @@ public class userActivityLogDAO {
      *
      */
 
-    public UserActivityLogDataModel[] ReadLogByDateTime(String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+    public UserActivityLogDM[] ReadLogByDateTime(String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
         this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE Timestamp LIKE ?");
         this.mySqlQuery.InitPreparedStatement();
         PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
@@ -163,10 +163,10 @@ public class userActivityLogDAO {
             ps.setString(1, "%"+DateTime+"%");
             ResultSet rs=this.mySqlQuery.Drl();
             int RowCount=this.getNumberRows(rs);
-            UserActivityLogDataModel[] ActivityLog=new UserActivityLogDataModel[RowCount];
+            UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
             int i=0;
             while(rs.next()) {
-                ActivityLog[i] = new UserActivityLogDataModel();
+                ActivityLog[i] = new UserActivityLogDM();
                 ActivityLog[i].setUID(rs.getInt("UId"));
                 ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
                 ActivityLog[i].setUserActivity(rs.getString("Activity"));
@@ -189,7 +189,7 @@ public class userActivityLogDAO {
      * @throws RmodelException.CommonException
      *
      */
-    public UserActivityLogDataModel[] ReadLogByUserNDateTime(String UId, String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+    public UserActivityLogDM[] ReadLogByUserNDateTime(String UId, String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
 
         try {
             this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId LIKE ? AND Timestamp LIKE ?");
@@ -199,10 +199,10 @@ public class userActivityLogDAO {
             ps.setString(2, "%"+DateTime+"%");
             ResultSet rs=this.mySqlQuery.Drl();
             int RowCount=this.getNumberRows(rs);
-            UserActivityLogDataModel[] ActivityLog=new UserActivityLogDataModel[RowCount];
+            UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
             int i=0;
             while(rs.next()) {
-                ActivityLog[i]=new UserActivityLogDataModel();
+                ActivityLog[i]=new UserActivityLogDM();
                 ActivityLog[i].setUID(rs.getInt("UId"));
                 ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
                 ActivityLog[i].setUserActivity(rs.getString("Activity"));
@@ -266,7 +266,7 @@ public class userActivityLogDAO {
      * @throws RmodelException.SqlException
      */
     public int getNumberRows(ResultSet resultSet) throws RmodelException.SqlException{
-        return DAOCommon.countRows(resultSet);
+        return CommonFunction.countRows(resultSet);
     }
 
     /**
