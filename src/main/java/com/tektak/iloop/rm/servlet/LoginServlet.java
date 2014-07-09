@@ -10,6 +10,7 @@ import com.tektak.iloop.util.common.BaseException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import java.sql.SQLException;
 /**
  * Created by tektak on 7/2/14.
  */
+@WebServlet("/loginservlet")
 public class LoginServlet extends HttpServlet {
 
     public void init(ServletConfig servletConfig){
@@ -71,13 +73,11 @@ public class LoginServlet extends HttpServlet {
                     request.setAttribute("password",password);
                 }else{
                     request.setAttribute("msg","Invalid Username or Password!!");
-                    System.out.println("Not Authenticate user!! navigting to Login page!!");
-                    PrintWriter ps=response.getWriter();
-                    ps.append("Not Authenticate user!! navigting to Login page!!....");
                 }
             } catch (RmodelException.SqlException e) {
                 e.printStackTrace();
             } catch (SQLException e){
+                e.printStackTrace();
             } catch (RmException.DBConnectionError dbConnectionError) {
                 dbConnectionError.printStackTrace();
             } catch (BaseException.ConfigError configError) {

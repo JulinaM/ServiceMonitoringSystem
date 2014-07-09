@@ -15,7 +15,7 @@ public class Test_DBConnection {
         DBConnection db=new DBConnection();
         MySql mySql= null;
         try {
-            mySql = db.getMySql();
+            mySql = db.Connect();
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {

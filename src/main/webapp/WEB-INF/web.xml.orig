@@ -7,11 +7,11 @@
 <<<<<<< HEAD
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.tektak.iLoop.rm.servlet.LoginServlet</servlet-class>
+        <servlet-class>com.tektak.iloop.rm.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ActivityLogServlet</servlet-name>
-        <servlet-class>com.tektak.iLoop.rm.servlet.ActivityLogServlet</servlet-class>
+        <servlet-class>com.tektak.iloop.rm.servlet.ActivityLogServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>

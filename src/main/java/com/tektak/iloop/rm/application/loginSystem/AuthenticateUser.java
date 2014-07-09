@@ -25,7 +25,7 @@ public class AuthenticateUser {
      * @throws RmodelException.SqlException
      */
     public AuthenticateUser()throws RmException.DBConnectionError, BaseException.ConfigError, RmodelException.SqlException, RmodelException.CommonException{
-        this.mySql=new DBConnection().getMySql();
+        this.mySql=new DBConnection().Connect();
     }
 
     /**

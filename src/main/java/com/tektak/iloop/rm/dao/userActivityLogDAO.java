@@ -33,7 +33,7 @@ public class userActivityLogDAO {
      * @throws RmodelException.CommonException
      */
     public userActivityLogDAO() throws RmException.DBConnectionError, BaseException.ConfigError, RmodelException.SqlException, RmodelException.CommonException{
-         this.mySql=new DBConnection().getMySql();
+         this.mySql=new DBConnection().Connect();
          this.mySqlQuery=new MySqlQuery();
          this.mySqlQuery.setSql(this.mySql);
     }

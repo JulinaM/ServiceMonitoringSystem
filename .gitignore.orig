@@ -1,0 +1,9 @@
+.idea/
+iLoopRm.iml
+target/
+<<<<<<< HEAD
+src/main/webapp/loginSystem/bootstrap/
+classes/
+=======
+assets/
+>>>>>>> 12df3514179b4efb23ea550b90c003f9c4e092b4

@@ -1,5 +1,4 @@
 .idea/
 iLoopRm.iml
 target/
-src/main/webapp/loginSystem/bootstrap/
-classes/
+assets/

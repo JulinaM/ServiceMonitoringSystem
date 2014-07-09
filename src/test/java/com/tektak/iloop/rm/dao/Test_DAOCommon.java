@@ -16,7 +16,7 @@ public class Test_DAOCommon {
     //@Test
     public void Test_countRows(){
         try {
-            MySql mySql=new DBConnection().getMySql();
+            MySql mySql=new DBConnection().Connect();
             MySqlQuery mySqlQuery=new MySqlQuery();
             mySqlQuery.setSql(mySql);
             mySqlQuery.setQuery("SELECT * FROM UserActivityLog");
