@@ -1,25 +1,36 @@
 package com.tektak.iloop.rm.dao;
 
+import com.tektak.iloop.rm.common.DBConnection;
 import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
+import com.tektak.iloop.rm.datamodel.ULogDM;
 import com.tektak.iloop.rmodel.RmodelException;
+import com.tektak.iloop.rmodel.driver.MySql;
+import com.tektak.iloop.rmodel.query.MySqlQuery;
 import com.tektak.iloop.util.common.BaseException;
-import org.junit.Assert;
-import org.junit.Test;
 
+import org.junit.Test;
+import org.junit.Assert;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * Created by tektak on 7/7/14.
  */
-public class Test_userActivityLogDAO {
+public class Test_ULogDAO {
     @Test
     public void Test_CreateLogTable(){
-        userActivityLogDAO uDAO=null;
+        ULogDAO uDAO=null;
         try {
-            uDAO=new userActivityLogDAO();
-            uDAO.CreateLogTable();
+            uDAO=new ULogDAO();
+            int i=uDAO.CreateLogTable();
+            if(i==0)
+                Assert.assertTrue(i==0);
+            else if(i==1)
+                Assert.assertTrue(i==1);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -38,14 +49,16 @@ public class Test_userActivityLogDAO {
     }
     @Test
     public void Test_WriteLog(){
-        UserActivityLogDM log=new UserActivityLogDM();
-        log.setUID(3333);
+        ULogDM log=new ULogDM();
+        log.setUID(2222);
         log.setIPaddress("170.0.0.2");
         log.setUserActivity("WriteLog(log) is testing...");
         log.setTimestamp(DateTime.getTimestamp());
         try {
-            int insertedRows = new userActivityLogDAO().WriteLog(log);
-            Assert.assertEquals(1, insertedRows);
+
+            int insertedRows = new ULogDAO().WriteLog(log);
+            Assert.assertTrue(insertedRows == 1);
+
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -59,18 +72,41 @@ public class Test_userActivityLogDAO {
     }
 
     @Test
-    void Test_fetchLog(){
-        UserActivityLogDM log=new UserActivityLogDM();
-        log.setUID(3333);
-        log.setIPaddress("170.0.0.3");
-        log.setUserActivity("Fetchlog() method is testing...");
-        log.setTimestamp(DateTime.getTimestamp());
-        ResultSet rs=null;
-        UserActivityLogDM[] userActivityLogDM= null;
+    public void Test_fetchLog(){
+
+        ULogDAO uDAO=null;
         try {
-            int insertedRows = new userActivityLogDAO().WriteLog(log);
-            userActivityLogDAO userActivityLogDAO=new userActivityLogDAO();
-            userActivityLogDM=userActivityLogDAO.fetchLog(rs);
+            ULogDAO ULogDAO =new ULogDAO();
+            ULogDAO.deleteLogByUser("3333");
+
+            ULogDM Activitylog=new ULogDM();
+            Activitylog.setUID(3333);
+
+            Activitylog.setIPaddress("170.0.0.3");
+            Activitylog.setUserActivity("Fetchlog() method is testing...");
+            Timestamp timestamp=Timestamp.valueOf("2007-09-23 10:10:10.0");
+            Activitylog.setTimestamp(timestamp);
+
+            uDAO=new ULogDAO();
+            uDAO.WriteLog(Activitylog);
+
+            MySql mySql=new DBConnection().Connect();
+            MySqlQuery mySqlQuery=new MySqlQuery();
+            mySqlQuery.setSql(mySql);
+            mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId=?");
+            mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps=mySqlQuery.getPreparedStatement();
+            ps.setInt(1, Activitylog.getUID());
+
+            ResultSet rs=mySqlQuery.Drl();
+            rs.next();
+            ULogDM logFetched=new ULogDM();
+            logFetched.setUID(rs.getInt("UId"));
+            logFetched.setIPaddress(rs.getString("IPaddress"));
+            logFetched.setUserActivity(rs.getString("Activity"));
+            logFetched.setTimestamp(rs.getTimestamp("Timestamp"));
+
+           Assert.assertTrue(Activitylog.equals(logFetched));
 
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
@@ -80,25 +116,36 @@ public class Test_userActivityLogDAO {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                uDAO.closeDbConnection();
+            } catch (RmodelException.SqlException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Test
     public void Test_ReadAllLog(){
-        System.out.println("<<<<<<<<<<<<Running Test_ReadAllLog()>>>>>>>>>>>>>>");
+        ULogDAO ULogDAO =null;
         try {
-            userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDM[] log=userActivityLogDAO.ReadAllLog();
-            userActivityLogDAO.closeDbConnection();
-            System.out.println("=====================================================");
-            for(int i=0;i<log.length;i++){
-                System.out.println("UId::"+log[i].getUID());
-                System.out.println("IPaddress::"+log[i].getIPaddress());
-                System.out.println("UserActivity::"+log[i].getUserActivity());
-                System.out.println("Timestamp::"+log[i].getTimestamp());
-                System.out.println("=====================================================");
-            }
+            ULogDAO =new ULogDAO();
+            ULogDAO.deleteAllLog();
 
+            ULogDM[] Activitylog=new ULogDM[5];
+            for(int i=0;i<5;i++){
+                Activitylog[i]=new ULogDM();
+                Activitylog[i].setUID(i);
+                Activitylog[i].setIPaddress("174.4.4."+i);
+                Activitylog[i].setUserActivity("ReadAllLog() method is testing..."+i);
+                Activitylog[i].setTimestamp(Timestamp.valueOf("2007-09-23 10:10:10.0"));
+                ULogDAO.WriteLog(Activitylog[i]);
+            }
+            ULogDM[] log= ULogDAO.ReadAllLog();
+            Assert.assertTrue(log.length == 5);
+            Assert.assertTrue(ULogDM.equals(log, Activitylog));
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
@@ -107,40 +154,56 @@ public class Test_userActivityLogDAO {
             e.printStackTrace();
         }catch (RmodelException.CommonException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                ULogDAO.closeDbConnection();
+            } catch (RmodelException.SqlException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    //@Test
+    @Test
     public void Test_ReadLogByUser(){
-        System.out.println("<<<<<<<<<<<<Running Test_ReadLogByUser()>>>>>>>>>>>>>>");
+        ULogDAO ULogDAO =null;
         try {
-            userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDM[] log=userActivityLogDAO.ReadLogByUser("101");
-            System.out.println("=====================================================");
-            for(int i=0;i<log.length;i++){
-                System.out.println("UId::"+log[i].getUID());
-                System.out.println("IPaddress::"+log[i].getIPaddress());
-                System.out.println("UserActivity::"+log[i].getUserActivity());
-                System.out.println("Timestamp::"+log[i].getTimestamp());
-                System.out.println("=====================================================");
+            ULogDAO =new ULogDAO();
+            ULogDAO.deleteLogByUser("5555");
+
+            ULogDM[] Activitylog=new ULogDM[5];
+            for(int i=0;i<5;i++){
+                Activitylog[i]=new ULogDM();
+                Activitylog[i].setUID(5555);
+                Activitylog[i].setIPaddress("174.5.5." + i);
+                Activitylog[i].setUserActivity("ReadLogByUser() method is testing..." + i);
+                Activitylog[i].setTimestamp(Timestamp.valueOf("2007-09-23 10:10:10.0"));
+                ULogDAO.WriteLog(Activitylog[i]);
             }
-            userActivityLogDAO.closeDbConnection();
+            ULogDM[] log= ULogDAO.ReadLogByUser("5555");
+            Assert.assertTrue(log.length == 5);
+            Assert.assertTrue(ULogDM.equals(log, Activitylog));
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
-        } catch (RmodelException.CommonException e) {
+        }catch (RmodelException.CommonException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                ULogDAO.closeDbConnection();
+            } catch (RmodelException.SqlException e) {
+                e.printStackTrace();
+            }
         }
     }
     //@Test
     public void Test_ReadLogByDateTime(){
         System.out.println("<<<<<<<<<<<<Running Test_ReadLogByDateTime()>>>>>>>>>>>>>>");
         try {
-            userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDM[] log=userActivityLogDAO.ReadLogByDateTime("2014-07-08 11:12:10");
+            ULogDAO ULogDAO =new ULogDAO();
+            ULogDM[] log= ULogDAO.ReadLogByDateTime("2014-07-08 11:12:10");
             System.out.println("=====================================================");
             for(int i=0;i<log.length;i++){
                 System.out.println("UId::"+log[i].getUID());
@@ -149,7 +212,7 @@ public class Test_userActivityLogDAO {
                 System.out.println("Timestamp::"+log[i].getTimestamp());
                 System.out.println("=====================================================");
             }
-            userActivityLogDAO.closeDbConnection();
+            ULogDAO.closeDbConnection();
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
@@ -164,8 +227,8 @@ public class Test_userActivityLogDAO {
     public void Test_ReadLogByUserNDateTime(){
         System.out.println("<<<<<<<<<<<<Running Test_ReadLogByUserNDateTime()>>>>>>>>>>>>>>");
         try {
-            userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            UserActivityLogDM[] log=userActivityLogDAO.ReadLogByUserNDateTime("102", "2014-07-08");
+            ULogDAO ULogDAO =new ULogDAO();
+            ULogDM[] log= ULogDAO.ReadLogByUserNDateTime("102", "2014-07-08");
             System.out.println("=====================================================");
             for(int i=0;i<log.length;i++){
                 System.out.println("UId::"+log[i].getUID());
@@ -174,7 +237,7 @@ public class Test_userActivityLogDAO {
                 System.out.println("Timestamp::"+log[i].getTimestamp());
                 System.out.println("=====================================================");
             }
-            userActivityLogDAO.closeDbConnection();
+            ULogDAO.closeDbConnection();
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
@@ -190,8 +253,8 @@ public class Test_userActivityLogDAO {
     public void Test_deleteLogByUser(){
         System.out.println("<<<<<<<<<<<<Running Test_deleteLogByUser()>>>>>>>>>>>>>>");
         try {
-            userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            System.out.println(userActivityLogDAO.deleteLogByUser("101")+" log are Deleted!!");
+            ULogDAO ULogDAO =new ULogDAO();
+            System.out.println(ULogDAO.deleteLogByUser("3333")+" log are Deleted!!");
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -207,8 +270,8 @@ public class Test_userActivityLogDAO {
     public void Test_deleteLogByDateTime(){
         System.out.println("<<<<<<<<<<<<Running Test_deleteLogByDateTime()>>>>>>>>>>>>>>");
         try {
-            userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            System.out.println(userActivityLogDAO.deleteLogByDateTime("13:16")+" log are Deleted!!");
+            ULogDAO ULogDAO =new ULogDAO();
+            System.out.println(ULogDAO.deleteLogByDateTime("2")+" log are Deleted!!");
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -224,8 +287,8 @@ public class Test_userActivityLogDAO {
     public void Test_deleteLogByUserNDateTime(){
         System.out.println("<<<<<<<<<<<<Running Test_deleteLogByUserNDateTime()>>>>>>>>>>>>>>");
         try {
-            userActivityLogDAO userActivityLogDAO =new userActivityLogDAO();
-            System.out.println(userActivityLogDAO.deleteLogByUserNDateTime("3333","2014-07-08")+" log are Deleted!!");
+            ULogDAO ULogDAO =new ULogDAO();
+            System.out.println(ULogDAO.deleteLogByUserNDateTime("3333","2014-07-08")+" log are Deleted!!");
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {

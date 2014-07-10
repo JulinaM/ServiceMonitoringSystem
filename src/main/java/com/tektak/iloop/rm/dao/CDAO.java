@@ -8,13 +8,7 @@ import java.sql.SQLException;
 /**
  * Created by tektak on 7/8/14.
  */
-public class CommonFunction {
-    /**
-     * count no. of Rows in ResultSet
-     * @param resultSet
-     * @return
-     * @throws RmodelException.SqlException
-     */
+public class CDAO {
     public static int countRows(ResultSet resultSet) throws RmodelException.SqlException{
         try {
             if(resultSet.last()){

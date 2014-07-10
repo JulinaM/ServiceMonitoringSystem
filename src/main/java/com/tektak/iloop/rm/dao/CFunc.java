@@ -8,7 +8,13 @@ import java.sql.SQLException;
 /**
  * Created by tektak on 7/8/14.
  */
-public class DAOCommon {
+public class CFunc {
+    /**
+     * count no. of Rows in ResultSet
+     * @param resultSet
+     * @return
+     * @throws RmodelException.SqlException
+     */
     public static int countRows(ResultSet resultSet) throws RmodelException.SqlException{
         try {
             if(resultSet.last()){

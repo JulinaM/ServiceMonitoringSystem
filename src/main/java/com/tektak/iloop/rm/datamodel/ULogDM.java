@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 /**
  * Datamodel for User Activity Log
  */
-public class UserActivityLogDM {
+public class ULogDM {
     /**
      * Store User Id
      */
@@ -89,5 +89,25 @@ public class UserActivityLogDM {
      */
     public void setIPaddress(String IPaddress) {
         this.IPaddress = IPaddress;
+    }
+
+    public boolean equals(ULogDM obj){
+        if(this.UId==obj.UId&&this.IPaddress.equals(obj.IPaddress)&&this.UserActivity.equals(obj.UserActivity)&&this.timestamp.equals(obj.timestamp)){
+            return true;
+        }else
+        return false;
+    }
+    public static boolean equals(ULogDM[] obj1,ULogDM[] obj2){
+        int obj1Len=obj1.length;
+        int obj2Len=obj2.length;
+        if(obj1Len!=obj2Len){
+            return false;
+        }
+        for(int i=0;i<obj1Len;i++){
+            if(!obj1[i].equals(obj2[i])){
+                return false;
+            }
+        }
+        return true;
     }
 }

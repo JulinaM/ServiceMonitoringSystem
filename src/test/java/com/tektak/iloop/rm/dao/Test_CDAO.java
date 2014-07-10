@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 /**
  * Created by tektak on 7/8/14.
  */
-public class Test_DAOCommon {
+public class Test_CDAO {
     //@Test
     public void Test_countRows(){
         try {
@@ -23,7 +23,7 @@ public class Test_DAOCommon {
             mySqlQuery.InitPreparedStatement();
             ResultSet rs=mySqlQuery.Drl();
             mySqlQuery.Close();
-            int RowCount= CommonFunction.countRows(rs);
+            int RowCount= CFunc.countRows(rs);
             System.out.println("No. of Rows returned::"+RowCount);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();

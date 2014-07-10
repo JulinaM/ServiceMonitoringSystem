@@ -15,7 +15,7 @@ import java.sql.SQLException;
 /**
  * Created by tektak on 7/4/14.
  */
-public class userActivityLogDAO {
+public class ULogDAO {
     /**
      * Store mysql connection
      */
@@ -34,7 +34,7 @@ public class userActivityLogDAO {
      * @throws RmodelException.SqlException
      * @throws RmodelException.CommonException
      */
-    public userActivityLogDAO() throws RmException.DBConnectionError, BaseException.ConfigError, RmodelException.SqlException, RmodelException.CommonException{
+    public ULogDAO() throws RmException.DBConnectionError, BaseException.ConfigError, RmodelException.SqlException, RmodelException.CommonException{
          this.mySql=new DBConnection().Connect();
          this.mySqlQuery=new MySqlQuery();
          this.mySqlQuery.setSql(this.mySql);
@@ -98,10 +98,10 @@ public class userActivityLogDAO {
      * @throws RmodelException.SqlException
      * @throws RmodelException.CommonException
      */
-    public void CreateLogTable() throws RmodelException.SqlException, RmodelException.CommonException {
+    public int CreateLogTable() throws RmodelException.SqlException, RmodelException.CommonException {
             this.mySqlQuery.setQuery("create table if not exists UserActivityLog( logId int(11) auto_increment, UId int(11) not null,IPaddress varchar(50),Activity varchar(255),Timestamp timestamp, primary key(logId) ); ");
             this.mySqlQuery.InitPreparedStatement();
-            this.mySqlQuery.Dml();
+            return this.mySqlQuery.Dml();
     }
 
     /**
