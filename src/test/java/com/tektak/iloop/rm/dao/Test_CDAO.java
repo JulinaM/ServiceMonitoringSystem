@@ -43,7 +43,7 @@ public class Test_CDAO {
             ResultSet rs=mySqlQuery.Drl();
 
             int RowCount= CFunc.countRows(rs);
-            System.out.println("No. of Rows returned::"+RowCount);
+
             Assert.assertEquals(RowCount,5);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
