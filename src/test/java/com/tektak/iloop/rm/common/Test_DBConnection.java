@@ -35,5 +35,6 @@ public class Test_DBConnection {
             }
         }
         Assert.assertNotNull("Mysql Connection Unsuccessful!!",mySql);
+        Assert.assertTrue(mySql!=null);
     }
 }
