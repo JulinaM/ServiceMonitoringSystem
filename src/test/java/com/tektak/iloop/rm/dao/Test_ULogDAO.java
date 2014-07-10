@@ -296,7 +296,7 @@ public class Test_ULogDAO {
 
             ULogDM[] Activitylog=new ULogDM[5];
             int sec=0;
-            Timestamp original=Timestamp.valueOf("2040-10-10 10:10:10.0");
+            Timestamp original=Timestamp.valueOf("2010-10-10 10:10:10.0");
 
             for(int i=0;i<5;i++){
                 Activitylog[i]=new ULogDM();
@@ -310,7 +310,7 @@ public class Test_ULogDAO {
                 ULogDAO.WriteLog(Activitylog[i]);
             }
 
-            ULogDM[] log= ULogDAO.ReadLogByDateTimeLessThan(Timestamp.valueOf("2010-10-10 10:10:10.0"));
+            ULogDM[] log= ULogDAO.ReadLogByUserNDateTimeLessThan(6666,Timestamp.valueOf("2010-10-10 10:10:10.0"));
 
             Assert.assertTrue(log.length == 5);
             Assert.assertTrue(ULogDM.equals(log, Activitylog));
