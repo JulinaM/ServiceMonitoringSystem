@@ -22,8 +22,7 @@ public class Test_CDAO {
         ULogDAO ULogDAO=null;
         try {
             ULogDAO =new ULogDAO();
-            int dletedRows=ULogDAO.deleteAllLog();
-            System.out.println("Deleted Rows::"+dletedRows);
+            ULogDAO.deleteAllLog();
 
             ULogDM[] Activitylog=new ULogDM[5];
             for(int i=0;i<5;i++){

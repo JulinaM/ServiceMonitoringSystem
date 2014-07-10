@@ -19,12 +19,8 @@ public class Test_CommonConfig {
         ConfigProperty configProperty = new ConfigProperty();
         configProperty.setConfig(file);
         Config config=null;
-
         try {
             config = new Config(new ApacheConfig(configProperty));
-            System.out.println("Username::"+config.ReadString("username"));
-            System.out.println("URL::"+config.ReadString("url"));
-            System.out.println("Driver::"+config.ReadString("driver"));
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }
@@ -42,8 +38,6 @@ public class Test_CommonConfig {
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }
-        System.out.println("Test method");
-
     }
     @Test
     public void Test_getConfig(){
@@ -60,9 +54,5 @@ public class Test_CommonConfig {
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }
-
-        System.out.println("===================================================================");
-        System.out.println("URl::"+config.ReadString("url"));
-        System.out.println("===================================================================");
     }
 }
