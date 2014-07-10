@@ -38,6 +38,7 @@ public class AddUserServlet extends HttpServlet {
             if (result == 1) {
                 userDetailDAO.putUser(userDetail);
                 page = "/allusers";
+                error = "";
             }
             else {
                 page = "/adduser";

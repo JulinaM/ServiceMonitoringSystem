@@ -7,8 +7,15 @@ import java.sql.SQLException;
 
 /**
  * Created by tektak on 7/8/14.
+ *Common methods for DAO
  */
 public class DAOCommon {
+    /**
+     *
+     * @param resultSet
+     * @return number of rows in the resultset
+     * @throws RmodelException.SqlException
+     */
     public static int countRows(ResultSet resultSet) throws RmodelException.SqlException{
         try {
             if(resultSet.last()){
