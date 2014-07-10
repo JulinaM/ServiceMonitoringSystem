@@ -2,7 +2,7 @@ package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.common.DBConnection;
 import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
+import com.tektak.iloop.rm.datamodel.ULogDM;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -11,6 +11,7 @@ import com.tektak.iloop.util.common.BaseException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * Created by tektak on 7/4/14.
@@ -74,13 +75,13 @@ public class ULogDAO {
      * @return UserActiviyLog array
      * @throws RmodelException.SqlException
      */
-    public UserActivityLogDM[] fetchLog(ResultSet rs) throws RmodelException.SqlException {
+    public ULogDM[] fetchLog(ResultSet rs) throws RmodelException.SqlException {
         int RowCount=this.getNumberRows(rs);
-        UserActivityLogDM[] ActivityLog=new UserActivityLogDM[RowCount];
+        ULogDM[] ActivityLog=new ULogDM[RowCount];
         int i=0;
         try {
             while(rs.next()) {
-                ActivityLog[i]=new UserActivityLogDM();
+                ActivityLog[i]=new ULogDM();
                 ActivityLog[i].setUID(rs.getInt("UId"));
                 ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
                 ActivityLog[i].setUserActivity(rs.getString("Activity"));
@@ -112,7 +113,7 @@ public class ULogDAO {
      * @throws RmodelException.CommonException
      *
      */
-    public int WriteLog(UserActivityLogDM log) throws RmodelException.SqlException, RmodelException.CommonException{
+    public int WriteLog(ULogDM log) throws RmodelException.SqlException, RmodelException.CommonException{
             try {
                 this.mySqlQuery.setQuery("INSERT INTO UserActivityLog (UId,IPaddress,Activity,Timestamp) VALUES(?,?,?,?)");
                 this.mySqlQuery.InitPreparedStatement();
@@ -129,12 +130,12 @@ public class ULogDAO {
 
     /**
      * Method to Read User Activity Log information
-     * @return  UserActivityLogDM type object
+     * @return  ULogDM type object
      * @throws RmodelException.SqlException
      * @throws RmodelException.CommonException
      *
      */
-    public UserActivityLogDM[] ReadAllLog() throws RmodelException.SqlException, RmodelException.CommonException{
+    public ULogDM[] ReadAllLog() throws RmodelException.SqlException, RmodelException.CommonException{
         try {
             this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog LIMIT ?,?");
             this.mySqlQuery.InitPreparedStatement();
@@ -158,13 +159,13 @@ public class ULogDAO {
      *
      */
 
-    public UserActivityLogDM[] ReadLogByUser(String UId) throws RmodelException.SqlException, RmodelException.CommonException {
+    public ULogDM[] ReadLogByUser(int UId) throws RmodelException.SqlException, RmodelException.CommonException {
 
         try {
             this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId=?");
             this.mySqlQuery.InitPreparedStatement();
             PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
-            ps.setString(1, UId);
+            ps.setInt(1, UId);
             ResultSet rs=this.mySqlQuery.Drl();
             return fetchLog(rs);
         } catch (SQLException e) {
@@ -182,18 +183,45 @@ public class ULogDAO {
      *
      */
 
-    public UserActivityLogDM[] ReadLogByDateTime(String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
-        this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE Timestamp LIKE ?");
+    public ULogDM[] ReadLogByDateTimeGreaterThan(Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+        this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE Timestamp >= ?");
         this.mySqlQuery.InitPreparedStatement();
         PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
         try {
-            ps.setString(1, "%"+DateTime+"%");
+            ps.setTimestamp(1, DateTime);
             ResultSet rs=this.mySqlQuery.Drl();
             return fetchLog(rs);
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
 
+    }
+
+    public ULogDM[] ReadLogByDateTimeLessThan(Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+        this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE Timestamp <= ?");
+        this.mySqlQuery.InitPreparedStatement();
+        PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+        try {
+            ps.setTimestamp(1, DateTime);
+            ResultSet rs=this.mySqlQuery.Drl();
+            return fetchLog(rs);
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+    public ULogDM[] ReadLogByDateTimeBetween(Timestamp DateTimeLessThan,Timestamp DateTimeGreaterThan) throws RmodelException.SqlException, RmodelException.CommonException {
+        this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE Timestamp <= ? AND Timestamp >= ?");
+        this.mySqlQuery.InitPreparedStatement();
+        PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+        try {
+            ps.setTimestamp(1, DateTimeLessThan);
+            ps.setTimestamp(2, DateTimeGreaterThan);
+            ResultSet rs=this.mySqlQuery.Drl();
+            return fetchLog(rs);
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
     }
 
     /**
@@ -205,14 +233,45 @@ public class ULogDAO {
      * @throws RmodelException.CommonException
      *
      */
-    public UserActivityLogDM[] ReadLogByUserNDateTime(String UId, String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+    public ULogDM[] ReadLogByUserNDateTimeGreaterThan(int UId, Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
 
         try {
-            this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId LIKE ? AND Timestamp LIKE ?");
+            this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId LIKE ? AND Timestamp >= ?");
             this.mySqlQuery.InitPreparedStatement();
             PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
-            ps.setString(1, "%"+UId+"%");
-            ps.setString(2, "%"+DateTime+"%");
+            ps.setInt(1, UId);
+            ps.setTimestamp(2, DateTime);
+            ResultSet rs=this.mySqlQuery.Drl();
+            return fetchLog(rs);
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+    public ULogDM[] ReadLogByUserNDateTimeLessThan(int UId, Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+
+        try {
+            this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId LIKE ? AND Timestamp <= ?");
+            this.mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+            ps.setInt(1, UId);
+            ps.setTimestamp(2, DateTime);
+            ResultSet rs=this.mySqlQuery.Drl();
+            return fetchLog(rs);
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+    public ULogDM[] ReadLogByUserNDateTimeBetween(int UId, Timestamp DateTimeLessThan,Timestamp DateTimeGreaterThan) throws RmodelException.SqlException, RmodelException.CommonException {
+
+        try {
+            this.mySqlQuery.setQuery("SELECT * FROM UserActivityLog WHERE UId LIKE ? AND Timestamp <= ? AND Timestamp >= ?");
+            this.mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+            ps.setInt(1, UId);
+            ps.setTimestamp(2, DateTimeLessThan);
+            ps.setTimestamp(3, DateTimeGreaterThan);
             ResultSet rs=this.mySqlQuery.Drl();
             return fetchLog(rs);
         } catch (SQLException e) {
@@ -226,38 +285,96 @@ public class ULogDAO {
         return this.mySqlQuery.Dml();
     }
 
-    public int deleteLogByUser(String UId) throws RmodelException.SqlException, RmodelException.CommonException {
+    public int deleteLogByUser(int UId) throws RmodelException.SqlException, RmodelException.CommonException {
         this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId= ?");
         this.mySqlQuery.InitPreparedStatement();
         PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
         try {
-            ps.setString(1, UId);
+            ps.setInt(1, UId);
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
         return this.mySqlQuery.Dml();
     }
 
-    public int deleteLogByDateTime(String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
-        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE Timestamp= ?");
+    public int deleteLogByDateTimeGreaterThan(Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE Timestamp >= ?");
         this.mySqlQuery.InitPreparedStatement();
         PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
         try {
-            ps.setString(1, "%"+DateTime+"%");
+            ps.setTimestamp(1, DateTime);
             return this.mySqlQuery.Dml();
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
     }
 
-    public int deleteLogByUserNDateTime(String UId, String DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+    public int deleteLogByDateTimeLessThan(Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE Timestamp <= ?");
+        this.mySqlQuery.InitPreparedStatement();
+        PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+        try {
+            ps.setTimestamp(1, DateTime);
+            return this.mySqlQuery.Dml();
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+    public int deleteLogByDateTimeBetween(Timestamp DateTimeAbove,Timestamp DateTimeBelow) throws RmodelException.SqlException, RmodelException.CommonException {
+        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE Timestamp >= ? AND Timestamp < ?");
+        this.mySqlQuery.InitPreparedStatement();
+        PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+         try {
+            ps.setTimestamp(1, DateTimeAbove);
+            ps.setTimestamp(2, DateTimeBelow);
+            System.out.println("prepared Statement ::"+ps.toString()+DateTimeAbove+" <=Timestamp "+DateTimeBelow);
+
+             return this.mySqlQuery.Dml();
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+
+
+    public int deleteLogByUserNDateTimeGreaterThan(int UId, Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
 
         try {
-            this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId = ? AND Timestamp = ?");
+            this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId = ? AND Timestamp >= ?");
             this.mySqlQuery.InitPreparedStatement();
             PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
-            ps.setString(1, "%"+UId+"%");
-            ps.setString(2, "%"+DateTime+"%");
+            ps.setInt(1, UId);
+            ps.setTimestamp(2, DateTime);
+            return this.mySqlQuery.Dml();
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+    public int deleteLogByUserNDateTimeLessThan(int UId, Timestamp DateTime) throws RmodelException.SqlException, RmodelException.CommonException {
+
+        try {
+            this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId = ? AND Timestamp <= ?");
+            this.mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+            ps.setInt(1, UId);
+            ps.setTimestamp(2, DateTime);
+            return this.mySqlQuery.Dml();
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+    public int deleteLogByUserNDateTimeBetween(int UId, Timestamp DateTimeLessThan, Timestamp DateTimeGreaterThan) throws RmodelException.SqlException, RmodelException.CommonException {
+
+        try {
+            this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId = ? AND Timestamp <= ? AND Timestamp >= ?");
+            this.mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+            ps.setInt(1, UId);
+            ps.setTimestamp(2, DateTimeLessThan);
+            ps.setTimestamp(2, DateTimeGreaterThan);
             return this.mySqlQuery.Dml();
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
@@ -271,7 +388,7 @@ public class ULogDAO {
      * @throws RmodelException.SqlException
      */
     public int getNumberRows(ResultSet resultSet) throws RmodelException.SqlException{
-        return CommonFunction.countRows(resultSet);
+        return CFunc.countRows(resultSet);
     }
 
     /**

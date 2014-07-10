@@ -158,7 +158,7 @@ public class UserDetailDAO {
         ResultSet rs = drlQuery(query);
 
         try {
-            int numRows = DAOCommon.countRows(rs);
+            int numRows = CDAO.countRows(rs);
             UserDetail[] list = new UserDetail[numRows];
             int i = 0;
             while (rs.next()) {
@@ -215,7 +215,7 @@ public class UserDetailDAO {
         }
 
         ResultSet rs = drlQuery(query);
-        int numRows = DAOCommon.countRows(rs);
+        int numRows = CDAO.countRows(rs);
         if (numRows == 1) {
             try {
                 while (rs.next())

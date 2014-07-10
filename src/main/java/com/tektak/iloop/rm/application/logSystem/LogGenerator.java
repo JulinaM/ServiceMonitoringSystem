@@ -2,8 +2,8 @@ package com.tektak.iloop.rm.application.logSystem;
 
 import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.dao.userActivityLogDAO;
-import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
+import com.tektak.iloop.rm.dao.ULogDAO;
+import com.tektak.iloop.rm.datamodel.ULogDM;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
 
@@ -29,13 +29,13 @@ public class LogGenerator {
      * @throws SQLException
      */
     public static int generateLog(int UId, String IPaddress, String UserActivity) throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError, SQLException{
-        UserActivityLogDM log=new UserActivityLogDM();
+        ULogDM log=new ULogDM();
         log.setUID(UId);
         log.setIPaddress(IPaddress);
         log.setUserActivity(UserActivity);
         log.setTimestamp(DateTime.getTimestamp());
 
-        userActivityLogDAO DAO=new userActivityLogDAO();
+        ULogDAO DAO=new ULogDAO();
 
         int AffectedRows = DAO.WriteLog(log);
         DAO.closeDbConnection();
