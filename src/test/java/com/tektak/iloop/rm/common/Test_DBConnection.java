@@ -1,8 +1,11 @@
 package com.tektak.iloop.rm.common;
 
+import com.tektak.iloop.rm.servlet.ActivityLogServlet;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.util.common.BaseException;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
 
@@ -10,7 +13,7 @@ import java.io.IOException;
  * Created by tektak on 7/7/14.
  */
 public class Test_DBConnection {
-    //@Test
+    @Test
     public void Test_Connect() throws IOException {
         DBConnection db=new DBConnection();
         MySql mySql= null;
@@ -31,12 +34,6 @@ public class Test_DBConnection {
                 e.printStackTrace();
             }
         }
-        if(mySql==null){
-            System.out.println("mySql==null");
-        }else{
-            System.out.println("===================================================================");
-            System.out.println("Mysql Connection Successful!!");
-            System.out.println("===================================================================");
-        }
+        Assert.assertNotNull("Mysql Connection Unsuccessful!!",mySql);
     }
 }
