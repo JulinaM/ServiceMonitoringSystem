@@ -53,11 +53,7 @@ public class Test_CDAO {
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }finally {
-            try {
-                ULogDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            ULogDAO.closeDbConnection();
         }
 
     }

@@ -1,6 +1,5 @@
 package com.tektak.iloop.rm.common;
 
-import com.tektak.iloop.rm.servlet.ActivityLogServlet;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.util.common.BaseException;

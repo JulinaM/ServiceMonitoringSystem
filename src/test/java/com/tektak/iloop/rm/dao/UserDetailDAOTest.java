@@ -4,8 +4,6 @@ import com.tektak.iloop.rm.datamodel.UserDetail;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class UserDetailDAOTest {
     @Test
     public void testPutUser() throws Exception {
@@ -39,6 +37,4 @@ public class UserDetailDAOTest {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
         Assert.assertEquals(-1,-1,userDetailDAO.userAuth("tes@123.com","test"));
     }
-
-
 }

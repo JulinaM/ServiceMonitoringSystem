@@ -40,25 +40,21 @@ public class Test_ULogDAO {
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }finally {
-            try {
-                uDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            uDAO.closeDbConnection();
         }
     }
     @Test
     public void Test_WriteLog(){
         ULogDM log=new ULogDM();
+        ULogDAO uLogDAO=null;
         log.setUID(2222);
         log.setIPaddress("170.0.0.2");
         log.setUserActivity("WriteLog(log) is testing...");
         log.setTimestamp(DateTime.getTimestamp());
         try {
-
-            int insertedRows = new ULogDAO().WriteLog(log);
+            uLogDAO = new ULogDAO();
+            int insertedRows = uLogDAO.WriteLog(log);
             Assert.assertTrue(insertedRows == 1);
-
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -67,6 +63,8 @@ public class Test_ULogDAO {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
+        }finally {
+            uLogDAO.closeDbConnection();
         }
 
     }
@@ -119,11 +117,7 @@ public class Test_ULogDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            try {
-                uDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            uDAO.closeDbConnection();
         }
     }
 
@@ -155,11 +149,7 @@ public class Test_ULogDAO {
         }catch (RmodelException.CommonException e) {
             e.printStackTrace();
         }finally {
-            try {
-                ULogDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            ULogDAO.closeDbConnection();
         }
     }
 
@@ -192,11 +182,7 @@ public class Test_ULogDAO {
         }catch (RmodelException.CommonException e) {
             e.printStackTrace();
         }finally {
-            try {
-                ULogDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            ULogDAO.closeDbConnection();
         }
     }
     @Test
@@ -235,11 +221,7 @@ public class Test_ULogDAO {
         }catch (RmodelException.CommonException e) {
             e.printStackTrace();
         }finally {
-            try {
-                ULogDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            ULogDAO.closeDbConnection();
         }
     }
 
@@ -279,11 +261,7 @@ public class Test_ULogDAO {
         }catch (RmodelException.CommonException e) {
             e.printStackTrace();
         }finally {
-            try {
-                ULogDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            ULogDAO.closeDbConnection();
         }
     }
 
@@ -323,11 +301,7 @@ public class Test_ULogDAO {
         }catch (RmodelException.CommonException e) {
             e.printStackTrace();
         }finally {
-            try {
-                ULogDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            ULogDAO.closeDbConnection();
         }
     }
 
@@ -368,11 +342,7 @@ public class Test_ULogDAO {
         }catch (RmodelException.CommonException e) {
             e.printStackTrace();
         }finally {
-            try {
-                ULogDAO.closeDbConnection();
-            } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            }
+            ULogDAO.closeDbConnection();
         }
     }
 }

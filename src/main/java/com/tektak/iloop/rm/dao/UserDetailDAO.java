@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class UserDetailDAO {
     Date date = new Date();
-    private UserDetail userDetail;
+    private UserDetail userDetail=null;
     private MySql sql;
     private MySqlQuery mySqlQuery;
     private String query;
@@ -49,7 +49,7 @@ public class UserDetailDAO {
      * @return rows affected
      */
     public int putUser(UserDetail userDetail) {
-        this.userDetail = userDetail;
+        this.setUserDetail(userDetail);
         String password = PasswordEnc.createRandomString();
         String encPassword = PasswordEnc.encrypt(userDetail.getUserEmail(), password);
         query = "INSERT INTO %s (email,name,password,userStatus,userRole,joinDate) VALUES(?,?,?,?,?,?)";
@@ -160,7 +160,6 @@ public class UserDetailDAO {
      * @return UserDetail type of list data if success else null is returned
      */
     public UserDetail[] fetchUser() {
-
         query = "SELECT * FROM %s";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
@@ -223,7 +222,7 @@ public class UserDetailDAO {
 
 
     public int userAuth(String email, String password) throws RmodelException.SqlException, RmodelException.SqlException, RmodelException.CommonException {
-        query = "SELECT email,password FROM %s WHERE email=? AND password=?";
+        query = "SELECT * FROM %s WHERE userEmail=? AND userPassword=?";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
         try {
@@ -235,7 +234,15 @@ public class UserDetailDAO {
             if (numRows == 1) {
                 try {
                     rs.next();
-                    if (email.equals(rs.getString("email")) && encPassword.equals(rs.getString("password"))) {
+                    userDetail=new UserDetail();
+                    String dbEmail=rs.getString("userEmail");
+                    String dbPass=rs.getString("userPassword");
+                    if (email.equals(dbEmail) && encPassword.equals(dbPass)) {
+                        this.userDetail.setUserName(rs.getString("userName"));
+                        this.userDetail.setUserEmail(dbEmail);
+                        this.userDetail.setUserStatus(rs.getInt("userStatus"));
+                        this.userDetail.setUserRole(rs.getInt("userRole"));
+                        this.userDetail.setJoinDate(rs.getDate("joinDate"));
                         return 1;
                     }
                 } catch (SQLException e) {
@@ -277,6 +284,13 @@ public class UserDetailDAO {
             }
         }
         return -1;
+    }
 
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 }

@@ -395,8 +395,11 @@ public class ULogDAO {
      * Method to close Database Connection
      * @throws RmodelException.SqlException
      */
-    public void closeDbConnection() throws RmodelException.SqlException {
-        this.mySqlQuery.Close();
-        this.mySql.CloseConnection();
+    public void closeDbConnection(){
+        try {
+            this.mySqlQuery.Close();
+        } catch (RmodelException.SqlException e) {
+            e.printStackTrace();
+        }
     }
 }
