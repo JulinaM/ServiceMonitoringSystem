@@ -10,9 +10,10 @@ public class UserDetail implements IUserDetail {
     private String userEmail;
     private String userName;
     private String userPassword;
-    private Integer userStatus;
-    private Integer userRole;
+    private String userStatus;
+    private String userRole;
     private Date joinDate;
+
     @Override
     public void setUserId(Integer userId) {
         this.userId = userId;
@@ -54,22 +55,22 @@ public class UserDetail implements IUserDetail {
     }
 
     @Override
-    public void setUserStatus(Integer userStatus) {
+    public void setUserStatus(String userStatus) {
         this.userStatus = userStatus;
     }
 
     @Override
-    public Integer getUserStatus() {
+    public String getUserStatus() {
         return this.userStatus;
     }
 
     @Override
-    public void setUserRole(Integer userRole) {
+    public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
 
     @Override
-    public Integer getUserRole() {
+    public String getUserRole() {
         return this.userRole;
     }
 

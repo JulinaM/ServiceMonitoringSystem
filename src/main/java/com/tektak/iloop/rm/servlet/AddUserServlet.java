@@ -28,12 +28,11 @@ public class AddUserServlet extends HttpServlet {
         UserDetail userDetail = new UserDetail();
         userDetail.setUserName(request.getParameter("username"));
         userDetail.setUserEmail(request.getParameter("useremail"));
-        userDetail.setUserStatus(Integer.parseInt(request.getParameter("userstatus")));
-        userDetail.setUserRole(Integer.parseInt(request.getParameter("userrole")));
+        userDetail.setUserStatus(request.getParameter("userstatus"));
+        userDetail.setUserRole(request.getParameter("userrole"));
 
         try {
             userDetailDAO = new UserDetailDAO();
-//            userDetailDAO.createUserTable();
             result = userDetailDAO.checkAvailability(userDetail.getUserEmail());
             System.out.println(result);
             if (result == 1) {
@@ -51,16 +50,6 @@ public class AddUserServlet extends HttpServlet {
             userDetailDAO.closeConnection();
             response.sendRedirect(page+error);
         }
-
-        /*if (result == 1) {
-            page = ("/pages/user/allUsers.jsp");
-        } else {
-            page = ("/pages/user/addUser.jsp");
-        }
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-        dispatcher.forward(request, response);*/
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

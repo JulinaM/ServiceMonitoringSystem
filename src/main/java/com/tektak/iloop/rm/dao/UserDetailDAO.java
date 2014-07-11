@@ -52,15 +52,15 @@ public class UserDetailDAO {
         this.userDetail = userDetail;
         String password = PasswordEnc.createRandomString();
         String encPassword = PasswordEnc.encrypt(userDetail.getUserEmail(), password);
-        query = "INSERT INTO %s (email,name,password,userStatus,userRole,joinDate) VALUES(?,?,?,?,?,?)";
+        query = "INSERT INTO %s (userEmail,userName,userPassword,userStatus,userRole,joinDate) VALUES(?,?,?,?,?,?)";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
         try {
             this.statement.setString(1, userDetail.getUserEmail());
             this.statement.setString(2, userDetail.getUserName());
             this.statement.setString(3, encPassword);
-            this.statement.setInt(4, userDetail.getUserStatus());
-            this.statement.setInt(5, userDetail.getUserRole());
+            this.statement.setString(4, userDetail.getUserStatus());
+            this.statement.setString(5, userDetail.getUserRole());
             this.statement.setTimestamp(6, new Timestamp(date.getTime()));
             int result = mySqlQuery.Dml();
             if (result == 1) {
@@ -94,30 +94,6 @@ public class UserDetailDAO {
     }
 
     /**
-     * Creates userDetail table if it doesn't exist in the database;
-     *
-     * @return 1(Success) or -1(Failure)
-     */
-    public Integer createUserTable() {
-        query = "CREATE TABLE IF NOT EXISTS %s ( " +
-                "userId int(20) PRIMARY KEY AUTO_INCREMENT, " +
-                "email varchar(150) NOT NULL, " +
-                "name varchar(150) NOT NULL, " +
-                "password varchar(250) NOT NULL, " +
-                "userStatus int(1)," +
-                "userRole int(1), " +
-                "joinDate timestamp)";
-        query = String.format(query, TABLE_NAME);
-        this.prepare(query);
-        try {
-            return mySqlQuery.Dml();
-        } catch (RmodelException.SqlException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    /**
      * Read single users detail from database whose userId is provided
      *
      * @param userId Id of user whose details is to be read
@@ -133,10 +109,10 @@ public class UserDetailDAO {
             UserDetail detail = new UserDetail();
             while (rs.next()) {
                 detail.setUserId(rs.getInt("userId"));
-                detail.setUserEmail(rs.getString("email"));
-                detail.setUserName(rs.getString("name"));
-                detail.setUserStatus(rs.getInt("userStatus"));
-                detail.setUserRole(rs.getInt("userRole"));
+                detail.setUserEmail(rs.getString("userEmail"));
+                detail.setUserName(rs.getString("userName"));
+                detail.setUserStatus(rs.getString("userStatus"));
+                detail.setUserRole(rs.getString("userRole"));
                 detail.setJoinDate(rs.getDate("joinDate"));
             }
             return detail;
@@ -171,10 +147,10 @@ public class UserDetailDAO {
             while (rs.next()) {
                 list[i] = new UserDetail();
                 list[i].setUserId(rs.getInt("userId"));
-                list[i].setUserEmail(rs.getString("email"));
-                list[i].setUserName(rs.getString("name"));
-                list[i].setUserStatus(rs.getInt("userStatus"));
-                list[i].setUserRole(rs.getInt("userRole"));
+                list[i].setUserEmail(rs.getString("userEmail"));
+                list[i].setUserName(rs.getString("userName"));
+                list[i].setUserStatus(rs.getString("userStatus"));
+                list[i].setUserRole(rs.getString("userRole"));
                 list[i].setJoinDate(rs.getDate("joinDate"));
                 i++;
             }
@@ -195,15 +171,25 @@ public class UserDetailDAO {
     }
 
 
-    public void editUser(String userId) {
+    public void editUser(int userId) {
 
     }
 
 
-    public void removeUser(String userId) {
+    public int removeUser(int userId) throws SQLException, RmodelException.SqlException {
         query = "DELETE FROM %s WHERE userId=?";
         query = String.format(query,TABLE_NAME);
+        this.prepare(query);
+        this.statement.setInt(1,userId);
+        return mySqlQuery.Dml();
+    }
 
+    public int removeUser(String email) throws SQLException, RmodelException.SqlException {
+        query = "DELETE FROM %s WHERE userEmail=?";
+        query = String.format(query,TABLE_NAME);
+        this.prepare(query);
+        this.statement.setString(1, email);
+        return mySqlQuery.Dml();
     }
 
     /**
@@ -222,7 +208,7 @@ public class UserDetailDAO {
 
 
     public int userAuth(String email, String password) throws RmodelException.SqlException, RmodelException.SqlException, RmodelException.CommonException {
-        query = "SELECT email,password FROM %s WHERE email=? AND password=?";
+        query = "SELECT * FROM %s WHERE userEmail=? AND userPassword=?";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
         try {
@@ -234,7 +220,8 @@ public class UserDetailDAO {
             if (numRows == 1) {
                 try {
                     rs.next();
-                    if (email.equals(rs.getString("email")) && encPassword.equals(rs.getString("password"))) {
+                    if (email.equals(rs.getString("userEmail")) && encPassword.equals(rs.getString("userPassword"))) {
+
                         return 1;
                     }
                 } catch (SQLException e) {
@@ -254,7 +241,7 @@ public class UserDetailDAO {
     }
 
     public int checkAvailability(String userEmail) {
-        query = "SELECT email FROM %s WHERE email=?";
+        query = "SELECT email FROM %s WHERE userEmail=?";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
         try {

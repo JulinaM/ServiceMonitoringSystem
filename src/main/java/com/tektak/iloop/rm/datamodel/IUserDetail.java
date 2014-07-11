@@ -14,10 +14,10 @@ public interface IUserDetail {
     public String getUserName();
     public void setUserPassword(String userPassword);
     public String getUserPassword();
-    public void setUserStatus(Integer userStatus);
-    public Integer getUserStatus();
-    public void setUserRole(Integer userRole);
-    public Integer getUserRole();
+    public void setUserStatus(String userStatus);
+    public String  getUserStatus();
+    public void setUserRole(String userRole);
+    public String getUserRole();
     public void setJoinDate(Date joinDate);
     public Date getJoinDate();
 
