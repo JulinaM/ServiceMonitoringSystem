@@ -20,6 +20,12 @@ import java.io.IOException;
 @WebServlet("/UserActivitylog")
 public class UserActivityLogServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String filterByUser=(String)request.getParameter("filter-by-user");
+        if(filterByUser==""){
+            System.out.println("filter-by-user==");
+        }else{
+            System.out.println("filter-by-user=="+filterByUser);
+        }
         doGet(request,response);
     }
 

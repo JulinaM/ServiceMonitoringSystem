@@ -1,7 +1,9 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.application.logSystem.LogGenerator;
 import com.tektak.iloop.rm.application.loginSystem.AuthenticateUser;
 import com.tektak.iloop.rm.common.CommonConfig;
+import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
@@ -21,6 +23,7 @@ import java.io.IOException;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  * Created by tektak on 7/2/14.
@@ -47,7 +50,6 @@ public class LoginServlet extends HttpServlet {
 
         if(email==null||password==null){
             address="/pages/loginSystem/login.jsp";
-            System.out.println("email==");
         }else{
             UserDetailDAO userDetailDAO=null;
             try {
@@ -56,6 +58,7 @@ public class LoginServlet extends HttpServlet {
                  if(userDetailDAO.userAuth(email, password)==1){
                     UserDetail userDetail=userDetailDAO.getUserDetail();
                     address="/UserActivitylog";
+                    LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),"Logged into the system Successfully!!");//
                     HttpSession httpSession=request.getSession();
                     httpSession.setAttribute("ValidUser",userDetail);
                 }else{

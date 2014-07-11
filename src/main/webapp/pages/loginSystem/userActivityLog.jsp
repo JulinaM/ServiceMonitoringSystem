@@ -1,6 +1,6 @@
 <%@ page import="com.tektak.iloop.rm.datamodel.UserDetail" %>
 <%@ page import="com.tektak.iloop.rm.datamodel.ULogDM" %>
-<%@ page import="com.tektak.iloop.rm.dao.ULogDAO" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: tektak
@@ -19,19 +19,26 @@
         <% String Email;
            String Password;
         %>
-
-        <h5>Retrieved from Session</h5>
         <% HttpSession  httpsession=request.getSession();
             UserDetail validUser=(UserDetail)httpsession.getAttribute("ValidUser");
         %>
+        <div id="loginStatus">
+            Email::<%=validUser.getUserEmail()%><br/>
+            UserName::<%=validUser.getUserName()%><br/>
+            <a href="/logout?logout=set" >Logout</a>
+        </div>
+        <div id="logOrder">
+            Filter By:<form action="/UserActivitylog" onchange="this.submit();">
+            User::<select name="filter-by-user">
 
-        Email::<%=validUser.getUserEmail()%><br/>
-        UserName::<%=validUser.getUserName()%><br/>
-    <hr/><hr/>
-        <h1>Welcome To the User Activity Log Management System.</h1>
+
+            %></select></form>
+        </div>
+
     <table class="table table-striped table-bordered table-condensed table-hover">
+        <caption>Welcome To the User Activity Log Management System.</caption>
         <thead>
-            <tr><th>Host IP</th><th>User</th><th>Activity</th><th>Date and Time</th></tr>
+            <tr><th>Host IP</th><th>User</th><th>Activity</th><th>Date and Time</th><th></th></tr>
         </thead>
         <tbody>
             <%ULogDM[] log= (ULogDM[])request.getAttribute("logs");

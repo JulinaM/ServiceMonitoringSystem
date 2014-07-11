@@ -7,8 +7,6 @@ import com.tektak.iloop.rm.datamodel.ULogDM;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
 
-import java.sql.SQLException;
-
 /**
  * Created by tektak on 7/3/14.
  */
@@ -26,9 +24,9 @@ public class LogGenerator {
      * @throws RmodelException.SqlException
      * @throws RmodelException.CommonException
      * @throws BaseException.ConfigError
-     * @throws SQLException
+     *
      */
-    public static int generateLog(int UId, String IPaddress, String UserActivity) throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError, SQLException{
+    public static int generateLog(int UId, String IPaddress, String UserActivity) throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError{
         ULogDM log=new ULogDM();
         log.setUID(UId);
         log.setIPaddress(IPaddress);
