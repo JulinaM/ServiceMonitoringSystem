@@ -9,9 +9,13 @@
 <html>
 <head>
     <link href="<%request.getContextPath();%>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title></title>
 </head>
 <body>
+<c:if test="${error != null}">
+    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong></div>
+</c:if>
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
@@ -37,9 +41,8 @@
                 <div class="form-group">
                     <label>User Role</label>
                     <select class="form-control" name="userrole">
-                        <option value="1">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option value="1">Super Admin</option>
+                        <option value="2">Normal Admin</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-default">Add</button>
@@ -47,5 +50,7 @@
         </div>
     </div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="<%request.getContextPath();%>/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

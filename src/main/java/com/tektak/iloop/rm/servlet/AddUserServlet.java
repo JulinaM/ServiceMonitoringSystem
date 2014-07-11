@@ -20,24 +20,40 @@ public class AddUserServlet extends HttpServlet {
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page;
+        String page = null;
         Integer result = null;
+        String error = null;
+        UserDetailDAO userDetailDAO = null;
 
-        UserDetail userDetail = new com.tektak.iloop.rm.datamodel.UserDetail();
+        UserDetail userDetail = new UserDetail();
         userDetail.setUserName(request.getParameter("username"));
         userDetail.setUserEmail(request.getParameter("useremail"));
         userDetail.setUserStatus(Integer.parseInt(request.getParameter("userstatus")));
         userDetail.setUserRole(Integer.parseInt(request.getParameter("userrole")));
 
+        UserDetailDAO userDetailDAO = new UserDetailDAO();
+
         try {
-            UserDetailDAO userDetailDAO = new UserDetailDAO();
-            userDetailDAO.createUserTable();
-            result = userDetailDAO.putUser(userDetail);
-            userDetailDAO.closeConnection();
+            userDetailDAO = new UserDetailDAO();
+//            userDetailDAO.createUserTable();
+            result = userDetailDAO.checkAvailability(userDetail.getUserEmail());
+            System.out.println(result);
+            if (result == 1) {
+                userDetailDAO.putUser(userDetail);
+                page = "/allusers";
+                error = "";
+            }
+            else {
+                page = "/adduser";
+                error = "?err=This email is already registered";
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            userDetailDAO.closeConnection();
+            response.sendRedirect(page+error);
         }
-        response.sendRedirect("/allusers");
+
         /*if (result == 1) {
             page = ("/pages/user/allUsers.jsp");
         } else {
@@ -50,6 +66,8 @@ public class AddUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.setAttribute("error",request.getParameter("err"));
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");
         dispatcher.forward(request, response);
     }

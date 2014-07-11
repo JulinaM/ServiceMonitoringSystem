@@ -28,6 +28,7 @@ public class AllUsersServlet extends HttpServlet{
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDetailDAO userDetailDAO = null;
+        UserDetail[] list = null;
         try {
             userDetailDAO = new UserDetailDAO();
         } catch (RmException.DBConnectionError dbConnectionError) {
@@ -39,14 +40,16 @@ public class AllUsersServlet extends HttpServlet{
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
         }
-        UserDetail[] list = null;
-        list = userDetailDAO.fetchUser();
-        userDetailDAO.closeConnection();
-        ArrayList<UserDetail> UList=new ArrayList<UserDetail>();
-        for(int i=0;i<list.length;i++){
-            UList.add(list[i]);
+        try {
+            list = userDetailDAO.fetchUser();
+            request.setAttribute("ulist",list);
+        }catch (Exception e){
+            request.setAttribute("error","Error while fetching");
+        }finally {
+            userDetailDAO.closeConnection();
         }
-        request.setAttribute("UList",UList);
+
+
 
         RequestDispatcher dispatch=request.getRequestDispatcher("/pages/user/allUsers.jsp");
         dispatch.forward(request,response);

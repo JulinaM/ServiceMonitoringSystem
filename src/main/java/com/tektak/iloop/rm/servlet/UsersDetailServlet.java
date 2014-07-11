@@ -25,25 +25,28 @@ public class UsersDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int uId = Integer.parseInt((request.getParameter("uid")));
+        Integer uId=null;
         UserDetailDAO userDetailDAO = null;
-        try {
-            userDetailDAO = new UserDetailDAO();
-        } catch (RmException.DBConnectionError dbConnectionError) {
-            dbConnectionError.printStackTrace();
-        } catch (RmodelException.SqlException e) {
-            e.printStackTrace();
-        } catch (RmodelException.CommonException e) {
-            e.printStackTrace();
-        } catch (BaseException.ConfigError configError) {
-            configError.printStackTrace();
-        }
         UserDetail detail = null;
-        detail = userDetailDAO.fetchUser(uId);
-        userDetailDAO.closeConnection();
-        if (detail != null){
-
+        try {
+            uId = Integer.parseInt((request.getParameter("uid")));
+        }catch (Exception e){
+            request.setAttribute("error","User not Selected");
         }
+        if (uId != null) {
+            try {
+                userDetailDAO = new UserDetailDAO();
+                detail = userDetailDAO.fetchUser(uId);
+                request.setAttribute("detail",detail);
+            }catch (Exception e){
+                request.setAttribute("error","No such user");
+            }finally {
+                userDetailDAO.closeConnection();
+            }
+        }
+
+
+
         RequestDispatcher dispatch=request.getRequestDispatcher("/pages/user/usersDetail.jsp");
         dispatch.forward(request,response);
     }

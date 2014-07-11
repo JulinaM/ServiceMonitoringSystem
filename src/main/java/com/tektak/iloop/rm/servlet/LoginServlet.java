@@ -65,7 +65,6 @@ public class LoginServlet extends HttpServlet {
                     System.out.println("email:"+email+" password:"+password+"    User Type:"+uType);
                     //address="/pages/loginSystem/home.jsp";
                     address="/pages/loginSystem/home.jsp";
-
                     HttpSession httpSession=request.getSession();
                     httpSession.setAttribute("email",email);
                     request.setAttribute("email",email);

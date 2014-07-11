@@ -388,7 +388,7 @@ public class ULogDAO {
      * @throws RmodelException.SqlException
      */
     public int getNumberRows(ResultSet resultSet) throws RmodelException.SqlException{
-        return CFunc.countRows(resultSet);
+        return DAOCommon.countRows(resultSet);
     }
 
     /**

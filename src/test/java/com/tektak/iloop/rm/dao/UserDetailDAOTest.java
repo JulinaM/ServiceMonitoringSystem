@@ -7,36 +7,38 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class UserDetailDAOTest {
-    //@Test
+    @Test
     public void testPutUser() throws Exception {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
         UserDetail userDetail = new UserDetail();
-        userDetail.setUserName("Sanjaya");
-        userDetail.setUserEmail("sanjaya.khatri@tektak.com");
+        userDetail.setUserName("Put User Test");
+        userDetail.setUserEmail("put_user@testing.com.iloop");
         userDetail.setUserStatus(1);
         userDetail.setUserRole(2);
-        Assert.assertNotNull(userDetailDAO.putUser(userDetail));
+        Assert.assertEquals(1,1,userDetailDAO.putUser(userDetail));
     }
 
-    //@Test
+    @Test
     public void testPrepare() throws Exception {
 
     }
 
-    //@Test
+    @Test
     public void testDmlQuery() throws Exception {
     }
 
-    //@Test
+    @Test
     public void testCreateUserTable() throws Exception {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
-        Assert.assertNotNull(userDetailDAO.createUserTable());
+        Assert.assertEquals(-1,-1,userDetailDAO.createUserTable());
 
     }
 
-    //@Test
+    @Test
     public void testUserAuth() throws Exception{
         UserDetailDAO userDetailDAO = new UserDetailDAO();
-        Assert.assertNotNull(userDetailDAO.userAuth("tes@123.com","test"));
+        Assert.assertEquals(-1,-1,userDetailDAO.userAuth("tes@123.com","test"));
     }
+
+
 }

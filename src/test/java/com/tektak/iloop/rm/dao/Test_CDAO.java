@@ -41,7 +41,7 @@ public class Test_CDAO {
             mySqlQuery.InitPreparedStatement();
             ResultSet rs=mySqlQuery.Drl();
 
-            int RowCount= CFunc.countRows(rs);
+            int RowCount= DAOCommon.countRows(rs);
 
             Assert.assertEquals(RowCount,5);
         } catch (RmodelException.SqlException e) {
