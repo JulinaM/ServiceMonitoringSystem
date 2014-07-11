@@ -164,8 +164,6 @@ public class UserDetailDAO {
         query = "SELECT * FROM %s";
         query = String.format(query, TABLE_NAME);
         this.prepare(query);
-        ResultSet rs = drlQuery(query);
-
         try {
             rs = mySqlQuery.Drl();
             int numRows = DAOCommon.countRows(rs);
@@ -277,8 +275,6 @@ public class UserDetailDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else {
-            return -1;
         }
         return -1;
 
