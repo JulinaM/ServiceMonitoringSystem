@@ -23,18 +23,19 @@ public class AddUserServlet extends HttpServlet {
         String page = null;
         Integer result = null;
         String error = null;
+        UserDetailDAO userDetailDAO = null;
 
-        UserDetail userDetail = new com.tektak.iloop.rm.datamodel.UserDetail();
+        UserDetail userDetail = new UserDetail();
         userDetail.setUserName(request.getParameter("username"));
         userDetail.setUserEmail(request.getParameter("useremail"));
         userDetail.setUserStatus(Integer.parseInt(request.getParameter("userstatus")));
         userDetail.setUserRole(Integer.parseInt(request.getParameter("userrole")));
 
-        UserDetailDAO userDetailDAO = new UserDetailDAO();
-
         try {
-            userDetailDAO.createUserTable();
+            userDetailDAO = new UserDetailDAO();
+//            userDetailDAO.createUserTable();
             result = userDetailDAO.checkAvailability(userDetail.getUserEmail());
+            System.out.println(result);
             if (result == 1) {
                 userDetailDAO.putUser(userDetail);
                 page = "/allusers";

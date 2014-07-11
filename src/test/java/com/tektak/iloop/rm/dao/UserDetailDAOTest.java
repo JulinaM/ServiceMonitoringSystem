@@ -4,19 +4,16 @@ import com.tektak.iloop.rm.datamodel.UserDetail;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class UserDetailDAOTest {
-    UserDetailDAO userDetailDAO = new UserDetailDAO();
-
     @Test
     public void testPutUser() throws Exception {
+        UserDetailDAO userDetailDAO = new UserDetailDAO();
         UserDetail userDetail = new UserDetail();
-        userDetail.setUserName("Sanjaya");
-        userDetail.setUserEmail("sanjaya.khatri@tektak.com");
+        userDetail.setUserName("Put User Test");
+        userDetail.setUserEmail("put_user@testing.com.iloop");
         userDetail.setUserStatus(1);
         userDetail.setUserRole(2);
-        Assert.assertNotNull(userDetailDAO.putUser(userDetail));
+        Assert.assertEquals(1,1,userDetailDAO.putUser(userDetail));
     }
 
     @Test
@@ -30,15 +27,14 @@ public class UserDetailDAOTest {
 
     @Test
     public void testCreateUserTable() throws Exception {
-        Assert.assertNotNull(userDetailDAO.createUserTable());
+        UserDetailDAO userDetailDAO = new UserDetailDAO();
+        Assert.assertEquals(-1,-1,userDetailDAO.createUserTable());
 
     }
 
     @Test
     public void testUserAuth() throws Exception{
-        Assert.assertNotNull(userDetailDAO.userAuth("tes@123.com","test"));
-
+        UserDetailDAO userDetailDAO = new UserDetailDAO();
+        Assert.assertEquals(-1,-1,userDetailDAO.userAuth("tes@123.com","test"));
     }
-
-
 }

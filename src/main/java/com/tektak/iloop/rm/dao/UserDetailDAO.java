@@ -2,11 +2,13 @@ package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.common.DBConnection;
 import com.tektak.iloop.rm.common.PasswordEnc;
+import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.common.SendEmail;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
+import com.tektak.iloop.util.common.BaseException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,10 +34,11 @@ public class UserDetailDAO {
     /**
      * Initialize Database connection
      */
-    public UserDetailDAO() {
+    public UserDetailDAO() throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError {
         DBConnection dbConnection = new DBConnection();
         this.sql = dbConnection.Connect();
         mySqlQuery = new MySqlQuery();
+
     }
 
     /**
@@ -45,8 +48,7 @@ public class UserDetailDAO {
      * @param userDetail
      * @return rows affected
      */
-
-    public Integer putUser(UserDetail userDetail) {
+    public int putUser(UserDetail userDetail) {
         this.userDetail = userDetail;
         String password = PasswordEnc.createRandomString();
         String encPassword = PasswordEnc.encrypt(userDetail.getUserEmail(), password);
@@ -188,6 +190,7 @@ public class UserDetailDAO {
                 e.printStackTrace();
             }
         }
+
         return null;
     }
 

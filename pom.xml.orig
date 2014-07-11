@@ -33,6 +33,7 @@
             <version>1.2</version>
         </dependency>
         <dependency>
+<<<<<<< HEAD
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.6</version>
@@ -46,11 +47,11 @@
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4</version>
-        </dependency>
-        <dependency>
+=======
             <groupId>com.tektak.iloop.util</groupId>
             <artifactId>iLoopUtil</artifactId>
             <version>1.0-SNAPSHOT</version>
+>>>>>>> 105d3afc0e5e1c5e75f16d6e8ee15f12b303582a
         </dependency>
     </dependencies>
 

@@ -1,8 +1,10 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
+import com.tektak.iloop.util.common.BaseException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,8 +27,19 @@ public class AllUsersServlet extends HttpServlet{
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDetailDAO userDetailDAO = new UserDetailDAO();
+        UserDetailDAO userDetailDAO = null;
         UserDetail[] list = null;
+        try {
+            userDetailDAO = new UserDetailDAO();
+        } catch (RmException.DBConnectionError dbConnectionError) {
+            dbConnectionError.printStackTrace();
+        } catch (RmodelException.SqlException e) {
+            e.printStackTrace();
+        } catch (RmodelException.CommonException e) {
+            e.printStackTrace();
+        } catch (BaseException.ConfigError configError) {
+            configError.printStackTrace();
+        }
         try {
             list = userDetailDAO.fetchUser();
             request.setAttribute("ulist",list);
