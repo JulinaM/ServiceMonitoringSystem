@@ -6,51 +6,67 @@ import com.tektak.iloop.util.configuration.Config;
 import com.tektak.iloop.util.configuration.ConfigProperty;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Created by tektak on 7/4/14.
  */
 public class CommonConfig {
-    private File file;
     private static Config config = null;
+    private File file;
 
     /**
      * Constructor to load static properties file
-     * @throws BaseException.ConfigError
      *
+     * @throws BaseException.ConfigError
      */
-    public CommonConfig() throws BaseException.ConfigError{
-        if(this.config==null){
-            this.file=new File("src/main/resources/configuration.properties");
-            ConfigProperty configProperty=new ConfigProperty();
+    public CommonConfig() throws BaseException.ConfigError {
+        if (this.config == null) {
+            this.file = new File("src/main/resources/configuration.properties");
+            ConfigProperty configProperty = new ConfigProperty();
             configProperty.setConfig(this.file);
-            this.config=new Config(new ApacheConfig(configProperty));
+            this.config = new Config(new ApacheConfig(configProperty));
         }
     }
 
     /**
      * Paramitarized constructor
+     *
      * @param filePath
      * @throws BaseException.ConfigError
-     *
      */
-    public CommonConfig(String filePath) throws BaseException.ConfigError{
-        if(this.config==null){
-            this.file=new File(filePath);
-            ConfigProperty configProperty=new ConfigProperty();
+    public CommonConfig(String filePath) throws BaseException.ConfigError {
+        if (this.config == null) {
+            this.file = new File(filePath);
+            ConfigProperty configProperty = new ConfigProperty();
             configProperty.setConfig(this.file);
-            this.config=new com.tektak.iloop.util.configuration.Config(new ApacheConfig(configProperty));
+            this.config = new Config(new ApacheConfig(configProperty));
+        }
+    }
+
+    /**
+     * Parameterized consturctor
+     *
+     * @param url
+     * @throws BaseException.ConfigError
+     */
+    public CommonConfig(URL url) throws BaseException.ConfigError {
+        if (this.config == null) {
+            ConfigProperty configProperty = new ConfigProperty();
+            configProperty.setConfig(url);
+            this.config = new Config(new ApacheConfig(configProperty));
         }
     }
 
     /**
      * method to return CommonConfig object
+     *
      * @return
      */
-    public com.tektak.iloop.util.configuration.Config getConfig(){
-        if(config==null){
+    public Config getConfig() {
+        if (config == null) {
             return null;
-        }else{
+        } else {
             return this.config;
         }
     }

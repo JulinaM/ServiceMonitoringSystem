@@ -9,22 +9,24 @@ import org.apache.commons.lang.RandomStringUtils;
  */
 public class PasswordEnc {
     /**
-     *Method to encrypt password
+     * Method to encrypt password
+     *
      * @param salt email id is used as salt
      * @param data password is data
-     * @return  sha512 encrypted password
+     * @return sha512 encrypted password
      */
-    public static String encrypt(String salt, String data){
-        return DigestUtils.sha512Hex(salt+data);
+    public static String encrypt(String salt, String data) {
+        return DigestUtils.sha512Hex(salt + data);
     }
 
     /**
      * Method to create random string
+     *
      * @return random string of length 10 which is used as password while creating new user
      */
-    public static String createRandomString(){
+    public static String createRandomString() {
         String data = RandomStringUtils.randomAlphanumeric(10);
-        System.out.println("pass: "+data);
+        System.out.println("pass: " + data);
         return data;
     }
 }
