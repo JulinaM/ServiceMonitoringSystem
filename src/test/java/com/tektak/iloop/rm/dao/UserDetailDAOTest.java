@@ -10,28 +10,38 @@ public class UserDetailDAOTest {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
         UserDetail userDetail = new UserDetail();
         userDetail.setUserName("Put User Test");
-        userDetail.setUserEmail("put_user@testing.com.iloop");
+        userDetail.setUserEmail("put_user@testing.com.ilooprm");
+        userDetail.setUserPassword("putTest");
         userDetail.setUserStatus("1");
         userDetail.setUserRole("2");
-        if (userDetailDAO.checkAvailability(userDetail.getUserEmail()) == 1) {
-            Assert.assertEquals(1, userDetailDAO.putUser(userDetail));
-            Assert.assertEquals(1,userDetailDAO.removeUser(userDetail.getUserEmail()));
-            Assert.assertEquals(0,userDetailDAO.removeUser(userDetail.getUserEmail()));
-        }
-    }
-    @Test
-    public void testPrepare() throws Exception {
-
+        Assert.assertEquals(1, userDetailDAO.putUser(userDetail));
+        userDetailDAO.removeUser(userDetail.getUserEmail());
     }
 
     @Test
-    public void testDmlQuery() throws Exception {
-    }
-
-    @Test
-    public void testUserAuth() throws Exception{
+    public void testEditUser() throws Exception {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
-        Assert.assertEquals(1,userDetailDAO.userAuth("test@123.com","test"));
-        Assert.assertEquals(-1,userDetailDAO.userAuth("tes@123.com","test"));
+        UserDetail userDetail = new UserDetail();
+        userDetail.setUserName("Auth Test");
+        userDetail.setUserEmail("authtest@testing.com.ilooprm");
+        userDetail.setUserPassword("authTest");
+        userDetail.setUserStatus("1");
+        userDetailDAO.putUser(userDetail);
+        UserDetail list  = userDetailDAO.fetchUser(userDetail.getUserEmail());
+        Assert.assertEquals(1, userDetailDAO.editUser(list));
+        userDetailDAO.removeUser(list.getUserId());
+    }
+
+    @Test
+    public void testUserAuth() throws Exception {
+        UserDetailDAO userDetailDAO = new UserDetailDAO();
+        UserDetail userDetail = new UserDetail();
+        userDetail.setUserName("Auth Test");
+        userDetail.setUserEmail("authtest@testing.com.ilooprm");
+        userDetail.setUserPassword("authTest");
+        userDetail.setUserStatus("1");
+        userDetailDAO.putUser(userDetail);
+        Assert.assertEquals(1, userDetailDAO.userAuth(userDetail.getUserEmail(), userDetail.getUserPassword()));
+        userDetailDAO.removeUser(userDetail.getUserEmail());
     }
 }
