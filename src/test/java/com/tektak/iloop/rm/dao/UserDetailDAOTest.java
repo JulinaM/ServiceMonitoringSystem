@@ -13,7 +13,7 @@ public class UserDetailDAOTest {
         userDetail.setUserEmail("put_user@testing.com.iloop");
         userDetail.setUserStatus(1);
         userDetail.setUserRole(2);
-        Assert.assertEquals(1,1,userDetailDAO.putUser(userDetail));
+        Assert.assertEquals(1, 1, userDetailDAO.putUser(userDetail));
     }
 
     @Test
@@ -28,13 +28,13 @@ public class UserDetailDAOTest {
     @Test
     public void testCreateUserTable() throws Exception {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
-        Assert.assertEquals(-1,-1,userDetailDAO.createUserTable());
+        Assert.assertEquals(-1, -1, userDetailDAO.createUserTable());
 
     }
 
     @Test
-    public void testUserAuth() throws Exception{
+    public void testUserAuth() throws Exception {
         UserDetailDAO userDetailDAO = new UserDetailDAO();
-        Assert.assertEquals(-1,-1,userDetailDAO.userAuth("tes@123.com","test"));
+        Assert.assertEquals(-1, -1, userDetailDAO.userAuth("tes@123.com", "test"));
     }
 }

@@ -18,32 +18,32 @@ import java.sql.Timestamp;
  */
 public class Test_CDAO {
     @Test
-    public void Test_countRows(){
-        ULogDAO ULogDAO=null;
+    public void Test_countRows() {
+        ULogDAO ULogDAO = null;
         try {
-            ULogDAO =new ULogDAO();
+            ULogDAO = new ULogDAO();
             ULogDAO.deleteAllLog();
 
-            ULogDM[] Activitylog=new ULogDM[5];
-            for(int i=0;i<5;i++){
-                Activitylog[i]=new ULogDM();
+            ULogDM[] Activitylog = new ULogDM[5];
+            for (int i = 0; i < 5; i++) {
+                Activitylog[i] = new ULogDM();
                 Activitylog[i].setUID(i);
-                Activitylog[i].setIPaddress("174.4.4."+i);
-                Activitylog[i].setUserActivity("ReadAllLog() method is testing..."+i);
+                Activitylog[i].setIPaddress("174.4.4." + i);
+                Activitylog[i].setUserActivity("ReadAllLog() method is testing..." + i);
                 Activitylog[i].setTimestamp(Timestamp.valueOf("2007-09-23 10:10:10.0"));
                 ULogDAO.WriteLog(Activitylog[i]);
             }
 
-            MySql mySql=new DBConnection().Connect();
-            MySqlQuery mySqlQuery=new MySqlQuery();
+            MySql mySql = new DBConnection().Connect();
+            MySqlQuery mySqlQuery = new MySqlQuery();
             mySqlQuery.setSql(mySql);
             mySqlQuery.setQuery("SELECT * FROM UserActivityLog");
             mySqlQuery.InitPreparedStatement();
-            ResultSet rs=mySqlQuery.Drl();
+            ResultSet rs = mySqlQuery.Drl();
 
-            int RowCount= DAOCommon.countRows(rs);
+            int RowCount = DAOCommon.countRows(rs);
 
-            Assert.assertEquals(RowCount,5);
+            Assert.assertEquals(RowCount, 5);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
@@ -52,7 +52,7 @@ public class Test_CDAO {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
-        }finally {
+        } finally {
             ULogDAO.closeDbConnection();
         }
 

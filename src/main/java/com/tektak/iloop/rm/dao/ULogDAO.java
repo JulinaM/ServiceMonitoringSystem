@@ -1,6 +1,7 @@
 package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.common.DBConnection;
+import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.datamodel.ULogDM;
 import com.tektak.iloop.rmodel.RmodelException;
@@ -67,6 +68,32 @@ public class ULogDAO {
     public void setLimit(int rowNo,int rowSize){
        this.setRowNo(rowNo);
         this.setRowSize(rowSize);
+    }
+
+    public int getRecentLogId() throws RmodelException.SqlException, RmodelException.CommonException{
+        this.mySqlQuery.setQuery("SELECT logId FROM `UserActivityLog` order by logId desc limit 1");
+        this.mySqlQuery.InitPreparedStatement();
+        PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+        ResultSet rs=this.mySqlQuery.Drl();
+        try {
+            rs.next();
+            return rs.getInt("logId");
+        } catch (SQLException e) {
+           throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
+    }
+
+    public int deleteLogByLogId(int logId) throws RmodelException.SqlException, RmodelException.CommonException {
+
+        try {
+            this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE logId=? ");
+            this.mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
+            ps.setInt(1,logId);
+            return this.mySqlQuery.Dml();
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
+        }
     }
 
     /**

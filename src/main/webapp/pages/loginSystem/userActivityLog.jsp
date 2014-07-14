@@ -1,5 +1,7 @@
+
 <%@ page import="com.tektak.iloop.rm.datamodel.UserDetail" %>
 <%@ page import="com.tektak.iloop.rm.datamodel.ULogDM" %>
+<%@ page import="java.io.PrintWriter" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -9,6 +11,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
+
 <html>
 <head>
     <title>Home</title>
@@ -16,19 +21,22 @@
     <link href="<%=request.getContextPath()%>/pages/loginSystem/css/userActivityLog.css" rel="stylesheet" media="screen">
 </head>
 <body>
-        <% String Email;
+        <%
+
+            String Email;
            String Password;
-        %>
-        <% HttpSession  httpsession=request.getSession();
+
+            HttpSession httpsession=request.getSession(true);
             UserDetail validUser=(UserDetail)httpsession.getAttribute("ValidUser");
         %>
+
         <div id="loginStatus">
             Email::<%=validUser.getUserEmail()%><br/>
             UserName::<%=validUser.getUserName()%><br/>
             <a href="/logout?logout=set" >Logout</a>
         </div>
         <div id="logOrder">
-            Filter By:<form action="/UserActivitylog" onchange="this.submit();">
+            Filter By:<form method="GET" action="/UserActivitylog" onchange="this.submit();">
             User::<select name="filter-by-user">
 
 

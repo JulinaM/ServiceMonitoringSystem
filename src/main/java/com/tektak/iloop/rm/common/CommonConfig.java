@@ -27,6 +27,7 @@ public class CommonConfig {
             ConfigProperty configProperty=new ConfigProperty();
             configProperty.setConfig(this.file);
             this.config=new Config(new ApacheConfig(configProperty));
+            System.out.println(this.file);
         }
     }
 
@@ -42,6 +43,7 @@ public class CommonConfig {
             ConfigProperty configProperty=new ConfigProperty();
             configProperty.setConfig(this.file);
             this.config=new com.tektak.iloop.util.configuration.Config(new ApacheConfig(configProperty));
+
         }
     }
     public CommonConfig(HttpServletRequest httpServletRequest) throws BaseException.ConfigError{

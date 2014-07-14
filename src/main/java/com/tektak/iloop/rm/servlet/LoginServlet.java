@@ -9,6 +9,7 @@ import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
+import org.json.JSONObject;
 
 
 import javax.servlet.RequestDispatcher;
@@ -31,39 +32,51 @@ import java.util.Date;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
-    }
-
-    /**
-     * Authenthicate the email and password with database record
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email=request.getParameter("email");
         String password=request.getParameter("password");
         String address=null;
         RequestDispatcher dispatcher;
-        System.out.println("email=="+email+"and password=="+password);
+
 
         if(email==null||password==null){
-            address="/pages/loginSystem/login.jsp";
+            address=request.getContextPath()+"/pages/loginSystem/login.jsp";
+            dispatcher= request.getRequestDispatcher(address);
+            dispatcher.forward(request,response);
         }else{
             UserDetailDAO userDetailDAO=null;
+
             try {
+                System.out.println("email=="+email+"  and password=="+password);
                 new CommonConfig(request);
                 userDetailDAO=new UserDetailDAO();
-                 if(userDetailDAO.userAuth(email, password)==1){
+                if(userDetailDAO.userAuth(email, password)==1){
                     UserDetail userDetail=userDetailDAO.getUserDetail();
-                    address="/UserActivitylog";
                     LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),"Logged into the system Successfully!!");//
-                    HttpSession httpSession=request.getSession();
+                    HttpSession httpSession=request.getSession(true);
+
+                    JSONObject jsonObject=new JSONObject();
+                    jsonObject.put("userId",userDetail.getUserId());
+                    jsonObject.put("userName",userDetail.getUserName());
+                    jsonObject.put("userEmail",userDetail.getUserEmail());
+                    jsonObject.put("userRole",userDetail.getUserRole());
+                    jsonObject.put("userJoinDate",userDetail.getJoinDate());
+
+                    System.out.println(jsonObject);
+
                     httpSession.setAttribute("ValidUser",userDetail);
+
+                    httpSession.setAttribute("userId",userDetail.getUserId());
+                    httpSession.setAttribute("userName",userDetail.getUserName());
+                    httpSession.setAttribute("userEmail",userDetail.getUserEmail());
+                    httpSession.setAttribute("userRole",userDetail.getUserRole());
+                    httpSession.setAttribute("userJoinDate",userDetail.getJoinDate());
+
+                    response.sendRedirect("/UserActivitylog");
                 }else{
-                     address="/pages/loginSystem/login.jsp";
+                    address=request.getContextPath()+"/pages/loginSystem/login.jsp";
                     request.setAttribute("msg","Invalid Username or Password!!");
+                    dispatcher= request.getRequestDispatcher(address);
+                    dispatcher.forward(request,response);
                 }
             } catch (RmodelException.SqlException e) {
                 e.printStackTrace();
@@ -77,8 +90,18 @@ public class LoginServlet extends HttpServlet {
                 userDetailDAO.closeConnection();
             }
         }
-        dispatcher= request.getRequestDispatcher(address);
-        dispatcher.forward(request,response);
+    }
 
+    /**
+     * Authenthicate the email and password with database record
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String address=request.getContextPath()+"/pages/loginSystem/login.jsp";
+        RequestDispatcher dispatcher=request.getRequestDispatcher(address);
+        dispatcher.forward(request,response);
     }
 }
