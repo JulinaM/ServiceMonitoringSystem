@@ -261,6 +261,7 @@ public class UserDetailDAO {
                     String dbEmail = rs.getString("userEmail");
                     String dbPass = rs.getString("userPassword");
                     if (email.equals(dbEmail) && encPassword.equals(dbPass)) {
+                        this.userDetail.setUserId(rs.getInt("userId"));
                         this.userDetail.setUserName(rs.getString("userName"));
                         this.userDetail.setUserEmail(dbEmail);
                         this.userDetail.setUserStatus(rs.getString("userStatus"));

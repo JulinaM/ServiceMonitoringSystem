@@ -22,8 +22,6 @@ public class Test_LogGenerator {
             e.printStackTrace();
         } catch (BaseException.ConfigError configError) {
             configError.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }
