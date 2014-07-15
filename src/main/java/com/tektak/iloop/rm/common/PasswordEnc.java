@@ -15,11 +15,18 @@ public class PasswordEnc {
      * @param data password is data
      * @return sha512 encrypted password
      */
-    public static String md5Hash(String data){
-        return DigestUtils.md5Hex(data);
-    }
     public static String encrypt(String salt, String data) {
         return DigestUtils.sha512Hex(salt + data);
+    }
+
+    /**
+     * Method to generate md5 hash
+     *
+     * @param data input string to
+     * @return md5Hex of data
+     */
+    public static String md5Hash(String data) {
+        return DigestUtils.md5Hex(data);
     }
 
     /**
@@ -29,7 +36,6 @@ public class PasswordEnc {
      */
     public static String createRandomString() {
         String data = RandomStringUtils.randomAlphanumeric(10);
-        System.out.println("pass: " + data);
         return data;
     }
 }

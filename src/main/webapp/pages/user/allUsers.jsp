@@ -15,7 +15,8 @@
 </head>
 <body>
 <c:if test="${error != null}">
-    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong></div>
+    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong>
+    </div>
 </c:if>
 <table class="table table-bordered">
     <thead>
@@ -39,7 +40,8 @@
             <td>${list.userStatus==1 ? "Active" : "Inactive"}</td>
             <td>${list.userRole==1 ? "Super Admin" : "Normal Admin"}</td>
             <td>${list.joinDate}</td>
-            <td><a href="">Disable/Enable</a> <a href="">Delete</a> <a href="<%request.getContextPath();%>/usersdetail?uid=${list.userId}">Edit</a></td>
+            <td><a href="">Disable/Enable</a> <a href="">Delete</a> <a
+                    href="<%request.getContextPath();%>/usersdetail?uid=${list.userId}">Edit</a></td>
         </tr>
     </c:forEach>
 

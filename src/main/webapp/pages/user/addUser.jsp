@@ -14,13 +14,15 @@
 </head>
 <body>
 <c:if test="${error != null}">
-    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong></div>
+    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong>
+    </div>
 </c:if>
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
 
             <form role="form" action="adduser" method="post">
+                <input type="hidden" name="token" value="${token}">
                 <div class="form-group">
                     <label for="nameInput">Name</label>
                     <input type="text" name="username" class="form-control" id="nameInput" placeholder="Name">

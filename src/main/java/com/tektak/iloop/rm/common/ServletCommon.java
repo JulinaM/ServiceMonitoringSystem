@@ -11,9 +11,19 @@ public class ServletCommon {
         if(httpSession.getAttribute("token")==null){
             token = PasswordEnc.md5Hash(String.valueOf(DateTime.getTimestamp()));
             httpSession.setAttribute("token", token);
-        }else{
-            token = (String)httpSession.getAttribute("token");
+        } else {
+            token = (String) httpSession.getAttribute("token");
         }
         return token;
+    }
+
+    public static int validateToken(HttpSession httpSession,String data) {
+        System.out.println("tok: "+data);
+        System.out.println("token: "+httpSession.getAttribute("token"));
+        if (httpSession.getAttribute("token").equals(data)){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 }

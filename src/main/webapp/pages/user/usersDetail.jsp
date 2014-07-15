@@ -18,7 +18,8 @@
 
 
 <c:if test="${error != null}">
-    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong></div>
+    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong>
+    </div>
 </c:if>
 
 <div class="container">
@@ -28,11 +29,13 @@
             <form role="form" action="adduser" method="post">
                 <div class="form-group">
                     <label for="nameInput">Name</label>
-                    <input type="text" name="username" class="form-control" id="nameInput" placeholder="Name" value="${detail.userName}">
+                    <input type="text" name="username" class="form-control" id="nameInput" placeholder="Name"
+                           value="${detail.userName}">
                 </div>
                 <div class="form-group">
                     <label for="inputEmail1">Email address</label>
-                    <input type="email" name="useremail" class="form-control" id="inputEmail1" placeholder="Email" value="${detail.userEmail}">
+                    <input type="email" name="useremail" class="form-control" id="inputEmail1" placeholder="Email"
+                           value="${detail.userEmail}">
                 </div>
                 <div class="form-group">
                     <label>User Status</label>

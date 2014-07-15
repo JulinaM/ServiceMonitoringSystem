@@ -7,12 +7,12 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.SQLException;
 
 public class UserDetailDAOTest {
     private static UserDetailDAO userDetailDAO;
     private static UserDetail userDetail;
+
     @BeforeClass
     public static void init() {
         userDetailDAO = new UserDetailDAO();
@@ -49,8 +49,8 @@ public class UserDetailDAOTest {
         userDetail.setUserEmail("edittest@testing.com.ilooprm");
         Assert.assertEquals(1, userDetailDAO.editUser(userDetail));
         UserDetail list = userDetailDAO.fetchUser(userDetail.getUserId());
-       Assert.assertEquals(userDetail.getUserEmail(),list.getUserEmail());
-        Assert.assertEquals(userDetail.getUserName(),list.getUserName());
+        Assert.assertEquals(userDetail.getUserEmail(), list.getUserEmail());
+        Assert.assertEquals(userDetail.getUserName(), list.getUserName());
         userDetailDAO.removeUser(userDetail.getUserId());
     }
 
