@@ -5,6 +5,7 @@ import com.tektak.iloop.rm.application.loginSystem.AuthenticateUser;
 import com.tektak.iloop.rm.common.CommonConfig;
 import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
+import com.tektak.iloop.rm.common.ServletCommon;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
@@ -36,6 +37,12 @@ public class LoginServlet extends HttpServlet {
         String password=request.getParameter("password");
         String address=null;
         RequestDispatcher dispatcher;
+        String token=request.getParameter("token");
+        if(!token.equals(ServletCommon.generateToken(request.getSession(false)))){
+            address=request.getContextPath()+"/pages/loginSystem/login.jsp";
+            dispatcher= request.getRequestDispatcher(address);
+            dispatcher.forward(request,response);
+        }
 
 
         if(email==null||password==null){
@@ -93,6 +100,8 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession httpSession=request.getSession(true);
+        ServletCommon.generateToken(httpSession);
         String address=request.getContextPath()+"/pages/loginSystem/login.jsp";
         RequestDispatcher dispatcher=request.getRequestDispatcher(address);
         dispatcher.forward(request,response);

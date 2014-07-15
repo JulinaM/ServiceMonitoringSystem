@@ -1,3 +1,4 @@
+<%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
 <%--
   Created by IntelliJ IDEA.
   User: tektak
@@ -19,11 +20,14 @@
     <div class="container">
         <form class="form-signin" role="form" method="post" action="/login">
             <%  String msg=(String)request.getAttribute("msg");
+                HttpSession httpSession=request.getSession(false);
+                String token= ServletCommon.generateToken(httpSession);
                 if(msg!=null){%>
             <div class="alert alert-success" role="alert"><%=msg%></div>
             <%  }
             %>
             <h2 class="form-signin-heading">Please sign in</h2>
+            <input name="token" type="hidden" value="<%=token%>">
             <input name="email" type="email" class="form-control" placeholder="Email address" required autofocus>
             <input name="password" type="password" class="form-control" placeholder="Password" required>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>

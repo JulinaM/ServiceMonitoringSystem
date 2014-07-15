@@ -1,5 +1,6 @@
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
+<%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -25,9 +26,9 @@
     String Password;
 
     HttpSession httpsession = request.getSession(false);
-    JSONArray jsonArray=null;
-    String sessionString=(String)httpsession.getAttribute("session");
-    JSONObject jsonSession=new JSONObject(sessionString);
+    JSONArray jsonArray = null;
+    String sessionString = (String) httpsession.getAttribute("session");
+    JSONObject jsonSession = new JSONObject(sessionString);
 %>
 
 <div id="loginStatus">
@@ -39,14 +40,23 @@
 <div id="logOrder">
     Filter By:
     <form method="GET" action="/UserActivitylog" onchange="this.submit();">
+        <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
         User::<select name="filter-by-user">
-        <%  jsonArray=(JSONArray)request.getAttribute("jsonArrayOfUserDetails");
-            int ArraySize=jsonArray.length();
-            for(int i=0;i<ArraySize;i++){
-                String userName=(String)jsonArray.getJSONObject(i).get("userName");                            %>
-                <option value="<%=userName%>"><%=userName%></option>
-     <%       }  %>
-        </select></form>
+
+        <% jsonArray = (JSONArray) request.getAttribute("jsonArrayOfUserDetails");
+            String selectedUId = (String) request.getAttribute("selectedUId");
+            int ArraySize = jsonArray.length();
+             %> <option value="all" <%=(selectedUId.equals("all")) ? "selected" : ""%>>All</option><%
+            for (int i = 0; i < ArraySize; i++) {
+                JSONObject jsonObject=jsonArray.getJSONObject(i);
+                String userName = (String) jsonObject.getString("userName");
+                int UId=(int)jsonObject.getInt("userId");
+                String uid= String.valueOf(UId);
+        %>
+        <option value="<%=UId%>" <%=(uid.equals(selectedUId)) ? "selected" : ""%>><%=userName%>
+        </option>
+        <% } %>
+    </select></form>
 </div>
 <h1>JSON object passing</h1>
 

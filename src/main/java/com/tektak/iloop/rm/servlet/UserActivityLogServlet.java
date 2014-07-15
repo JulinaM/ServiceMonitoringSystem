@@ -1,6 +1,7 @@
 package com.tektak.iloop.rm.servlet;
 
 import com.tektak.iloop.rm.common.RmException;
+import com.tektak.iloop.rm.common.ServletCommon;
 import com.tektak.iloop.rm.dao.ULogDAO;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.ULogDM;
@@ -33,6 +34,7 @@ import java.util.Date;
 public class UserActivityLogServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,15 +47,31 @@ public class UserActivityLogServlet extends HttpServlet {
         }
 
         String filterByUser=(String)request.getParameter("filter-by-user");
-        if(filterByUser==""){
-            System.out.println("filter-by-user==");
-        }else{
+        if(filterByUser!=""){
             System.out.println("filter-by-user=="+filterByUser);
         }
         ULogDAO uLogDAO= null;
         try {
             uLogDAO = new ULogDAO();
-            ULogDM[] logs=uLogDAO.ReadAllLog();
+            String selectedUId=(String)request.getParameter("filter-by-user");
+            System.out.println("selectedUId"+selectedUId);
+            ULogDM[] logs=null;
+            if(selectedUId!=null) {
+                if(selectedUId.equals("all")){
+                    selectedUId="all";
+                    request.setAttribute("selectedUId",selectedUId);
+                    logs=uLogDAO.ReadAllLog();
+                }else {
+                    request.setAttribute("selectedUId",selectedUId );
+                    logs=uLogDAO.ReadLogByUser(Integer.parseInt(selectedUId));
+                }
+
+            }else{
+                selectedUId="all";
+                request.setAttribute("selectedUId",selectedUId);
+                logs=uLogDAO.ReadAllLog();
+            }
+
 
             JSONArray jsonArrayOfLogs=new JSONArray();
             int i=0;
@@ -67,13 +85,11 @@ public class UserActivityLogServlet extends HttpServlet {
                 jsonArrayOfLogs.put(jsonObject1);
                 i++;
             }
-
             UserDetailDAO userDetailDAO=new UserDetailDAO();
             UserDetail[] userDetails=userDetailDAO.fetchUser();
-            System.out.println(userDetails[0].getJoinDate());
             JSONArray jsonArrayOfUserDetails=new JSONArray();
+            i=0;
             for(UserDetail u:userDetails){
-                i=0;
                 JSONObject jsonObject2=new JSONObject();
                 jsonObject2.put("userId", userDetails[i].getUserId());
                 jsonObject2.put("userEmail", userDetails[i].getUserEmail());
@@ -84,10 +100,8 @@ public class UserActivityLogServlet extends HttpServlet {
                 i++;
             }
 
-            System.out.println(jsonArrayOfUserDetails);
-            request.setAttribute("jsonArrayOfUserDetails",jsonArrayOfUserDetails);
 
-            System.out.println(jsonArrayOfLogs);
+            request.setAttribute("jsonArrayOfUserDetails",jsonArrayOfUserDetails);
             request.setAttribute("jsonArrayOfLogs",jsonArrayOfLogs);
             RequestDispatcher dispatcher=request.getRequestDispatcher("/pages/loginSystem/userActivityLog.jsp");
             dispatcher.forward(request,response);
