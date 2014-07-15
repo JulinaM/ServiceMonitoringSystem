@@ -53,23 +53,14 @@ public class LoginServlet extends HttpServlet {
                     UserDetail userDetail=userDetailDAO.getUserDetail();
                     LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),"Logged into the system Successfully!!");//
                     HttpSession httpSession=request.getSession(true);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("userId", userDetail.getUserId());
+                    jsonObject.put("userName", userDetail.getUserName());
+                    jsonObject.put("userEmail", userDetail.getUserEmail());
+                    jsonObject.put("userRole", userDetail.getUserRole());
+                    jsonObject.put("userJoinDate", userDetail.getJoinDate());
 
-                    JSONObject jsonObject=new JSONObject();
-                    jsonObject.put("userId",userDetail.getUserId());
-                    jsonObject.put("userName",userDetail.getUserName());
-                    jsonObject.put("userEmail",userDetail.getUserEmail());
-                    jsonObject.put("userRole",userDetail.getUserRole());
-                    jsonObject.put("userJoinDate",userDetail.getJoinDate());
-
-                    System.out.println(jsonObject);
-
-                    httpSession.setAttribute("ValidUser",userDetail);
-
-                    httpSession.setAttribute("userId",userDetail.getUserId());
-                    httpSession.setAttribute("userName",userDetail.getUserName());
-                    httpSession.setAttribute("userEmail",userDetail.getUserEmail());
-                    httpSession.setAttribute("userRole",userDetail.getUserRole());
-                    httpSession.setAttribute("userJoinDate",userDetail.getJoinDate());
+                    httpSession.setAttribute("session",jsonObject.toString());
 
                     response.sendRedirect("/UserActivitylog");
                 }else{
