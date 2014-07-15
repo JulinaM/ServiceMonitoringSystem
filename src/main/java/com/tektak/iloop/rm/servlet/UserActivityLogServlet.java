@@ -39,9 +39,7 @@ public class UserActivityLogServlet extends HttpServlet {
 
         HttpSession session=request.getSession(false);
         String jsonObjectString=(String)session.getAttribute("session");
-        JSONObject jsonObject = new JSONObject(jsonObjectString);
-        String ssUserEmail = jsonObject.getString("userEmail");
-        if(ssUserEmail==null){
+         if(jsonObjectString==null){
             response.sendRedirect("/login");
             return;
         }

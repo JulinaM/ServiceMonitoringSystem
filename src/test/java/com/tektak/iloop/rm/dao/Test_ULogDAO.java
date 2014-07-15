@@ -24,6 +24,7 @@ public class Test_ULogDAO {
     public static void Init() throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError {
         uLogDAO = new ULogDAO();
         Activitylog = new ULogDM();
+        uLogDAO.deleteAllLog();
     }
     @AfterClass
     public static void AInit(){
