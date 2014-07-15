@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by tektak on 7/2/14.
  */
 public class UserDetail implements IUserDetail {
-    private Integer userId;
+    private int userId;
     private String userEmail;
     private String userName;
     private String userPassword;
@@ -15,12 +15,12 @@ public class UserDetail implements IUserDetail {
     private Date joinDate;
 
     @Override
-    public void setUserId(Integer userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
     @Override
-    public Integer getUserId() {
+    public int getUserId() {
         return this.userId;
     }
 

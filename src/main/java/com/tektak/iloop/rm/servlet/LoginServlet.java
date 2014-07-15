@@ -3,6 +3,8 @@ package com.tektak.iloop.rm.servlet;
 import com.tektak.iloop.rm.application.loginSystem.AuthenticateUser;
 import com.tektak.iloop.rm.common.CommonConfig;
 import com.tektak.iloop.rm.common.RmException;
+import com.tektak.iloop.rm.dao.UserDetailDAO;
+import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
 
@@ -23,19 +25,8 @@ import java.sql.SQLException;
 /**
  * Created by tektak on 7/2/14.
  */
-@WebServlet("/loginservlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
-    public void init(ServletConfig servletConfig){
-        String RealPath=servletConfig.getServletContext().getRealPath("WEB-INF/classes/configuration.properties");
-        try {
-            CommonConfig commonCommonConfig =new CommonConfig(RealPath);
-            com.tektak.iloop.util.configuration.Config config= commonCommonConfig.getConfig();
-            System.out.println("Username::"+config.ReadString("username"));
-        } catch (BaseException.ConfigError configError) {
-            configError.printStackTrace();
-        }
-    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request,response);
     }
@@ -50,32 +41,28 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email=request.getParameter("email");
         String password=request.getParameter("password");
-        String uType=request.getParameter("uType");
-        String address="/pages/loginSystem/login.jsp";
+        String address=null;
         RequestDispatcher dispatcher;
+        System.out.println("email=="+email+"and password=="+password);
 
         if(email==null||password==null){
             address="/pages/loginSystem/login.jsp";
-            request.setAttribute("msg","Invalid Username or Password!!");
+            System.out.println("email==");
         }else{
-            try {
-                AuthenticateUser authenticateUser=new AuthenticateUser();
-                if(authenticateUser.IsAuthenticateUser(email,password)==1){
-                    System.out.println("Authenticate user!! navigting to new page!!");
-                    System.out.println("email:"+email+" password:"+password+"    User Type:"+uType);
-                    //address="/pages/loginSystem/home.jsp";
-                    address="/pages/loginSystem/home.jsp";
+            UserDetailDAO userDetailDAO=null;
+            /*try {
+                new CommonConfig(request);
+                userDetailDAO=new UserDetailDAO();
+                 if(userDetailDAO.userAuth(email, password)==1){
+                    UserDetail userDetail=userDetailDAO.getUserDetail();
+                    address="/UserActivitylog";
                     HttpSession httpSession=request.getSession();
-                    httpSession.setAttribute("email",email);
-                    request.setAttribute("email",email);
-                    httpSession.setAttribute("password",password);
-                    request.setAttribute("password",password);
+                    httpSession.setAttribute("ValidUser",userDetail);
                 }else{
+                     address="/pages/loginSystem/login.jsp";
                     request.setAttribute("msg","Invalid Username or Password!!");
                 }
             } catch (RmodelException.SqlException e) {
-                e.printStackTrace();
-            } catch (SQLException e){
                 e.printStackTrace();
             } catch (RmException.DBConnectionError dbConnectionError) {
                 dbConnectionError.printStackTrace();
@@ -83,7 +70,9 @@ public class LoginServlet extends HttpServlet {
                 configError.printStackTrace();
             } catch (RmodelException.CommonException e) {
                 e.printStackTrace();
-            }
+            }finally {
+                userDetailDAO.closeConnection();
+            }*/
         }
         dispatcher= request.getRequestDispatcher(address);
         dispatcher.forward(request,response);

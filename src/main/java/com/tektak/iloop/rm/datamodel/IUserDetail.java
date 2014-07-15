@@ -6,8 +6,8 @@ import java.util.Date;
  * Created by tektak on 7/2/14.
  */
 public interface IUserDetail {
-    public void setUserId(Integer userId);
-    public Integer getUserId();
+    public void setUserId(int userId);
+    public int getUserId();
     public void setUserEmail(String userEmail);
     public String getUserEmail();
     public void setUserName(String userName);

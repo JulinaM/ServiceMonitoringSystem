@@ -1,6 +1,7 @@
 package com.tektak.iloop.rm.servlet;
 
 import com.tektak.iloop.rm.common.PasswordEnc;
+import com.tektak.iloop.rm.common.ServletCommon;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 
@@ -54,7 +55,8 @@ public class AddUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String token = ServletCommon.generateToken(request.getSession());
+        request.setAttribute("token", token);
         request.setAttribute("error", request.getParameter("err"));
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");
         dispatcher.forward(request, response);

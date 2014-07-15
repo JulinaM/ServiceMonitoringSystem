@@ -1,14 +1,32 @@
 package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.datamodel.UserDetail;
+import com.tektak.iloop.rmodel.RmodelException;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.jws.soap.SOAPBinding;
+import java.sql.SQLException;
+
 public class UserDetailDAOTest {
+    private static UserDetailDAO userDetailDAO;
+    private static UserDetail userDetail;
+    @BeforeClass
+    public static void init() {
+        userDetailDAO = new UserDetailDAO();
+        userDetail = new UserDetail();
+    }
+
+    @AfterClass
+    public static void close() {
+        userDetailDAO.closeConnection();
+        userDetail = null;
+    }
+
     @Test
-    public void testPutUser() throws Exception {
-        UserDetailDAO userDetailDAO = new UserDetailDAO();
-        UserDetail userDetail = new UserDetail();
+    public void testPutUser() throws RmodelException.SqlException, SQLException {
         userDetail.setUserName("Put User Test");
         userDetail.setUserEmail("put_user@testing.com.ilooprm");
         userDetail.setUserPassword("putTest");
@@ -19,23 +37,25 @@ public class UserDetailDAOTest {
     }
 
     @Test
-    public void testEditUser() throws Exception {
-        UserDetailDAO userDetailDAO = new UserDetailDAO();
-        UserDetail userDetail = new UserDetail();
+    public void testEditUser() throws SQLException, RmodelException.SqlException {
         userDetail.setUserName("Auth Test");
         userDetail.setUserEmail("authtest@testing.com.ilooprm");
         userDetail.setUserPassword("authTest");
         userDetail.setUserStatus("1");
         userDetailDAO.putUser(userDetail);
-        UserDetail list  = userDetailDAO.fetchUser(userDetail.getUserEmail());
-        Assert.assertEquals(1, userDetailDAO.editUser(list));
-        userDetailDAO.removeUser(list.getUserId());
+        int id = (userDetailDAO.fetchUser(userDetail.getUserEmail())).getUserId();
+        userDetail.setUserId(id);
+        userDetail.setUserName("Edit Test");
+        userDetail.setUserEmail("edittest@testing.com.ilooprm");
+        Assert.assertEquals(1, userDetailDAO.editUser(userDetail));
+        UserDetail list = userDetailDAO.fetchUser(userDetail.getUserId());
+       Assert.assertEquals(userDetail.getUserEmail(),list.getUserEmail());
+        Assert.assertEquals(userDetail.getUserName(),list.getUserName());
+        userDetailDAO.removeUser(userDetail.getUserId());
     }
 
     @Test
-    public void testUserAuth() throws Exception {
-        UserDetailDAO userDetailDAO = new UserDetailDAO();
-        UserDetail userDetail = new UserDetail();
+    public void testUserAuth() throws RmodelException.SqlException, SQLException, RmodelException.CommonException {
         userDetail.setUserName("Auth Test");
         userDetail.setUserEmail("authtest@testing.com.ilooprm");
         userDetail.setUserPassword("authTest");

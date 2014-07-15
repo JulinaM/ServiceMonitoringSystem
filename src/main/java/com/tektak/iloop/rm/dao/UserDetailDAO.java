@@ -130,7 +130,34 @@ public class UserDetailDAO {
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } finally {
-                rs.close();
+            rs.close();
+        }
+        return null;
+    }
+
+    public UserDetail fetchUser(String userEmail) throws SQLException {
+        query = "SELECT * FROM %s WHERE userEmail=?";
+        query = String.format(query, TABLE_NAME);
+        this.prepare(query);
+        try {
+            this.statement.setString(1, userEmail);
+            rs = mySqlQuery.Drl();
+            UserDetail detail = new UserDetail();
+            while (rs.next()) {
+                detail.setUserId(rs.getInt("userId"));
+                detail.setUserEmail(rs.getString("userEmail"));
+                detail.setUserName(rs.getString("userName"));
+                detail.setUserStatus(rs.getString("userStatus"));
+                detail.setUserRole(rs.getString("userRole"));
+                detail.setJoinDate(rs.getDate("joinDate"));
+            }
+            return detail;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (RmodelException.SqlException e) {
+            e.printStackTrace();
+        } finally {
+            rs.close();
         }
         return null;
     }
@@ -165,7 +192,7 @@ public class UserDetailDAO {
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } finally {
-                rs.close();
+            rs.close();
         }
 
         return null;
@@ -175,10 +202,10 @@ public class UserDetailDAO {
     public int editUser(UserDetail userDetail) throws SQLException, RmodelException.SqlException {
         this.userDetail = userDetail;
         query = "UPDATE %s SET userName=?,userEmail=? WHERE userId=?";
-        query = String.format(query,TABLE_NAME);
+        query = String.format(query, TABLE_NAME);
         this.prepare(query);
-        this.statement.setString(1,this.userDetail.getUserName());
-        this.statement.setString(2,this.userDetail.getUserEmail());
+        this.statement.setString(1, this.userDetail.getUserName());
+        this.statement.setString(2, this.userDetail.getUserEmail());
         this.statement.setInt(3, this.userDetail.getUserId());
         return mySqlQuery.Dml();
 
@@ -187,15 +214,15 @@ public class UserDetailDAO {
 
     public int removeUser(int userId) throws SQLException, RmodelException.SqlException {
         query = "DELETE FROM %s WHERE userId=?";
-        query = String.format(query,TABLE_NAME);
+        query = String.format(query, TABLE_NAME);
         this.prepare(query);
-        this.statement.setInt(1,userId);
+        this.statement.setInt(1, userId);
         return mySqlQuery.Dml();
     }
 
     public int removeUser(String email) throws SQLException, RmodelException.SqlException {
         query = "DELETE FROM %s WHERE userEmail=?";
-        query = String.format(query,TABLE_NAME);
+        query = String.format(query, TABLE_NAME);
         this.prepare(query);
         this.statement.setString(1, email);
         return mySqlQuery.Dml();
@@ -224,13 +251,22 @@ public class UserDetailDAO {
             String encPassword = PasswordEnc.encrypt(email, password);
             this.statement.setString(1, email);
             this.statement.setString(2, encPassword);
-            this.statement.setString(3,"1");
+            this.statement.setString(3, "1");
             rs = mySqlQuery.Drl();
             int numRows = DAOCommon.countRows(rs);
             if (numRows == 1) {
                 try {
                     rs.next();
-                    if (email.equals(rs.getString("userEmail")) && encPassword.equals(rs.getString("userPassword"))) {
+                    userDetail = new UserDetail();
+                    String dbEmail = rs.getString("userEmail");
+                    String dbPass = rs.getString("userPassword");
+                    if (email.equals(dbEmail) && encPassword.equals(dbPass)) {
+                        this.userDetail.setUserName(rs.getString("userName"));
+                        this.userDetail.setUserEmail(dbEmail);
+                        this.userDetail.setUserStatus(rs.getString("userStatus"));
+                        this.userDetail.setUserRole(rs.getString("userRole"));
+                        this.userDetail.setJoinDate(rs.getDate("joinDate"));
+                        //if (email.equals(rs.getString("userEmail")) && encPassword.equals(rs.getString("userPassword"))) {
 
                         return 1;
                     }
@@ -241,7 +277,7 @@ public class UserDetailDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-                rs.close();
+            rs.close();
         }
         return -1;
     }
@@ -263,35 +299,16 @@ public class UserDetailDAO {
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } finally {
-                rs.close();
+            rs.close();
         }
         return -1;
     }
 
-    public UserDetail fetchUser(String userEmail) throws SQLException {
-        query = "SELECT * FROM %s WHERE userEmail=?";
-        query = String.format(query, TABLE_NAME);
-        this.prepare(query);
-        try {
-            this.statement.setString(1, userEmail);
-            rs = mySqlQuery.Drl();
-            UserDetail detail = new UserDetail();
-            while (rs.next()) {
-                detail.setUserId(rs.getInt("userId"));
-                detail.setUserEmail(rs.getString("userEmail"));
-                detail.setUserName(rs.getString("userName"));
-                detail.setUserStatus(rs.getString("userStatus"));
-                detail.setUserRole(rs.getString("userRole"));
-                detail.setJoinDate(rs.getDate("joinDate"));
-            }
-            return detail;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (RmodelException.SqlException e) {
-            e.printStackTrace();
-        } finally {
-            rs.close();
-        }
-        return null;
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 }

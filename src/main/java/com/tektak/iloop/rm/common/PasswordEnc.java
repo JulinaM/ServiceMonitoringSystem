@@ -15,6 +15,9 @@ public class PasswordEnc {
      * @param data password is data
      * @return sha512 encrypted password
      */
+    public static String md5Hash(String data){
+        return DigestUtils.md5Hex(data);
+    }
     public static String encrypt(String salt, String data) {
         return DigestUtils.sha512Hex(salt + data);
     }

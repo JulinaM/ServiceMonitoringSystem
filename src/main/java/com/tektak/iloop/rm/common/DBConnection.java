@@ -18,8 +18,7 @@ public class DBConnection {
      * @return MySql object
      */
     public MySql Connect() throws RmException.DBConnectionError, BaseException.ConfigError, RmodelException.SqlException, RmodelException.CommonException {
-        ClassLoader classLoader = DBConnection.class.getClassLoader();
-        URL url = classLoader.getResource("configuration.properties");
+        URL url = DBConnection.class.getClassLoader().getResource("configuration.properties");
         CommonConfig commonCommonConfig = new CommonConfig(url);
         Config config = commonCommonConfig.getConfig();
 
