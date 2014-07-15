@@ -1,6 +1,3 @@
-<%@ page import="com.tektak.iloop.rm.datamodel.UserDetail" %>
-<%@ page import="com.tektak.iloop.rm.datamodel.ULogDM" %>
-<%@ page import="java.io.PrintWriter" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 
@@ -28,24 +25,27 @@
     String Password;
 
     HttpSession httpsession = request.getSession(false);
-    JSONObject jsonObjectOfUserDetails=(JSONObject)request.getAttribute("jsonArrayOfUserDetails");
-
+    JSONArray jsonArray=null;
+    String sessionString=(String)httpsession.getAttribute("session");
+    JSONObject jsonSession=new JSONObject(sessionString);
 %>
 
 <div id="loginStatus">
-    Email::<%=httpsession.getAttribute("userEmail")%><br/>
-    UserName::<%=httpsession.getAttribute("userName")%><br/>
-    JoinDate::<%=httpsession.getAttribute("userJoinDate")%><br/>
+    Email::<%=jsonSession.getString("userEmail")%><br/>
+    UserName::<%=jsonSession.getString("userName")%><br/>
+    JoinDate::<%=jsonSession.getString("userJoinDate")%><br/>
     <a href="/logout?logout=set">Logout</a>
 </div>
 <div id="logOrder">
     Filter By:
     <form method="GET" action="/UserActivitylog" onchange="this.submit();">
         User::<select name="filter-by-user">
-        <%--<%int jsonSize=jsonObjectOfUserDetails.length();
-            for(int i=0;i<jsonSize;i++){%>
-                <option value="<%=jsonObjectOfUserDetails.get("userName")%>"><%=jsonObjectOfUserDetails.get("userName")%></option>
-     <%       }  %>--%>
+        <%  jsonArray=(JSONArray)request.getAttribute("jsonArrayOfUserDetails");
+            int ArraySize=jsonArray.length();
+            for(int i=0;i<ArraySize;i++){
+                String userName=(String)jsonArray.getJSONObject(i).get("userName");                            %>
+                <option value="<%=userName%>"><%=userName%></option>
+     <%       }  %>
         </select></form>
 </div>
 <h1>JSON object passing</h1>
@@ -63,9 +63,9 @@
     </thead>
     <tbody>
     <%
-        JSONArray jsonArray = (JSONArray) request.getAttribute("jsonArrayOfLogs");
+        jsonArray = (JSONArray) request.getAttribute("jsonArrayOfLogs");
 
-        int ArraySize = jsonArray.length();
+        ArraySize = jsonArray.length();
         for (int i = 0; i < ArraySize; i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
     %>

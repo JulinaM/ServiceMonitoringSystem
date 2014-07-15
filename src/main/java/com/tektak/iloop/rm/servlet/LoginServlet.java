@@ -47,11 +47,11 @@ public class LoginServlet extends HttpServlet {
 
             try {
                 System.out.println("email=="+email+"  and password=="+password);
-//                new CommonConfig(request);
                 userDetailDAO=new UserDetailDAO();
                 if(userDetailDAO.userAuth(email, password)==1){
                     UserDetail userDetail=userDetailDAO.getUserDetail();
                     LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),"Logged into the system Successfully!!");//
+
                     HttpSession httpSession=request.getSession(true);
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("userId", userDetail.getUserId());

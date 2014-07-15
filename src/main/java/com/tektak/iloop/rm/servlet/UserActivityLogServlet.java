@@ -75,12 +75,15 @@ public class UserActivityLogServlet extends HttpServlet {
             System.out.println(userDetails[0].getJoinDate());
             JSONArray jsonArrayOfUserDetails=new JSONArray();
             for(UserDetail u:userDetails){
+                i=0;
                 JSONObject jsonObject2=new JSONObject();
                 jsonObject2.put("userId", userDetails[i].getUserId());
                 jsonObject2.put("userEmail", userDetails[i].getUserEmail());
                 jsonObject2.put("userName", userDetails[i].getUserName());
                 jsonObject2.put("userStatus", userDetails[i].getUserStatus());
                 jsonObject2.put("joinDate", userDetails[i].getJoinDate());
+                jsonArrayOfUserDetails.put(jsonObject2);
+                i++;
             }
 
             System.out.println(jsonArrayOfUserDetails);
