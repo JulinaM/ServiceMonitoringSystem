@@ -1,9 +1,12 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.application.logSystem.LogGenerator;
+import com.tektak.iloop.rm.common.CommonConfig;
 import com.tektak.iloop.rm.common.PasswordEnc;
 import com.tektak.iloop.rm.common.ServletCommon;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
+import org.json.JSONObject;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,13 +22,13 @@ import java.io.IOException;
 
 @WebServlet("/adduser")
 public class AddUserServlet extends HttpServlet {
-
-
+    String page = null;
+    String error = "";
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page = null;
         Integer result = null;
-        String error = "";
-        if (ServletCommon.validateToken(request.getSession(),request.getParameter("token")) == 1) {
+        String sesData = (String)request.getSession().getAttribute("session");
+        if (sesData== null && ServletCommon.generateToken(request.getSession()).equals(request.getParameter("token"))) {
+            JSONObject sesObj = new JSONObject(sesData);
             UserDetailDAO userDetailDAO = null;
             UserDetail userDetail = new UserDetail();
             userDetail.setUserName(request.getParameter("username"));
@@ -38,6 +41,8 @@ public class AddUserServlet extends HttpServlet {
                 if (result == 1) {
                     userDetail.setUserPassword(PasswordEnc.createRandomString());
                     userDetailDAO.putUser(userDetail);
+
+                    LogGenerator.generateLog(sesObj.getInt("userId"),request.getRemoteAddr(),"User Added Successfully");
                     page = "/allusers";
                 } else {
                     page = "/adduser";
@@ -58,11 +63,16 @@ public class AddUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String token = ServletCommon.generateToken(request.getSession());
-        request.setAttribute("token", token);
-        request.setAttribute("error", request.getParameter("err"));
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");
-        dispatcher.forward(request, response);
+        if (request.getSession().getAttribute("session") == null) {
+            String token = ServletCommon.generateToken(request.getSession());
+            request.setAttribute("token", token);
+            request.setAttribute("error", request.getParameter("err"));
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");
+            dispatcher.forward(request, response);
+        }else {
+            response.sendRedirect("/login");
+        }
+
     }
 }
 

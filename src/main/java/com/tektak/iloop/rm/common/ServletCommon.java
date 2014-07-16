@@ -18,8 +18,6 @@ public class ServletCommon {
     }
 
     public static int validateToken(HttpSession httpSession,String data) {
-        System.out.println("tok: "+data);
-        System.out.println("token: "+httpSession.getAttribute("token"));
         if (httpSession.getAttribute("token").equals(data)){
             return 1;
         }else {
