@@ -3,7 +3,6 @@
 <%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="com.tektak.iloop.rm.datamodel.LogReportParamater" %>
-<%@ page import="com.tektak.iloop.rm.common.Session" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -35,15 +34,7 @@
     JSONObject jsonSession = new JSONObject(sessionString);
 
     LogReportParamater lrParam = (LogReportParamater) request.getAttribute("lrParam");
-    Session ss=Session.getSession(request);
 %>
-
-<div id="loginStatus">
-    Email::<%=ss.getUserEmail()%><br/>
-    UserName::<%=ss.getUserName()%><br/>
-    JoinDate::<%=ss.getJoinDate()%><br/>
-    <a href="/logout?logout=set">Logout</a>
-</div>
 <div id="logOrder">
     Filter By:
     <form method="GET" action="/UserActivitylog" onchange="this.submit();" onkeyup="this.submit()">

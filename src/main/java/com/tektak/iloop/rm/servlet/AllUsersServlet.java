@@ -1,5 +1,6 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.common.Session;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 
@@ -23,22 +24,27 @@ public class AllUsersServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDetailDAO userDetailDAO = null;
-        UserDetail[] list = null;
-        try {
-            userDetailDAO = new UserDetailDAO();
-            list = userDetailDAO.fetchUser();
-            request.setAttribute("ulist", list);
-        } catch (Exception e) {
-            request.setAttribute("error", "Error while fetching");
-        } finally {
-            if (userDetailDAO != null)
-                userDetailDAO.closeConnection();
+        if (!Session.IsValidSession()) {
+            response.sendRedirect("/login");
+            return;
+        } else {
+            UserDetailDAO userDetailDAO = null;
+            UserDetail[] list = null;
+            try {
+                userDetailDAO = new UserDetailDAO();
+                list = userDetailDAO.fetchUser();
+                request.setAttribute("ulist", list);
+            } catch (Exception e) {
+                request.setAttribute("error", "Error while fetching");
+            } finally {
+                if (userDetailDAO != null)
+                    userDetailDAO.closeConnection();
+            }
+
+
+            RequestDispatcher dispatch = request.getRequestDispatcher("/pages/user/allUsers.jsp");
+            dispatch.forward(request, response);
         }
-
-
-        RequestDispatcher dispatch = request.getRequestDispatcher("/pages/user/allUsers.jsp");
-        dispatch.forward(request, response);
     }
 
 }

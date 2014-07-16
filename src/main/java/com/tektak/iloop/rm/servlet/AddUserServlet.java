@@ -3,6 +3,7 @@ package com.tektak.iloop.rm.servlet;
 import com.tektak.iloop.rm.application.logSystem.LogGenerator;
 import com.tektak.iloop.rm.common.PasswordEnc;
 import com.tektak.iloop.rm.common.ServletCommon;
+import com.tektak.iloop.rm.common.Session;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import org.json.JSONObject;
@@ -27,7 +28,7 @@ public class AddUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer result = null;
         String sesData = (String) request.getSession().getAttribute("session");
-        if (sesData != null && ServletCommon.generateToken(request.getSession()).equals(request.getParameter("token"))) {
+        if (Session.IsValidSession() && ServletCommon.generateToken(request.getSession()).equals(request.getParameter("token"))) {
             JSONObject sesObj = new JSONObject(sesData);
             UserDetailDAO userDetailDAO = null;
             UserDetail userDetail = new UserDetail();
@@ -60,19 +61,19 @@ public class AddUserServlet extends HttpServlet {
             error = "?err=You don't have permission for this process";
         }
         response.sendRedirect(page + error);
+        return;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("session") != null) {
-            String token = ServletCommon.generateToken(request.getSession());
-            request.setAttribute("token", token);
+        if (!Session.IsValidSession()) {
+            response.sendRedirect("/login");
+            return;
+        }else {
+            request.setAttribute("token", ServletCommon.generateToken(request.getSession()));
             request.setAttribute("error", request.getParameter("err"));
             RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");
             dispatcher.forward(request, response);
-        } else {
-            response.sendRedirect("/login");
         }
-
     }
 }
 
