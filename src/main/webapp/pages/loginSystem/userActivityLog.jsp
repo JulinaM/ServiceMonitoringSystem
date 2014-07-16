@@ -4,6 +4,7 @@
 <%@ page import="com.tektak.iloop.rm.common.DateTime" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.Calendar" %>
+<%@ page import="com.tektak.iloop.rm.datamodel.LogReportParamater" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -32,6 +33,8 @@
     JSONArray jsonArray = null;
     String sessionString = (String) httpsession.getAttribute("session");
     JSONObject jsonSession = new JSONObject(sessionString);
+
+    LogReportParamater lrParam=(LogReportParamater)request.getAttribute("lrParam");
 %>
 
 <div id="loginStatus">
@@ -47,7 +50,7 @@
         User::<select name="filter-by-user">
 
         <% jsonArray = (JSONArray) request.getAttribute("jsonArrayOfUserDetails");
-            String selectedUId = (String) request.getAttribute("selectedUId");
+            String selectedUId = lrParam.getUId();
             int ArraySize = jsonArray.length();
              %> <option value="all" <%=(selectedUId.equals("all")) ? "selected" : ""%>>All</option><%
             for (int i = 0; i < ArraySize; i++) {
@@ -59,12 +62,14 @@
         <option value="<%=UId%>" <%=(uid.equals(selectedUId)) ? "selected" : ""%>><%=userName%>
         </option>
         <% }
-            String fy=(String)request.getAttribute("fy");
-            String fm=(String)request.getAttribute("fm");
-            String fd=(String)request.getAttribute("fd");
-            String ty=(String)request.getAttribute("ty");
-            String tm=(String)request.getAttribute("tm");
-            String td=(String)request.getAttribute("td");
+            String fy=lrParam.getFy();
+            String fm=lrParam.getFm();
+            String fd=lrParam.getFd();
+            String ty=lrParam.getTy();
+            String tm=lrParam.getTm();
+            String td=lrParam.getTd();
+
+
 
             System.out.println(ty+"/"+tm+"/"+td);
         %>
@@ -92,7 +97,7 @@
         To::<select name="to-filter-by-year">
         <% Calendar now=Calendar.getInstance();
             %>
-            <%--<option value="<%=now.get(Calendar.YEAR)%>"><%=now.get(Calendar.YEAR)%></option>--%>
+
         <%  i=0;
 
             for(i=2014;i<2050;i++){%>
@@ -100,14 +105,14 @@
         <% }%>
     </select>Year
         <select name="to-filter-by-month">
-            <%--<option value="<%=now.get(Calendar.YEAR)%>"><%=now.get(Calendar.MONTH)%></option>--%>
+
             <% i=0;
                 for(i=1;i<13;i++){%>
             <option value="<%=i%>" <%=(i==Integer.parseInt(tm))?"selected":""%>><%=i%></option>
             <% }%>
         </select>Month
         <select name="to-filter-by-day">
-            <%--<option value="<%=now.get(Calendar.YEAR)%>"><%=now.get(Calendar.DAY_OF_MONTH)%></option>--%>
+
             <% i=0;
                 for(i=1;i<31;i++){%>
             <option value="<%=i%>" <%=(i==Integer.parseInt(td))?"selected":""%>><%=i%></option>

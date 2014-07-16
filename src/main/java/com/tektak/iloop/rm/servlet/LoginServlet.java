@@ -2,14 +2,12 @@ package com.tektak.iloop.rm.servlet;
 
 import com.tektak.iloop.rm.application.logSystem.LogGenerator;
 import com.tektak.iloop.rm.application.loginSystem.AuthenticateUser;
-import com.tektak.iloop.rm.common.CommonConfig;
-import com.tektak.iloop.rm.common.DateTime;
-import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.common.ServletCommon;
+import com.tektak.iloop.rm.common.*;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
+import com.tektak.iloop.util.configuration.Config;
 import org.json.JSONObject;
 
 
@@ -57,17 +55,10 @@ public class LoginServlet extends HttpServlet {
                 userDetailDAO=new UserDetailDAO();
                 if(userDetailDAO.userAuth(email, password)==1){
                     UserDetail userDetail=userDetailDAO.getUserDetail();
-                    LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),"Logged into the system Successfully!!");//
 
-                    HttpSession httpSession=request.getSession(true);
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("userId", userDetail.getUserId());
-                    jsonObject.put("userName", userDetail.getUserName());
-                    jsonObject.put("userEmail", userDetail.getUserEmail());
-                    jsonObject.put("userRole", userDetail.getUserRole());
-                    jsonObject.put("userJoinDate", userDetail.getJoinDate());
+                    LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),CommonConfig.getConfig().ReadString("login"));
 
-                    httpSession.setAttribute("session",jsonObject.toString());
+                    session.setSession(request,userDetail);
 
                     response.sendRedirect("/UserActivitylog");
                 }else{

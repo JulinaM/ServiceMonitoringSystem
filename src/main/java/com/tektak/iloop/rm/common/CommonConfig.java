@@ -63,11 +63,11 @@ public class CommonConfig {
      *
      * @return
      */
-    public Config getConfig() {
+    public static Config getConfig() {
         if (config == null) {
             return null;
         } else {
-            return this.config;
+            return config;
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.tektak.iloop.rm.datamodel;
 
+import com.tektak.iloop.rm.common.SendEmail;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -88,7 +90,26 @@ public class LogReportParamater {
         return fy+"-"+fm+"-"+fd;
     }
 
+    public void setFromDate(String Year,String Month,String Day){
+        this.fy=Year;
+        this.fm=Month;
+        this.fd=Day;
+    }
+
+    public void setToDate(String Year,String Month,String Day){
+        this.ty=Year;
+        this.tm=Month;
+        this.td=Day;
+    }
+
     public String getToDate(){
         return ty+"-"+tm+"-"+td;
+    }
+
+    public boolean IsNull(){
+        if(this.UId==null||this.fy==null||this.fm==null||this.fd==null||this.ty==null||this.tm==null||this.td==null){
+            return true;
+        }
+        return false;
     }
 }
