@@ -14,10 +14,12 @@ public class ULogDM {
      * Store User Id
      */
     private int UId;
+    private int logId;
     /**
      * Store IP address of user
      */
     private String IPaddress;
+    private String userName;
     /**
      * Store User Activity
      */
@@ -26,6 +28,7 @@ public class ULogDM {
      * store Timestamp of User Activity
      */
     private Timestamp timestamp;
+
 
     /**
      *
@@ -92,7 +95,7 @@ public class ULogDM {
     }
 
     public boolean equals(ULogDM obj){
-        if(this.UId==obj.UId&&this.IPaddress.equals(obj.IPaddress)&&this.UserActivity.equals(obj.UserActivity)&&this.timestamp.equals(obj.timestamp)){
+        if(this.userName.equals(obj.getUserName())&&this.UId==obj.UId&&this.IPaddress.equals(obj.IPaddress)&&this.UserActivity.equals(obj.UserActivity)&&this.timestamp.equals(obj.timestamp)){
             return true;
         }else
         return false;
@@ -109,5 +112,21 @@ public class ULogDM {
             }
         }
         return true;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getLogId() {
+        return logId;
+    }
+
+    public void setLogId(int logId) {
+        this.logId = logId;
     }
 }

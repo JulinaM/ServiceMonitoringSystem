@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 /**
  * Created by tektak on 7/8/14.
  */
-public class Test_CDAO {
+public class Test_CommonDAO {
     private static ULogDAO uLogDAO;
     private static ULogDM Activitylog;
     @BeforeClass

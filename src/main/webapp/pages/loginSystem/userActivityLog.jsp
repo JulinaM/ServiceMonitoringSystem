@@ -1,8 +1,10 @@
-<%@ page import="com.tektak.iloop.rm.datamodel.UserDetail" %>
-<%@ page import="com.tektak.iloop.rm.datamodel.ULogDM" %>
-<%@ page import="java.io.PrintWriter" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
+<%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
+<%@ page import="com.tektak.iloop.rm.common.DateTime" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="com.tektak.iloop.rm.datamodel.LogReportParamater" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -20,16 +22,23 @@
     <link href="<%=request.getContextPath()%>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<%=request.getContextPath()%>/pages/loginSystem/css/userActivityLog.css" rel="stylesheet"
           media="screen">
+    <style>body {
+        padding-top: 60px;
+    }</style>
 </head>
 <body>
+<%@ include file="../include/navTop.jsp" %>
 <%
 
     String Email;
     String Password;
 
     HttpSession httpsession = request.getSession(false);
-    JSONObject jsonObjectOfUserDetails=(JSONObject)request.getAttribute("jsonArrayOfUserDetails");
+    JSONArray jsonArray = null;
+    String sessionString = (String) httpsession.getAttribute("session");
+    JSONObject jsonSession = new JSONObject(sessionString);
 
+    LogReportParamater lrParam=(LogReportParamater)request.getAttribute("lrParam");
 %>
 
 <div id="loginStatus">
@@ -41,12 +50,79 @@
 <div id="logOrder">
     Filter By:
     <form method="GET" action="/UserActivitylog" onchange="this.submit();">
+        <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
         User::<select name="filter-by-user">
-        <%--<%int jsonSize=jsonObjectOfUserDetails.length();
-            for(int i=0;i<jsonSize;i++){%>
-                <option value="<%=jsonObjectOfUserDetails.get("userName")%>"><%=jsonObjectOfUserDetails.get("userName")%></option>
-     <%       }  %>--%>
-        </select></form>
+
+        <% jsonArray = (JSONArray) request.getAttribute("jsonArrayOfUserDetails");
+            String selectedUId = lrParam.getUId();
+            int ArraySize = jsonArray.length();
+             %> <option value="all" <%=(selectedUId.equals("all")) ? "selected" : ""%>>All</option><%
+            for (int i = 0; i < ArraySize; i++) {
+                JSONObject jsonObject=jsonArray.getJSONObject(i);
+                String userName = (String) jsonObject.getString("userName");
+                int UId=(int)jsonObject.getInt("userId");
+                String uid= String.valueOf(UId);
+        %>
+        <option value="<%=UId%>" <%=(uid.equals(selectedUId)) ? "selected" : ""%>><%=userName%>
+        </option>
+        <% }
+            String fy=lrParam.getFy();
+            String fm=lrParam.getFm();
+            String fd=lrParam.getFd();
+            String ty=lrParam.getTy();
+            String tm=lrParam.getTm();
+            String td=lrParam.getTd();
+
+
+
+            System.out.println(ty+"/"+tm+"/"+td);
+        %>
+    </select>
+        From::<select name="from-filter-by-year">
+            <% int i=0;
+                for(i=2014;i<2050;i++){%>
+                    <option value="<%=i%>" <%=(i==Integer.parseInt(fy))?"selected":""%>><%=i%></option>
+        <% }%>
+        </select>Year
+        <select name="from-filter-by-month">
+            <% i=0;
+                for(i=1;i<13;i++){%>
+                    <option value="<%=i%>"<%=(i==Integer.parseInt(fm))?"selected":""%>><%=i%></option>
+            <% }%>
+        </select>Month
+        <select name="from-filter-by-day">
+            <% i=0;
+                for(i=1;i<31;i++){%>
+                    <option value="<%=i%>"<%=(i==Integer.parseInt(fd))?"selected":""%>><%=i%></option>
+            <% }%>
+        </select>Day
+
+
+        To::<select name="to-filter-by-year">
+        <% Calendar now=Calendar.getInstance();
+            %>
+
+        <%  i=0;
+
+            for(i=2014;i<2050;i++){%>
+        <option value="<%=i%>" <%=(i==Integer.parseInt(ty))?"selected":""%>><%=i%></option>
+        <% }%>
+    </select>Year
+        <select name="to-filter-by-month">
+
+            <% i=0;
+                for(i=1;i<13;i++){%>
+            <option value="<%=i%>" <%=(i==Integer.parseInt(tm))?"selected":""%>><%=i%></option>
+            <% }%>
+        </select>Month
+        <select name="to-filter-by-day">
+
+            <% i=0;
+                for(i=1;i<31;i++){%>
+            <option value="<%=i%>" <%=(i==Integer.parseInt(td))?"selected":""%>><%=i%></option>
+            <% }%>
+        </select>Day
+    </form>
 </div>
 <h1>JSON object passing</h1>
 
@@ -63,21 +139,28 @@
     </thead>
     <tbody>
     <%
-        JSONArray jsonArray = (JSONArray) request.getAttribute("jsonArrayOfLogs");
+        jsonArray = (JSONArray) request.getAttribute("jsonArrayOfLogs");
 
-        int ArraySize = jsonArray.length();
-        for (int i = 0; i < ArraySize; i++) {
+        ArraySize = jsonArray.length();
+        for (i = 0; i < ArraySize; i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
     %>
     <tr>
         <td><%=jsonObject.get("userIPaddress")%>
         </td>
-        <td><%=jsonObject.get("userId")%>
+        <td><%=jsonObject.get("userName")%>
         </td>
         <td><%=jsonObject.get("userActivity")%>
         </td>
         <td><%=jsonObject.get("userTimestamp")%>
         </td>
+        <td><form action="/UserActivitylog" method="get">
+            <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
+
+            <input type="hidden" name="logIdToDelete" value="<%=jsonObject.get("logId")%>">
+            <input type="hidden" name="filter-by-user" value="<%=selectedUId%>">
+            <input type="submit" value="Delete">
+        </form> </td>
     </tr>
 
     <% }
