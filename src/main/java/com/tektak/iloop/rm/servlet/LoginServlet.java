@@ -1,18 +1,14 @@
 package com.tektak.iloop.rm.servlet;
 
 import com.tektak.iloop.rm.application.logSystem.LogGenerator;
-import com.tektak.iloop.rm.application.loginSystem.AuthenticateUser;
 import com.tektak.iloop.rm.common.*;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
-import com.tektak.iloop.util.configuration.Config;
-import org.json.JSONObject;
 
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Date;
 
 /**
  * Created by tektak on 7/2/14.
@@ -58,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 
                     LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),CommonConfig.getConfig().ReadString("login"));
 
-                    session.setSession(request,userDetail);
+                    Session.setSession(request, userDetail);
 
                     response.sendRedirect("/UserActivitylog");
                 }else{

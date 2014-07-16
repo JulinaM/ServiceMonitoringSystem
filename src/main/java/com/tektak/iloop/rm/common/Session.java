@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by tektak on 7/16/14.
  */
-public class session {
+public class Session {
     private int userId;
     private String userName;
     private int userRole;
@@ -74,7 +74,7 @@ public class session {
         validSession=true;
     }
 
-    public static session getSession(HttpServletRequest request){
+    public static Session getSession(HttpServletRequest request){
         HttpSession httpSession=request.getSession(false);
         String JSONString=(String)httpSession.getAttribute("session");
         if(JSONString==null){
@@ -82,7 +82,7 @@ public class session {
            return null;
         }
         JSONObject jsonObject=new JSONObject(JSONString);
-        session obj=new session();
+        Session obj=new Session();
         obj.setUserId(jsonObject.getInt("userId"));
         obj.setUserName(jsonObject.getString("userName"));
         obj.setUserRole(jsonObject.getInt("userRole"));

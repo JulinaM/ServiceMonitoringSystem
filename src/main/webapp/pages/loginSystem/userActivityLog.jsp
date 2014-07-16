@@ -1,8 +1,6 @@
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
-<%@ page import="com.tektak.iloop.rm.common.DateTime" %>
-<%@ page import="java.util.Date" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="com.tektak.iloop.rm.datamodel.LogReportParamater" %>
 
@@ -45,8 +43,7 @@
 </div>
 <div id="logOrder">
     Filter By:
-    <form method="GET" action="/UserActivitylog" onchange="this.submit();">
-        <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
+    <form method="GET" action="/UserActivitylog" onchange="this.submit();" onkeyup="this.submit()">
         User::<select name="filter-by-user">
 
         <% jsonArray = (JSONArray) request.getAttribute("jsonArrayOfUserDetails");
@@ -68,6 +65,8 @@
             String ty=lrParam.getTy();
             String tm=lrParam.getTm();
             String td=lrParam.getTd();
+
+            String search=lrParam.getSearch();
 
 
 
@@ -118,9 +117,10 @@
             <option value="<%=i%>" <%=(i==Integer.parseInt(td))?"selected":""%>><%=i%></option>
             <% }%>
         </select>Day
+        Search:<input id="sField" type="text" name="search" value="<%=search%>" size="15" maxlength="150" autofocus onfocus="this.value=this.value;">
     </form>
 </div>
-<h1>JSON object passing</h1>
+
 
 <table class="table table-striped table-bordered table-condensed table-hover">
     <caption>Welcome To the User Activity Log Management System.</caption>
@@ -150,11 +150,10 @@
         </td>
         <td><%=jsonObject.get("userTimestamp")%>
         </td>
-        <td><form action="/UserActivitylog" method="get">
+        <td><form action="/UserActivitylog" method="post">
             <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
 
             <input type="hidden" name="logIdToDelete" value="<%=jsonObject.get("logId")%>">
-            <input type="hidden" name="filter-by-user" value="<%=selectedUId%>">
             <input type="submit" value="Delete">
         </form> </td>
     </tr>

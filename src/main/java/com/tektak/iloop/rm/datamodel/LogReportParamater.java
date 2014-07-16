@@ -18,6 +18,8 @@ public class LogReportParamater {
     private String tm;
     private String td;
 
+    private String search;
+
     public String getUId() {
         return UId;
     }
@@ -84,6 +86,8 @@ public class LogReportParamater {
         this.ty=(String)request.getParameter("to-filter-by-year");
         this.tm=(String)request.getParameter("to-filter-by-month");
         this.td=(String)request.getParameter("to-filter-by-day");
+
+        this.search=(String)request.getParameter("search");
     }
 
     public String getFromDate(){
@@ -111,5 +115,15 @@ public class LogReportParamater {
             return true;
         }
         return false;
+    }
+
+    public String getSearch() {
+        if(this.search==null)
+            this.setSearch("");
+        return this.search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 }

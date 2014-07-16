@@ -350,17 +350,18 @@ public class ULogDAO {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
     }
-    public ULogDM[] ReadLogByFilter(String DateGreaterThan,String DateLessThan) throws RmodelException.SqlException, RmodelException.CommonException {
+    public ULogDM[] ReadLogByFilter(String search,String DateGreaterThan,String DateLessThan) throws RmodelException.SqlException, RmodelException.CommonException {
         try {
-            String query="SELECT logId,UId,userName,IPaddress,Activity,Timestamp FROM %s as a INNER JOIN %s as b on b.userId = a.UId WHERE DATE(a.timestamp) BETWEEN ? AND ? LIMIT ?,?";
+            String query="SELECT logId,UId,userName,IPaddress,Activity,Timestamp FROM %s as a INNER JOIN %s as b on b.userId = a.UId WHERE a.Activity LIKE ? AND DATE(a.timestamp) BETWEEN ? AND ? LIMIT ?,?";
             query=String.format(query,TABLE_NAME1,TABLE_NAME2);
             this.mySqlQuery.setQuery(query);
             this.mySqlQuery.InitPreparedStatement();
             PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
-            ps.setString(1, DateGreaterThan);
-            ps.setString(2, DateLessThan);
-            ps.setInt(3, this.getRowNo());
-            ps.setInt(4, this.getRowSize());
+            ps.setString(1, "%"+search+"%");
+            ps.setString(2, DateGreaterThan);
+            ps.setString(3, DateLessThan);
+            ps.setInt(4, this.getRowNo());
+            ps.setInt(5, this.getRowSize());
             ResultSet rs=this.mySqlQuery.Drl();
             System.out.println("Query::"+ps.toString());
             return fetchLog(rs);
@@ -368,18 +369,19 @@ public class ULogDAO {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }
     }
-    public ULogDM[] ReadLogByFilter(String UId,String DateGreaterThan,String DateLessThan) throws RmodelException.SqlException, RmodelException.CommonException {
+    public ULogDM[] ReadLogByFilter(String UId,String search,String DateGreaterThan,String DateLessThan) throws RmodelException.SqlException, RmodelException.CommonException {
         try {
-            String query="SELECT logId,UId,userName,IPaddress,Activity,Timestamp FROM %s as a INNER JOIN %s as b on b.userId = a.UId WHERE a.UId= ? AND DATE(timestamp) BETWEEN ? AND ? LIMIT ?,?";
+            String query="SELECT logId,UId,userName,IPaddress,Activity,Timestamp FROM %s as a INNER JOIN %s as b on b.userId = a.UId WHERE a.UId= ? AND a.Activity LIKE %?% AND DATE(timestamp) BETWEEN ? AND ? LIMIT ?,?";
             query=String.format(query,TABLE_NAME1,TABLE_NAME2);
             this.mySqlQuery.setQuery(query);
             this.mySqlQuery.InitPreparedStatement();
             PreparedStatement ps=this.mySqlQuery.getPreparedStatement();
             ps.setString(1, UId);
-            ps.setString(2, DateGreaterThan);
-            ps.setString(3, DateLessThan);
-            ps.setInt(4, this.getRowNo());
-            ps.setInt(5, this.getRowSize());
+            ps.setString(2, "%"+search+"%");
+            ps.setString(3, DateGreaterThan);
+            ps.setString(4, DateLessThan);
+            ps.setInt(5, this.getRowNo());
+            ps.setInt(6, this.getRowSize());
             System.out.println("----Query:"+ps.toString());
 
             ResultSet rs=this.mySqlQuery.Drl();
