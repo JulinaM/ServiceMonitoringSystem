@@ -12,8 +12,12 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title>User Detail</title>
 
+    <style>body {
+        padding-top: 60px;
+    }</style>
 </head>
 <body>
+<%@ include file="../include/navTop.jsp" %>
 <c:if test="${error != null}">
     <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong>
     </div>

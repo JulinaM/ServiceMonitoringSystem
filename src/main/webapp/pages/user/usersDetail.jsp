@@ -12,15 +12,22 @@
     <link href="<%request.getContextPath();%>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <title>User Detail</title>
-
+    <style>body {
+        padding-top: 60px;
+    }</style>
 </head>
 <body>
+<%@ include file="../include/navTop.jsp" %>
 
-
-<c:if test="${error != null}">
-    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <c:if test="${error != null}">
+            <div class="alert alert-danger"><span class="close"
+                                                  data-dismiss="alert">&times;</span><strong>${error}!</strong>
+            </div>
+        </c:if>
     </div>
-</c:if>
+</div>
 
 <div class="container">
     <div class="row">
