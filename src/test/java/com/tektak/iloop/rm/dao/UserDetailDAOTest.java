@@ -13,19 +13,19 @@ import java.sql.SQLException;
 public class UserDetailDAOTest {
     private static UserDetailDAO userDetailDAO;
     private static UserDetail userDetail;
-    @BeforeClass
+    //@BeforeClass
     public static void init() {
         userDetailDAO = new UserDetailDAO();
         userDetail = new UserDetail();
     }
 
-    @AfterClass
+    //@AfterClass
     public static void close() {
         userDetailDAO.closeConnection();
         userDetail = null;
     }
 
-    @Test
+    //@Test
     public void testPutUser() throws RmodelException.SqlException, SQLException {
         userDetail.setUserName("Put User Test");
         userDetail.setUserEmail("put_user@testing.com.ilooprm");
@@ -36,7 +36,7 @@ public class UserDetailDAOTest {
         userDetailDAO.removeUser(userDetail.getUserEmail());
     }
 
-    @Test
+    //@Test
     public void testEditUser() throws SQLException, RmodelException.SqlException {
         userDetail.setUserName("Auth Test");
         userDetail.setUserEmail("authtest@testing.com.ilooprm");
@@ -54,7 +54,7 @@ public class UserDetailDAOTest {
         userDetailDAO.removeUser(userDetail.getUserId());
     }
 
-    @Test
+    //@Test
     public void testUserAuth() throws RmodelException.SqlException, SQLException, RmodelException.CommonException {
         userDetail.setUserName("Auth Test");
         userDetail.setUserEmail("authtest@testing.com.ilooprm");

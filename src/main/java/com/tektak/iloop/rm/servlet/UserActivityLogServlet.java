@@ -25,6 +25,7 @@ import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -46,29 +47,90 @@ public class UserActivityLogServlet extends HttpServlet {
             return;
         }
 
+
         String filterByUser=(String)request.getParameter("filter-by-user");
+
+        String fy=(String)request.getParameter("from-filter-by-year");
+        String fm=(String)request.getParameter("from-filter-by-month");
+        String fd=(String)request.getParameter("from-filter-by-day");
+        String ty=(String)request.getParameter("to-filter-by-year");
+        String tm=(String)request.getParameter("to-filter-by-month");
+        String td=(String)request.getParameter("to-filter-by-day");
+
+        String fdate=fy+"-"+fm+"-"+fd;
+        String tdate=ty+"-"+tm+"-"+td;
+        System.out.println("Sabai vanda bahira-- /// from Date::"+fy+"/"+fm+"/"+fd);
+        System.out.println("To Date::"+ty+"/"+tm+"/"+td);
+        Calendar now=Calendar.getInstance();
+        String today=now.get(Calendar.YEAR)+"-"+now.get(Calendar.MONTH)+"-"+now.get(Calendar.DAY_OF_MONTH);
+
+        String logIdToDelete=(String)request.getParameter("logIdToDelete");
+
         if(filterByUser!=""){
             System.out.println("filter-by-user=="+filterByUser);
         }
         ULogDAO uLogDAO= null;
         try {
             uLogDAO = new ULogDAO();
+            if(logIdToDelete!=null){
+                uLogDAO.deleteLogByLogId(Integer.parseInt(logIdToDelete));
+            }
             String selectedUId=(String)request.getParameter("filter-by-user");
             System.out.println("selectedUId"+selectedUId);
             ULogDM[] logs=null;
-            if(selectedUId!=null) {
-                if(selectedUId.equals("all")){
+
+            if(selectedUId!=null&&fy!=null&&fy!=null&&fm!=null&&fd!=null&&ty!=null&&tm!=null&&td!=null) {
+                if(selectedUId.equals("all")&&fdate.equals("2014-1-1")&&today.equals(tdate)){
                     selectedUId="all";
                     request.setAttribute("selectedUId",selectedUId);
-                    logs=uLogDAO.ReadAllLog();
+                    request.setAttribute("fy","2014");
+                    request.setAttribute("fm","1");
+                    request.setAttribute("fd","1");
+
+                    logs=uLogDAO.ReadLogByFilter(fdate,tdate);
+
+                    System.out.println("IF() vitra /// from Date::"+fy+"/"+fm+"/"+fd);
+                    System.out.println("To Date::"+ty+"/"+tm+"/"+td);
                 }else {
+                    if(selectedUId.equals("all")){
+                        logs=uLogDAO.ReadLogByFilter(fdate,tdate);
+                    }else{
+                        logs=uLogDAO.ReadLogByFilter(selectedUId,fdate,tdate);
+                    }
                     request.setAttribute("selectedUId",selectedUId );
-                    logs=uLogDAO.ReadLogByUser(Integer.parseInt(selectedUId));
+
+                    request.setAttribute("fy",fy);
+                    request.setAttribute("fm",fm);
+                    request.setAttribute("fd",fd);
+
+                    request.setAttribute("ty",ty);
+                    request.setAttribute("tm",tm);
+                    request.setAttribute("td",td);
+
+                    System.out.println("if ko else vitra /// from Date::"+fy+"/"+fm+"/"+fd);
+                    System.out.println("To Date::"+ty+"/"+tm+"/"+td);
+                    System.out.println("No. of rows::"+logs.length);
                 }
 
             }else{
                 selectedUId="all";
                 request.setAttribute("selectedUId",selectedUId);
+
+                request.setAttribute("fy","2014");
+                request.setAttribute("fm","1");
+                request.setAttribute("fd","1");
+
+                ty= String.valueOf(now.get(Calendar.YEAR));
+                tm= String.valueOf(now.get(Calendar.MONTH));
+                td= String.valueOf(now.get(Calendar.DAY_OF_MONTH));
+
+                System.out.println("initial phase // from Date::"+fy+"/"+fm+"/"+fd);
+                System.out.println("To Date::"+ty+"/"+tm+"/"+td);
+
+                request.setAttribute("ty",ty);
+                request.setAttribute("tm",tm);
+                request.setAttribute("td",td);
+
                 logs=uLogDAO.ReadAllLog();
             }
 
@@ -77,7 +139,9 @@ public class UserActivityLogServlet extends HttpServlet {
             int i=0;
             for(ULogDM u:logs){
                 JSONObject jsonObject1=new JSONObject();
+                jsonObject1.put("logId", logs[i].getLogId());
                 jsonObject1.put("userId", logs[i].getUID());
+                jsonObject1.put("userName", logs[i].getUserName());
                 jsonObject1.put("userIPaddress", logs[i].getIPaddress());
                 jsonObject1.put("userActivity", logs[i].getUserActivity());
                 jsonObject1.put("userTimestamp", logs[i].getTimestamp());
@@ -88,16 +152,15 @@ public class UserActivityLogServlet extends HttpServlet {
             UserDetailDAO userDetailDAO=new UserDetailDAO();
             UserDetail[] userDetails=userDetailDAO.fetchUser();
             JSONArray jsonArrayOfUserDetails=new JSONArray();
-            i=0;
+
             for(UserDetail u:userDetails){
                 JSONObject jsonObject2=new JSONObject();
-                jsonObject2.put("userId", userDetails[i].getUserId());
-                jsonObject2.put("userEmail", userDetails[i].getUserEmail());
-                jsonObject2.put("userName", userDetails[i].getUserName());
-                jsonObject2.put("userStatus", userDetails[i].getUserStatus());
-                jsonObject2.put("joinDate", userDetails[i].getJoinDate());
+                jsonObject2.put("userId", u.getUserId());
+                jsonObject2.put("userEmail", u.getUserEmail());
+                jsonObject2.put("userName", u.getUserName());
+                jsonObject2.put("userStatus", u.getUserStatus());
+                jsonObject2.put("joinDate", u.getJoinDate());
                 jsonArrayOfUserDetails.put(jsonObject2);
-                i++;
             }
 
 
