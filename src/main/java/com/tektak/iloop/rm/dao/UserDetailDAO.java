@@ -1,5 +1,6 @@
 package com.tektak.iloop.rm.dao;
 
+import com.tektak.iloop.rm.application.logSystem.LogGenerator;
 import com.tektak.iloop.rm.common.DBConnection;
 import com.tektak.iloop.rm.common.PasswordEnc;
 import com.tektak.iloop.rm.common.RmException;
@@ -258,17 +259,13 @@ public class UserDetailDAO {
                 try {
                     rs.next();
                     userDetail = new UserDetail();
-                    String dbEmail = rs.getString("userEmail");
-                    String dbPass = rs.getString("userPassword");
-                    if (email.equals(dbEmail) && encPassword.equals(dbPass)) {
+                    if (email.equals(rs.getString("userEmail")) && encPassword.equals(rs.getString("userPassword"))) {
                         this.userDetail.setUserId(rs.getInt("userId"));
                         this.userDetail.setUserName(rs.getString("userName"));
-                        this.userDetail.setUserEmail(dbEmail);
+                        this.userDetail.setUserEmail(rs.getString("userEmail"));
                         this.userDetail.setUserStatus(rs.getString("userStatus"));
                         this.userDetail.setUserRole(rs.getString("userRole"));
                         this.userDetail.setJoinDate(rs.getDate("joinDate"));
-                        //if (email.equals(rs.getString("userEmail")) && encPassword.equals(rs.getString("userPassword"))) {
-
                         return 1;
                     }
                 } catch (SQLException e) {

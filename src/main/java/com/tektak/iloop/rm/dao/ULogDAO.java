@@ -363,7 +363,7 @@ public class ULogDAO {
             ps.setInt(4, this.getRowNo());
             ps.setInt(5, this.getRowSize());
             ResultSet rs=this.mySqlQuery.Drl();
-            System.out.println("Query::"+ps.toString());
+
             return fetchLog(rs);
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
@@ -382,7 +382,6 @@ public class ULogDAO {
             ps.setString(4, DateLessThan);
             ps.setInt(5, this.getRowNo());
             ps.setInt(6, this.getRowSize());
-            System.out.println("----Query:"+ps.toString());
 
             ResultSet rs=this.mySqlQuery.Drl();
             return fetchLog(rs);
@@ -439,9 +438,7 @@ public class ULogDAO {
          try {
             ps.setTimestamp(1, DateTimeAbove);
             ps.setTimestamp(2, DateTimeBelow);
-            System.out.println("prepared Statement ::"+ps.toString()+DateTimeAbove+" <=Timestamp "+DateTimeBelow);
-
-             return this.mySqlQuery.Dml();
+            return this.mySqlQuery.Dml();
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION,e);
         }

@@ -45,7 +45,6 @@ public class LoginServlet extends HttpServlet {
             UserDetailDAO userDetailDAO=null;
 
             try {
-                System.out.println("email=="+email+"  and password=="+password);
                 userDetailDAO=new UserDetailDAO();
                 if(userDetailDAO.userAuth(email, password)==1){
                     UserDetail userDetail=userDetailDAO.getUserDetail();
@@ -53,8 +52,7 @@ public class LoginServlet extends HttpServlet {
                     LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),CommonConfig.getConfig().ReadString("login"));
 
                     Session.setSession(request, userDetail);
-
-                    response.sendRedirect("/UserActivitylog");
+                    response.sendRedirect("/allusers");
                 }else{
                     address=request.getContextPath()+"/pages/loginSystem/login.jsp";
                     request.setAttribute("msg","Invalid Username or Password!!");

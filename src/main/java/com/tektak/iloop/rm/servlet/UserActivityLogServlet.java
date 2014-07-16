@@ -33,12 +33,12 @@ public class UserActivityLogServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ULogDAO uLogDAO=null;
         String generatedToken=ServletCommon.generateToken(request.getSession(false));
-        System.out.println("generatedToken="+generatedToken);
+
         String logIdToDelete = (String) request.getParameter("logIdToDelete");
         try {
             uLogDAO = new ULogDAO();
             String receivedToken=(String)request.getParameter("token");
-            System.out.println("receivedToken="+receivedToken);
+
             if (logIdToDelete != null&&receivedToken!=null) {
                 if(receivedToken.equals(generatedToken)) {
                     uLogDAO.deleteLogByLogId(Integer.parseInt(logIdToDelete));
@@ -75,10 +75,6 @@ public class UserActivityLogServlet extends HttpServlet {
 
         Calendar now = Calendar.getInstance();
         String today = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH)+1) + "-" + now.get(Calendar.DAY_OF_MONTH);
-        System.out.println("Sabai vanda bahira-- /// from Date::" + lrParam.getFromDate());
-        System.out.println("To Date::" + lrParam.getToDate());
-        System.out.println("Today::" + today);
-
 
         ULogDAO uLogDAO = null;
         try {
@@ -88,13 +84,8 @@ public class UserActivityLogServlet extends HttpServlet {
             if (lrParam.IsNull()) {
                 lrParam.setUId("all");
                 lrParam.setFromDate("2014", "1", "1");
-
                 lrParam.setToDate(String.valueOf(now.get(Calendar.YEAR)), String.valueOf((now.get(Calendar.MONTH)+1)), String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
                 logs = uLogDAO.ReadAllLog();
-                System.out.println("no. of rows:"+logs.length);
-                for(ULogDM u:logs){
-                    System.out.println(u.getUserName());
-                }
             } else {
                 if (lrParam.getUId().equals("all") && lrParam.getFromDate().equals("2014-1-1") && lrParam.getToDate().equals(today)) {
 
@@ -104,20 +95,12 @@ public class UserActivityLogServlet extends HttpServlet {
 
                     logs = uLogDAO.ReadLogByFilter(lrParam.getSearch(),lrParam.getFromDate(), lrParam.getToDate());
 
-                    System.out.println("IF() vitra /// from Date::" + lrParam.getFromDate());
-                    System.out.println("To Date::" + lrParam.getToDate());
-
-                    System.out.println("value of search::"+lrParam.getSearch());
                 } else {
                     if (lrParam.getUId().equals("all")) {
                         logs = uLogDAO.ReadLogByFilter(lrParam.getSearch(),lrParam.getFromDate(), lrParam.getToDate());
                     } else {
                         logs = uLogDAO.ReadLogByFilter(lrParam.getUId(),lrParam.getSearch(), lrParam.getFromDate(), lrParam.getToDate());
                     }
-
-                    System.out.println("if ko else vitra /// from Date::" + lrParam.getFromDate());
-                    System.out.println("To Date::" + lrParam.getToDate());
-                    System.out.println("No. of rows::" + logs.length);
                 }
             }
             request.setAttribute("lrParam", lrParam);
@@ -135,7 +118,6 @@ public class UserActivityLogServlet extends HttpServlet {
 
                 jsonArrayOfLogs.put(jsonObject1);
             }
-            System.out.println(jsonArrayOfLogs.toString());
 
             UserDetailDAO userDetailDAO = new UserDetailDAO();
             UserDetail[] userDetails = userDetailDAO.fetchUser();

@@ -15,18 +15,13 @@ public class UserDetail implements IUserDetail {
     private Date joinDate;
 
     @Override
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    @Override
     public int getUserId() {
         return this.userId;
     }
 
     @Override
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -35,8 +30,8 @@ public class UserDetail implements IUserDetail {
     }
 
     @Override
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     @Override
@@ -45,8 +40,8 @@ public class UserDetail implements IUserDetail {
     }
 
     @Override
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
@@ -55,8 +50,8 @@ public class UserDetail implements IUserDetail {
     }
 
     @Override
-    public void setUserStatus(String userStatus) {
-        this.userStatus = userStatus;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     @Override
@@ -65,8 +60,8 @@ public class UserDetail implements IUserDetail {
     }
 
     @Override
-    public void setUserRole(String userRole) {
-        this.userRole = userRole;
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
     }
 
     @Override
@@ -75,13 +70,18 @@ public class UserDetail implements IUserDetail {
     }
 
     @Override
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     @Override
     public Date getJoinDate() {
         return this.joinDate;
+    }
+
+    @Override
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
     }
 }
 
