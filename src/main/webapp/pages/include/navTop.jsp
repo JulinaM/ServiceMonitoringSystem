@@ -28,30 +28,26 @@
                 </li>
                 <li><a href="/UserActivitylog">View log</a>
                 </li>
+                <li class="dropdown navbar-right">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <%=obj.getUserName()%><i class="glyphicon glyphicon-collapse-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="glyphicon glyphicon-user"></i><%= obj.getUserEmail()%>
+                        </a>
+                        </li>
+                        <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
             </ul>
-            <li class="dropdown navbar-right">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <%obj.getUserName();%><i class="glyphicon glyphicon-collapse-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="glyphicon glyphicon-user"></i><% obj.getUserEmail();%></a>
-                    </li>
-                    <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-user -->
-            </li>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
 <hr>
-<div id="loginStatus">
-    Email::<%=obj.getUserId()%><br/>
-    UserName::<%=obj.getUserEmail()%><br/>
-    <a href="/logout?logout=set">Logout</a>
-</div>
