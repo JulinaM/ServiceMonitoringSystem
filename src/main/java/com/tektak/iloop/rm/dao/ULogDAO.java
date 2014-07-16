@@ -1,9 +1,9 @@
 package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.common.DBConnection;
-import com.tektak.iloop.rm.common.DateTime;
 import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.datamodel.ULogDM;
+import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -115,10 +115,13 @@ public class ULogDAO {
         int i = 0;
         try {
             while (rs.next()) {
+                UserDetail userDetail=new UserDetail();
+                userDetail.setUserName(rs.getString("userName"));
+
                 ActivityLog[i] = new ULogDM();
                 ActivityLog[i].setLogId(rs.getInt("logId"));
                 ActivityLog[i].setUID(rs.getInt("UId"));
-                ActivityLog[i].setUserName(rs.getString("userName"));
+                ActivityLog[i].setUserDetail(userDetail);
                 ActivityLog[i].setIPaddress(rs.getString("IPaddress"));
                 ActivityLog[i].setUserActivity(rs.getString("Activity"));
                 ActivityLog[i].setTimestamp(rs.getTimestamp("Timestamp"));

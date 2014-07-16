@@ -19,7 +19,7 @@ public class ULogDM {
      * Store IP address of user
      */
     private String IPaddress;
-    private String userName;
+    private UserDetail userDetail=null;
     /**
      * Store User Activity
      */
@@ -95,7 +95,7 @@ public class ULogDM {
     }
 
     public boolean equals(ULogDM obj){
-        if(this.userName.equals(obj.getUserName())&&this.UId==obj.UId&&this.IPaddress.equals(obj.IPaddress)&&this.UserActivity.equals(obj.UserActivity)&&this.timestamp.equals(obj.timestamp)){
+        if(this.userDetail.getUserName().equals(obj.userDetail.getUserName())&&this.UId==obj.UId&&this.IPaddress.equals(obj.IPaddress)&&this.UserActivity.equals(obj.UserActivity)&&this.timestamp.equals(obj.timestamp)){
             return true;
         }else
         return false;
@@ -114,19 +114,19 @@ public class ULogDM {
         return true;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public int getLogId() {
         return logId;
     }
 
     public void setLogId(int logId) {
         this.logId = logId;
+    }
+
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 }

@@ -110,7 +110,8 @@ public class UserActivityLogServlet extends HttpServlet {
                 JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("logId", u.getLogId());
                 jsonObject1.put("userId", u.getUID());
-                jsonObject1.put("userName", u.getUserName());
+                //jsonObject1.put("userName", u.getUserName());
+                jsonObject1.put("userName",u.getUserDetail().getUserName());
                 jsonObject1.put("userIPaddress", u.getIPaddress());
                 jsonObject1.put("userActivity", u.getUserActivity());
                 jsonObject1.put("userTimestamp", u.getTimestamp());

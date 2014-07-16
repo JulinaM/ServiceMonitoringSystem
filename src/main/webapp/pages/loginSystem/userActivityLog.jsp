@@ -21,29 +21,19 @@
     <link href="<%=request.getContextPath()%>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<%=request.getContextPath()%>/pages/loginSystem/css/userActivityLog.css" rel="stylesheet"
           media="screen">
+    <style>body {
+        padding-top: 60px;
+    }</style>
 </head>
 <body>
 <%@ include file="../include/navTop.jsp" %>
-<%
-
-    String Email;
-    String Password;
-
-    HttpSession httpsession = request.getSession(false);
+<% HttpSession httpsession = request.getSession(false);
     JSONArray jsonArray = null;
     String sessionString = (String) httpsession.getAttribute("session");
     JSONObject jsonSession = new JSONObject(sessionString);
 
     LogReportParamater lrParam = (LogReportParamater) request.getAttribute("lrParam");
-    Session ss=Session.getSession(request);
 %>
-
-<div id="loginStatus">
-    Email::<%=ss.getUserEmail()%><br/>
-    UserName::<%=ss.getUserName()%><br/>
-    JoinDate::<%=ss.getJoinDate()%><br/>
-    <a href="/logout?logout=set">Logout</a>
-</div>
 <div id="logOrder">
     Filter By:
     <form method="GET" action="/UserActivitylog" onchange="this.submit();" onkeyup="this.submit()">
