@@ -22,6 +22,4 @@ public class UserRole {
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
-
-
 }

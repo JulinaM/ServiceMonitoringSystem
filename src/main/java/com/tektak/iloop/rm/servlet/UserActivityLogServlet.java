@@ -1,12 +1,13 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.common.CommonConfig;
 import com.tektak.iloop.rm.common.OurSession;
 import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.common.ServletCommon;
-import com.tektak.iloop.rm.dao.ULogDAO;
+import com.tektak.iloop.rm.dao.UserActivityLogDAO;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.LogReportParamater;
-import com.tektak.iloop.rm.datamodel.ULogDM;
+import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.util.common.BaseException;
@@ -31,17 +32,17 @@ import java.util.Calendar;
 @WebServlet("/UserActivitylog")
 public class UserActivityLogServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ULogDAO uLogDAO = null;
+        UserActivityLogDAO userActivityLogDAO = null;
         String generatedToken = ServletCommon.generateToken(request.getSession(false));
 
         String logIdToDelete = (String) request.getParameter("logIdToDelete");
         try {
-            uLogDAO = new ULogDAO();
+            userActivityLogDAO = new UserActivityLogDAO();
             String receivedToken = (String) request.getParameter("token");
 
             if (logIdToDelete != null && receivedToken != null) {
                 if (receivedToken.equals(generatedToken)) {
-                    uLogDAO.deleteLogByLogId(Integer.parseInt(logIdToDelete));
+                    userActivityLogDAO.deleteLogById(Integer.parseInt(logIdToDelete));
                 } else {
                     response.sendRedirect("/UserActivityLog");
                     return;
@@ -60,10 +61,16 @@ public class UserActivityLogServlet extends HttpServlet {
         return;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response){
         ServletCommon.generateToken(request.getSession(false));
         if (OurSession.getSession(request.getSession(false))==null) {
-            response.sendRedirect("/login");
+            try {
+                response.sendRedirect("/login");
+            } catch (IOException e) {
+                ServletCommon.setErrMsg(request, CommonConfig.getConfig().ReadString("io"));
+
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -74,17 +81,17 @@ public class UserActivityLogServlet extends HttpServlet {
         Calendar now = Calendar.getInstance();
         String today = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
 
-        ULogDAO uLogDAO = null;
+        UserActivityLogDAO userActivityLogDAO = null;
         try {
-            ULogDM[] logs = null;
-            uLogDAO = new ULogDAO();
+            UserActivityLogDM[] logs = null;
+            userActivityLogDAO = new UserActivityLogDAO();
 
 
             if (lrParam.IsNull()) {
                 lrParam.setUId("all");
                 lrParam.setFromDate("2014", "1", "1");
                 lrParam.setToDate(String.valueOf(now.get(Calendar.YEAR)), String.valueOf((now.get(Calendar.MONTH) + 1)), String.valueOf(now.get(Calendar.DAY_OF_MONTH)));
-                logs = uLogDAO.ReadAllLog();
+                logs = userActivityLogDAO.selectAllLog();
             } else {
                 if (lrParam.getUId().equals("all") && lrParam.getFromDate().equals("2014-1-1") && lrParam.getToDate().equals(today)) {
 
@@ -92,13 +99,13 @@ public class UserActivityLogServlet extends HttpServlet {
                     lrParam.setUId("all");
                     lrParam.setFromDate("2014", "1", "1");
 
-                    logs = uLogDAO.ReadLogByFilter(lrParam.getSearch(), lrParam.getFromDate(), lrParam.getToDate());
+                    logs = userActivityLogDAO.filterLog(lrParam.getSearch(), lrParam.getFromDate(), lrParam.getToDate());
 
                 } else {
                     if (lrParam.getUId().equals("all")) {
-                        logs = uLogDAO.ReadLogByFilter(lrParam.getSearch(), lrParam.getFromDate(), lrParam.getToDate());
+                        logs = userActivityLogDAO.filterLog(lrParam.getSearch(), lrParam.getFromDate(), lrParam.getToDate());
                     } else {
-                        logs = uLogDAO.ReadLogByFilter(lrParam.getUId(), lrParam.getSearch(), lrParam.getFromDate(), lrParam.getToDate());
+                        logs = userActivityLogDAO.filterLog(lrParam.getUId(), lrParam.getSearch(), lrParam.getFromDate(), lrParam.getToDate());
                     }
                 }
             }
@@ -106,11 +113,11 @@ public class UserActivityLogServlet extends HttpServlet {
 
             JSONArray jsonArrayOfLogs = new JSONArray();
 
-            for (ULogDM u : logs) {
+            for (UserActivityLogDM u : logs) {
                 JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("logId", u.getLogId());
                 jsonObject1.put("userId", u.getUID());
-                //jsonObject1.put("userName", u.getUserName());
+
                 jsonObject1.put("userName",u.getUserDetail().getUserName());
                 jsonObject1.put("userIPaddress", u.getIPaddress());
                 jsonObject1.put("userActivity", u.getUserActivity());
@@ -135,19 +142,32 @@ public class UserActivityLogServlet extends HttpServlet {
             request.setAttribute("jsonArrayOfUserDetails", jsonArrayOfUserDetails);
             request.setAttribute("jsonArrayOfLogs", jsonArrayOfLogs);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/loginSystem/userActivityLog.jsp");
-            dispatcher.forward(request, response);
+            try {
+                dispatcher.forward(request, response);
+            } catch (ServletException e) {
+                ServletCommon.setErrMsg(request, CommonConfig.getConfig().ReadString("servlet"));
+                e.printStackTrace();
+            } catch (IOException e) {
+                ServletCommon.setErrMsg(request, CommonConfig.getConfig().ReadString("io"));
+                e.printStackTrace();
+            }
         } catch (RmodelException.SqlException e) {
+            ServletCommon.setErrMsg(request, CommonConfig.getConfig().ReadString("sql"));
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("config"));
             e.printStackTrace();
         } catch (SQLException e) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("sql"));
             e.printStackTrace();
         } catch (RmException.DBConnectionError dbConnectionError) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("database"));
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("config"));
             configError.printStackTrace();
         } finally {
-            uLogDAO.closeDbConnection();
+            userActivityLogDAO.closeDbConnection();
         }
     }
 }

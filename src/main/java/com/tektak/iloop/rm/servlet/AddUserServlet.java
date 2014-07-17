@@ -37,7 +37,8 @@ public class AddUserServlet extends HttpServlet {
             userDetail.setUserName(request.getParameter("username"));
             userDetail.setUserEmail(request.getParameter("useremail"));
             userDetail.setUserStatus(request.getParameter("userstatus"));
-            userDetail.setUserRole(request.getParameter("userrole"));
+            //TODO
+            //userDetail.setUserRole(request.getParameter("userrole"));
             try {
                 userDetailDAO = new UserDetailDAO();
                 result = userDetailDAO.checkAvailability(userDetail.getUserEmail());

@@ -31,7 +31,8 @@ public class UserDetailDAOTest {
         userDetail.setUserEmail("put_user@testing.com.ilooprm");
         userDetail.setUserPassword("putTest");
         userDetail.setUserStatus("1");
-        userDetail.setUserRole("2");
+        //TODO
+        //userDetail.setUserRole("2");
         Assert.assertEquals(1, userDetailDAO.putUser(userDetail));
         userDetailDAO.removeUser(userDetail.getUserEmail());
     }

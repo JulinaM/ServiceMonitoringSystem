@@ -1,5 +1,6 @@
 package com.tektak.iloop.rm.common;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -17,11 +18,17 @@ public class ServletCommon {
         return token;
     }
 
-    public static int validateToken(HttpSession httpSession,String data) {
-        if (httpSession.getAttribute("token").equals(data)){
-            return 1;
-        }else {
-            return 0;
-        }
+    public static void setErrMsg(HttpServletRequest request,String errMsg){
+        request.setAttribute("errMsg",errMsg);
     }
+
+    public static String getErrMsg(HttpServletRequest request){
+        String errMsg=(String)request.getAttribute("errMsg");
+        if(errMsg==null)
+            return null;
+        return errMsg;
+    }
+
+
+
 }

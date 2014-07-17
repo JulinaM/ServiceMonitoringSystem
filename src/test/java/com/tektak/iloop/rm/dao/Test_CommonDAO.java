@@ -2,7 +2,7 @@ package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.common.DBConnection;
 import com.tektak.iloop.rm.common.RmException;
-import com.tektak.iloop.rm.datamodel.ULogDM;
+import com.tektak.iloop.rm.datamodel.UserActivityLogDM;
 import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
@@ -16,13 +16,13 @@ import java.sql.Timestamp;
  * Created by tektak on 7/8/14.
  */
 public class Test_CommonDAO {
-    private static ULogDAO uLogDAO;
-    private static ULogDM Activitylog;
+    private static UserActivityLogDAO userActivityLogDAO;
+    private static UserActivityLogDM Activitylog;
     @BeforeClass
     public static void init(){
         try {
-            uLogDAO=new ULogDAO();
-            Activitylog=new ULogDM();
+            userActivityLogDAO =new UserActivityLogDAO();
+            Activitylog=new UserActivityLogDM();
         } catch (RmException.DBConnectionError dbConnectionError) {
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
@@ -35,25 +35,23 @@ public class Test_CommonDAO {
     }
     @AfterClass
     public static void Ainit(){
-        uLogDAO.closeDbConnection();
-        uLogDAO=null;
+        userActivityLogDAO.closeDbConnection();
+        userActivityLogDAO =null;
     }
     @Before
-    public void insert() throws RmodelException.SqlException, RmodelException.CommonException {
-
+    public void insertDummyData() throws RmodelException.SqlException, RmodelException.CommonException {
         Activitylog.setUID(3333);
-
-        Activitylog.setIPaddress("170.0.0.3");
-        Activitylog.setUserActivity("Fetchlog() method is testing...");
+        Activitylog.setIPaddress("170.0.0.1");
+        Activitylog.setUserActivity("insertDummyData() method is testing...");
         Timestamp timestamp = Timestamp.valueOf("2010-10-10 10:10:10.0");
         Activitylog.setTimestamp(timestamp);
 
-        uLogDAO.WriteLog(Activitylog);
+        userActivityLogDAO.insert(Activitylog);
     }
     @After
     public void delete(){
         try {
-            uLogDAO.deleteLogByUser(3333);
+            userActivityLogDAO.deleteLogByUser(3333);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
