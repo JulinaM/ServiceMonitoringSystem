@@ -115,7 +115,7 @@ public class ULogDAO {
         int i = 0;
         try {
             while (rs.next()) {
-                UserDetail userDetail=new UserDetail();
+                UserDetail userDetail = new UserDetail();
                 userDetail.setUserName(rs.getString("userName"));
 
                 ActivityLog[i] = new ULogDM();

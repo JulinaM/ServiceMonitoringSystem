@@ -1,5 +1,6 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.common.Session;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 
@@ -22,30 +23,35 @@ public class UsersDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer uId = null;
-        UserDetailDAO userDetailDAO = null;
-        UserDetail detail = null;
-        try {
-            uId = Integer.parseInt((request.getParameter("uid")));
-        } catch (Exception e) {
-            request.setAttribute("error", "User not Selected");
-        }
-        if (uId != null) {
+        if (!Session.IsValidSession()) {
+            response.sendRedirect("/login");
+            return;
+        } else {
+            Integer uId = null;
+            UserDetailDAO userDetailDAO = null;
+            UserDetail detail = null;
             try {
-                userDetailDAO = new UserDetailDAO();
-                detail = userDetailDAO.fetchUser(uId);
-                request.setAttribute("detail", detail);
+                uId = Integer.parseInt((request.getParameter("uid")));
             } catch (Exception e) {
-                request.setAttribute("error", "No such user");
-            } finally {
-                if (userDetailDAO != null)
-                    userDetailDAO.closeConnection();
+                request.setAttribute("error", "User not Selected");
             }
+            if (uId != null) {
+                try {
+                    userDetailDAO = new UserDetailDAO();
+                    detail = userDetailDAO.fetchUser(uId);
+                    request.setAttribute("detail", detail);
+                } catch (Exception e) {
+                    request.setAttribute("error", "No such user");
+                } finally {
+                    if (userDetailDAO != null)
+                        userDetailDAO.closeConnection();
+                }
+            }
+
+
+            RequestDispatcher dispatch = request.getRequestDispatcher("/pages/user/usersDetail.jsp");
+            dispatch.forward(request, response);
         }
-
-
-        RequestDispatcher dispatch = request.getRequestDispatcher("/pages/user/usersDetail.jsp");
-        dispatch.forward(request, response);
     }
 
 }

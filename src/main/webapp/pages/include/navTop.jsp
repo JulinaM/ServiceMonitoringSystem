@@ -1,3 +1,5 @@
+<%@ page import="com.tektak.iloop.rm.common.Session" %>
+<% Session obj = Session.getSession(request); %>
 <%--
   Created by IntelliJ IDEA.
   User: tektak
@@ -26,12 +28,25 @@
                 </li>
                 <li><a href="/UserActivitylog">View log</a>
                 </li>
+                <li class="dropdown navbar-right">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <%=obj.getUserName()%><i class="glyphicon glyphicon-collapse-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="glyphicon glyphicon-user"></i><%= obj.getUserEmail()%>
+                        </a>
+                        </li>
+                        <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
-<hr>
-
-

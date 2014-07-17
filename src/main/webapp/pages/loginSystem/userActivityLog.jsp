@@ -3,7 +3,6 @@
 <%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="com.tektak.iloop.rm.datamodel.LogReportParamater" %>
-<%@ page import="com.tektak.iloop.rm.common.Session" %>
 
 <%--
   Created by IntelliJ IDEA.
