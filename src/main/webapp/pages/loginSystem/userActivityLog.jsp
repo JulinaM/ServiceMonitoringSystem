@@ -32,7 +32,11 @@
     JSONObject jsonSession = new JSONObject(sessionString);
 
     LogReportParamater lrParam = (LogReportParamater) request.getAttribute("lrParam");
+
 %>
+<script type="text/javascript">
+    window.find('<%=lrParam.getSearch()%>');
+            </script>
 <div id="logOrder">
     Filter By:
     <form method="GET" action="/UserActivitylog" onchange="this.submit();" onkeyup="this.submit()">
