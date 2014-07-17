@@ -14,7 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -29,8 +28,7 @@ public class AddUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer result = null;
         String sesData = (String) request.getSession().getAttribute("session");
-        HttpSession httpSession=request.getSession(false);
-        if (OurSession.getSession(httpSession)!=null && ServletCommon.generateToken(request.getSession()).equals(request.getParameter("token"))) {
+        if (OurSession.getSession(request.getSession()) != null && ServletCommon.generateToken(request.getSession()).equals(request.getParameter("token"))) {
             JSONObject sesObj = new JSONObject(sesData);
             UserDetailDAO userDetailDAO = null;
             UserDetail userDetail = new UserDetail();
@@ -44,7 +42,6 @@ public class AddUserServlet extends HttpServlet {
                 if (result == 1) {
                     userDetail.setUserPassword(PasswordEnc.createRandomString());
                     userDetailDAO.putUser(userDetail);
-
                     LogGenerator.generateLog(sesObj.getInt("userId"), request.getRemoteAddr(), "User Added Successfully");
                     page = "/allusers";
                 } else {
@@ -67,11 +64,10 @@ public class AddUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession httpSession=request.getSession(false);
-        if (OurSession.getSession(httpSession)==null) {
+        if (OurSession.getSession(request.getSession()) == null) {
             response.sendRedirect("/login");
             return;
-        }else {
+        } else {
             request.setAttribute("token", ServletCommon.generateToken(request.getSession()));
             request.setAttribute("error", request.getParameter("err"));
             RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");

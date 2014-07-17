@@ -23,7 +23,7 @@ public class UsersDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (OurSession.getSession(request.getSession(false))==null) {
+        if (OurSession.getSession(request.getSession(false)) == null) {
             response.sendRedirect("/login");
             return;
         } else {
@@ -39,6 +39,9 @@ public class UsersDetailServlet extends HttpServlet {
                 try {
                     userDetailDAO = new UserDetailDAO();
                     detail = userDetailDAO.fetchUser(uId);
+                    if(detail.getUserId()==0){
+                        throw new Exception();
+                    }
                     request.setAttribute("detail", detail);
                 } catch (Exception e) {
                     request.setAttribute("error", "No such user");

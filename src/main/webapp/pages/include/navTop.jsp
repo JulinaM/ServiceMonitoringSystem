@@ -34,10 +34,10 @@
                         <%=obj.getUserName()%><i class="glyphicon glyphicon-collapse-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="glyphicon glyphicon-user"></i><%= obj.getUserEmail()%>
+                        <li><a href="#"><i class="glyphicon glyphicon-user"></i> <%= obj.getUserEmail()%>
                         </a>
                         </li>
-                        <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i> Settings</a>
+                        <li><a href="changepwd"><i class="glyphicon glyphicon-asterisk"></i> Change Password</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="logout"><i class="glyphicon glyphicon-log-out"></i> Logout</a>

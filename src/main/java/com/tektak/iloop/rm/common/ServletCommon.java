@@ -16,12 +16,4 @@ public class ServletCommon {
         }
         return token;
     }
-
-    public static int validateToken(HttpSession httpSession,String data) {
-        if (httpSession.getAttribute("token").equals(data)){
-            return 1;
-        }else {
-            return 0;
-        }
-    }
 }

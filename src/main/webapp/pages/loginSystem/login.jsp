@@ -14,16 +14,28 @@
     <!-- Bootstrap -->
     <link href="<%=request.getContextPath()%>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<%=request.getContextPath()%>/pages/loginSystem/css/signin.css" rel="stylesheet">
-    <%System.out.println(request.getContextPath());%>
+    <style>body {
+        padding-top: 60px;
+    }</style>
 </head>
 <body>
+<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">TEKTAK</a>
+        </div>
+    </div>
+</nav>
+
+
+
     <div class="container">
         <form class="form-signin" role="form" method="post" action="/login">
             <%  String msg=(String)request.getAttribute("msg");
                 HttpSession httpSession=request.getSession(false);
                 String token= ServletCommon.generateToken(httpSession);
                 if(msg!=null){%>
-            <div class="alert alert-success" role="alert"><%=msg%></div>
+            <div class="alert alert-danger alert-dismissable" role="alert"><%=msg%></div>
             <%  }
             %>
             <h2 class="form-signin-heading">Please sign in</h2>

@@ -34,7 +34,6 @@ public class OurSession {
         userDetail.setUserName(jsonObject.getString("userName"));
         userDetail.setUserRole(jsonObject.getString("userRole"));
         userDetail.setJoinDate( new Date(jsonObject.getLong("userJoinDate")));
-        System.out.println(userDetail.getJoinDate());
         userDetail.setUserEmail(jsonObject.getString("userEmail"));
         return userDetail;
     }

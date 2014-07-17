@@ -72,11 +72,10 @@ public class UserDetailDAO {
             this.statement.setString(4, userDetail.getUserStatus());
             this.statement.setString(5, userDetail.getUserRole());
             this.statement.setTimestamp(6, new Timestamp(date.getTime()));
-            int result = mySqlQuery.Dml();
-            if (result == 1) {
-                SendEmail.email(userDetail.getUserEmail(), "User Created", "Email: " + userDetail.getUserEmail() + "<br>Password: " + userDetail.getUserPassword());
-                return result;
-            }
+            return mySqlQuery.Dml();
+            //TODO remove email send from DAO
+                //SendEmail.email(userDetail.getUserEmail(), "User Created", "Email: " + userDetail.getUserEmail() + "<br>Password: " + userDetail.getUserPassword());
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (RmodelException.SqlException e) {

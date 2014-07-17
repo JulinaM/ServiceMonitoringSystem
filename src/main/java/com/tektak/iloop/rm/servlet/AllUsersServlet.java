@@ -25,8 +25,7 @@ public class AllUsersServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession httpSession=request.getSession(false);
-        if (OurSession.getSession(httpSession)==null) {
+        if (OurSession.getSession(request.getSession(false)) == null) {
             response.sendRedirect("/login");
             return;
         } else {

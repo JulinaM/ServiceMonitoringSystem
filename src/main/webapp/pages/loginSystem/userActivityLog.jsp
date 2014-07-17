@@ -28,7 +28,7 @@
 <%@ include file="../include/navTop.jsp" %>
 <%
     JSONArray jsonArray = null;
-    OurSession ssn= OurSession.getSession(request);
+    UserDetail ssn= OurSession.getSession(request.getSession());
 
 
     LogReportParamater lrParam = (LogReportParamater) request.getAttribute("lrParam");
