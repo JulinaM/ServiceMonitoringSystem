@@ -24,7 +24,7 @@ public class Test_ULogDAO {
     public static void Init() throws RmException.DBConnectionError, RmodelException.SqlException, RmodelException.CommonException, BaseException.ConfigError {
         uLogDAO = new ULogDAO();
         Activitylog = new ULogDM();
-        uLogDAO.deleteAllLog();
+        uLogDAO.deleteLogByUser(3333);
     }
     @AfterClass
     public static void AInit(){
@@ -131,6 +131,7 @@ public class Test_ULogDAO {
     public void Test_ReadAllLog() {
         try {
             ULogDM[] log = uLogDAO.ReadAllLog();
+            System.out.println("log no.="+log.length);
             Assert.assertTrue(log.length>0);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();

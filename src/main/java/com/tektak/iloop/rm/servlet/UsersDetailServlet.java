@@ -1,6 +1,6 @@
 package com.tektak.iloop.rm.servlet;
 
-import com.tektak.iloop.rm.common.Session;
+import com.tektak.iloop.rm.common.OurSession;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 
@@ -23,7 +23,7 @@ public class UsersDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!Session.IsValidSession()) {
+        if (OurSession.getSession(request.getSession(false))==null) {
             response.sendRedirect("/login");
             return;
         } else {

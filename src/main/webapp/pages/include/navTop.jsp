@@ -1,5 +1,6 @@
-<%@ page import="com.tektak.iloop.rm.common.Session" %>
-<% Session obj = Session.getSession(request); %>
+<%@ page import="com.tektak.iloop.rm.common.OurSession" %>
+<%@ page import="com.tektak.iloop.rm.datamodel.UserDetail" %>
+<% UserDetail obj = OurSession.getSession(request.getSession(false)); %>
 <%--
   Created by IntelliJ IDEA.
   User: tektak

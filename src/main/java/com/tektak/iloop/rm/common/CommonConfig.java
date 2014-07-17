@@ -21,11 +21,11 @@ public class CommonConfig {
      * @throws BaseException.ConfigError
      */
     public CommonConfig() throws BaseException.ConfigError {
-        if (this.config == null) {
+        if (config == null) {
             this.file = new File("src/main/resources/configuration.properties");
             ConfigProperty configProperty = new ConfigProperty();
             configProperty.setConfig(this.file);
-            this.config = new Config(new ApacheConfig(configProperty));
+            config = new Config(new ApacheConfig(configProperty));
         }
     }
 
@@ -36,11 +36,11 @@ public class CommonConfig {
      * @throws BaseException.ConfigError
      */
     public CommonConfig(String filePath) throws BaseException.ConfigError {
-        if (this.config == null) {
+        if (config == null) {
             this.file = new File(filePath);
             ConfigProperty configProperty = new ConfigProperty();
             configProperty.setConfig(this.file);
-            this.config = new Config(new ApacheConfig(configProperty));
+            config = new Config(new ApacheConfig(configProperty));
         }
     }
 
@@ -51,10 +51,10 @@ public class CommonConfig {
      * @throws BaseException.ConfigError
      */
     public CommonConfig(URL url) throws BaseException.ConfigError {
-        if (this.config == null) {
+        if (config == null) {
             ConfigProperty configProperty = new ConfigProperty();
             configProperty.setConfig(url);
-            this.config = new Config(new ApacheConfig(configProperty));
+            config = new Config(new ApacheConfig(configProperty));
         }
     }
 
@@ -68,6 +68,12 @@ public class CommonConfig {
             return null;
         } else {
             return config;
+        }
+    }
+
+    public static void closeConfig(){
+        if(config!=null){
+           config=null;
         }
     }
 }

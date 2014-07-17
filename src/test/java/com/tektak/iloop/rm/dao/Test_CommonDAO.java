@@ -71,8 +71,7 @@ public class Test_CommonDAO {
             ResultSet rs = mySqlQuery.Drl();
 
             int RowCount = DAOCommon.countRows(rs);
-
-            Assert.assertEquals(RowCount, 1);
+            Assert.assertTrue(RowCount>0);
         } catch (RmodelException.SqlException e) {
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {

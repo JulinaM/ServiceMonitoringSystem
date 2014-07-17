@@ -28,9 +28,10 @@ public class LoginServlet extends HttpServlet {
         String email=request.getParameter("email");
         String password=request.getParameter("password");
         String address=null;
+        HttpSession httpSession=request.getSession(false);
         RequestDispatcher dispatcher;
         String token=request.getParameter("token");
-        if(!token.equals(ServletCommon.generateToken(request.getSession(false)))){
+        if(!token.equals(ServletCommon.generateToken(httpSession))){
             address=request.getContextPath()+"/pages/loginSystem/login.jsp";
             dispatcher= request.getRequestDispatcher(address);
             dispatcher.forward(request,response);
@@ -51,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 
                     LogGenerator.generateLog(userDetail.getUserId(),request.getRemoteAddr(),CommonConfig.getConfig().ReadString("login"));
 
-                    Session.setSession(request, userDetail);
+                    OurSession.setSession(httpSession, userDetail);
                     response.sendRedirect("/allusers");
                 }else{
                     address=request.getContextPath()+"/pages/loginSystem/login.jsp";

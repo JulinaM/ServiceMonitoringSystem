@@ -1,8 +1,8 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.common.OurSession;
 import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.common.ServletCommon;
-import com.tektak.iloop.rm.common.Session;
 import com.tektak.iloop.rm.dao.ULogDAO;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.LogReportParamater;
@@ -62,7 +62,7 @@ public class UserActivityLogServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletCommon.generateToken(request.getSession(false));
-        if (!Session.IsValidSession()) {
+        if (OurSession.getSession(request.getSession(false))==null) {
             response.sendRedirect("/login");
             return;
         }

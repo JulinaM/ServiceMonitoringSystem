@@ -26,17 +26,17 @@
 </head>
 <body>
 <%@ include file="../include/navTop.jsp" %>
-<% HttpSession httpsession = request.getSession(false);
+<%
     JSONArray jsonArray = null;
-    String sessionString = (String) httpsession.getAttribute("session");
-    JSONObject jsonSession = new JSONObject(sessionString);
+    OurSession ssn= OurSession.getSession(request);
+
 
     LogReportParamater lrParam = (LogReportParamater) request.getAttribute("lrParam");
 
 %>
 <script type="text/javascript">
     window.find('<%=lrParam.getSearch()%>');
-            </script>
+</script>
 <div id="logOrder">
     Filter By:
     <form method="GET" action="/UserActivitylog" onchange="this.submit();" onkeyup="this.submit()">
@@ -153,6 +153,7 @@
         </td>
         <td><%=jsonObject.get("userTimestamp")%>
         </td>
+        <% if(ssn.getUserRole()==1){%>
         <td>
             <form action="/UserActivitylog" method="post">
                 <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
@@ -161,6 +162,7 @@
                 <input type="submit" value="Delete">
             </form>
         </td>
+        <%}%>
     </tr>
 
     <% }

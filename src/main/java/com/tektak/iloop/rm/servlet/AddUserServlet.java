@@ -1,9 +1,9 @@
 package com.tektak.iloop.rm.servlet;
 
 import com.tektak.iloop.rm.application.logSystem.LogGenerator;
+import com.tektak.iloop.rm.common.OurSession;
 import com.tektak.iloop.rm.common.PasswordEnc;
 import com.tektak.iloop.rm.common.ServletCommon;
-import com.tektak.iloop.rm.common.Session;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import org.json.JSONObject;
@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -28,7 +29,8 @@ public class AddUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer result = null;
         String sesData = (String) request.getSession().getAttribute("session");
-        if (Session.IsValidSession() && ServletCommon.generateToken(request.getSession()).equals(request.getParameter("token"))) {
+        HttpSession httpSession=request.getSession(false);
+        if (OurSession.getSession(httpSession)!=null && ServletCommon.generateToken(request.getSession()).equals(request.getParameter("token"))) {
             JSONObject sesObj = new JSONObject(sesData);
             UserDetailDAO userDetailDAO = null;
             UserDetail userDetail = new UserDetail();
@@ -65,7 +67,8 @@ public class AddUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!Session.IsValidSession()) {
+        HttpSession httpSession=request.getSession(false);
+        if (OurSession.getSession(httpSession)==null) {
             response.sendRedirect("/login");
             return;
         }else {
