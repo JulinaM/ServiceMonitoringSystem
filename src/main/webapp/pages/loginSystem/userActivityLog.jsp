@@ -3,7 +3,6 @@
 <%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="com.tektak.iloop.rm.datamodel.LogReportParamater" %>
-
 <%--
   Created by IntelliJ IDEA.
   User: tektak
@@ -153,11 +152,11 @@
         </td>
         <td><%=jsonObject.get("userTimestamp")%>
         </td>
-        <% if(ssn.getUserRole().equals("1")){%>
+        <%
+            if(ssn.getUserRole().contains("DeleteLog")){%>
         <td>
             <form action="/UserActivitylog" method="post">
                 <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
-
                 <input type="hidden" name="logIdToDelete" value="<%=jsonObject.get("logId")%>">
                 <input type="submit" value="Delete">
             </form>

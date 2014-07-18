@@ -23,12 +23,29 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/adduser">Add Users</a>
-                </li>
+                <% UserDetail ses=OurSession.getSession(request.getSession(false));
+                    if(ses.getUserRole().contains("AddUser")){
+                        %><li><a href="/adduser">Add Users</a>
+            </li><%
+                    }
+                %>
+
+                <% if(ses.getUserRole().contains("ViewUser")){
+                    %>
                 <li><a href="/allusers">View Users</a>
                 </li>
+                <%
+
+                }%>
+
+                <% if(ses.getUserRole().contains("ViewLog")){
+                %>
                 <li><a href="/UserActivitylog">View log</a>
                 </li>
+                <%
+
+                    }%>
+
                 <li class="dropdown navbar-right">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <%=obj.getUserName()%><i class="glyphicon glyphicon-collapse-down"></i>

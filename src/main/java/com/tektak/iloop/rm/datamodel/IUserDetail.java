@@ -26,9 +26,9 @@ public interface IUserDetail {
 
     public void setUserStatus(String userStatus);
 
-    public UserRole getUserRole();
+    public String getUserRole();
 
-    public void setUserRole(UserRole userRole);
+    public void setUserRole(String userRole);
 
     public Date getJoinDate();
 

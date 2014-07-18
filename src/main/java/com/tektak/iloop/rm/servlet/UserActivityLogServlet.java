@@ -42,6 +42,7 @@ public class UserActivityLogServlet extends HttpServlet {
 
             if (logIdToDelete != null && receivedToken != null) {
                 if (receivedToken.equals(generatedToken)) {
+                    System.out.println("logId"+logIdToDelete);
                     userActivityLogDAO.deleteLogById(Integer.parseInt(logIdToDelete));
                 } else {
                     response.sendRedirect("/UserActivityLog");
@@ -49,12 +50,16 @@ public class UserActivityLogServlet extends HttpServlet {
                 }
             }
         } catch (RmException.DBConnectionError dbConnectionError) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("database"));
             dbConnectionError.printStackTrace();
         } catch (BaseException.ConfigError configError) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("config"));
             configError.printStackTrace();
         } catch (RmodelException.SqlException e) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("sql"));
             e.printStackTrace();
         } catch (RmodelException.CommonException e) {
+            ServletCommon.setErrMsg(request,CommonConfig.getConfig().ReadString("base"));
             e.printStackTrace();
         }
         doGet(request, response);

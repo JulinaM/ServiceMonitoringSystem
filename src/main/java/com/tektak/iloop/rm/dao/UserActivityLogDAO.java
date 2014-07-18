@@ -138,9 +138,9 @@ public class UserActivityLogDAO {
 
                 if(DAOCommon.IsValidColumn(rs,"userStatus"))
                     userDetail.setUserStatus(rs.getString("userStatus"));
-                //TODO
-                /*if(DAOCommon.IsValidColumn(rs,"userRole"))
-                    userDetail.setUserRole(rs.getString("userRole"));*/
+
+                if(DAOCommon.IsValidColumn(rs,"userRole"))
+                    userDetail.setUserRole(rs.getString("userRole"));
 
                 if(DAOCommon.IsValidColumn(rs,"joinDate"))
                     userDetail.setJoinDate(rs.getDate("joinDate"));
@@ -219,7 +219,7 @@ public class UserActivityLogDAO {
      */
     public UserActivityLogDM[] selectAllLog() throws RmodelException.SqlException, RmodelException.CommonException {
         try {
-            String query = "SELECT UId,userName,IPaddress,Activity,Timestamp FROM %s as a INNER JOIN %s as b on b.userId = a.UId LIMIT ?,?";
+            String query = "SELECT logId,UId,userName,IPaddress,Activity,Timestamp FROM %s as a INNER JOIN %s as b on b.userId = a.UId LIMIT ?,?";
             query = String.format(query, TABLE_NAME1, TABLE_NAME2);
 
             this.mySqlQuery.setQuery(query);
@@ -335,9 +335,9 @@ public class UserActivityLogDAO {
     public int deleteLogById(int logId) throws RmodelException.SqlException, RmodelException.CommonException {
 
         try {
-            String Query="DELETE FROM %s WHERE logId=? ";
-            String.format(Query, TABLE_NAME1);
-            this.mySqlQuery.setQuery(Query);
+            String query="DELETE FROM %s WHERE logId=? ";
+            query = String.format(query, TABLE_NAME1);
+            this.mySqlQuery.setQuery(query);
             this.mySqlQuery.InitPreparedStatement();
             PreparedStatement ps = this.mySqlQuery.getPreparedStatement();
             ps.setInt(1, logId);
@@ -354,7 +354,10 @@ public class UserActivityLogDAO {
      * @throws RmodelException.CommonException
      */
     public int deleteAllLog() throws RmodelException.SqlException, RmodelException.CommonException {
-        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog");
+
+        String query="DELETE FROM %s";
+        query = String.format(query, TABLE_NAME1);
+        this.mySqlQuery.setQuery(query);
         this.mySqlQuery.InitPreparedStatement();
         return this.mySqlQuery.Dml();
     }
@@ -367,10 +370,13 @@ public class UserActivityLogDAO {
      * @throws RmodelException.CommonException
      */
     public int deleteLogByUser(int UId) throws RmodelException.SqlException, RmodelException.CommonException {
-        this.mySqlQuery.setQuery("DELETE FROM UserActivityLog WHERE UId= ?");
-        this.mySqlQuery.InitPreparedStatement();
-        PreparedStatement ps = this.mySqlQuery.getPreparedStatement();
+
         try {
+            String query="DELETE FROM %s WHERE UId= ?";
+            query = String.format(query, TABLE_NAME1);
+            this.mySqlQuery.setQuery(query);
+            this.mySqlQuery.InitPreparedStatement();
+            PreparedStatement ps = this.mySqlQuery.getPreparedStatement();
             ps.setInt(1, UId);
         } catch (SQLException e) {
             throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION, e);

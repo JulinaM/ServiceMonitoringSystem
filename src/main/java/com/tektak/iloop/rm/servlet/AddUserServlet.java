@@ -7,6 +7,8 @@ import com.tektak.iloop.rm.common.PasswordEnc;
 import com.tektak.iloop.rm.common.ServletCommon;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
+import com.tektak.iloop.rm.datamodel.UserRole;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.RequestDispatcher;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by tektak on 7/3/14.
@@ -35,8 +38,8 @@ public class AddUserServlet extends HttpServlet {
             userDetail.setUserName(request.getParameter("username"));
             userDetail.setUserEmail(request.getParameter("useremail"));
             userDetail.setUserStatus(request.getParameter("userstatus"));
-            //TODO
-            //userDetail.setUserRole(request.getParameter("userrole"));
+            String[] paramValues = request.getParameterValues("userrole");
+            userDetail.setUserRole(Arrays.toString(paramValues));
             try {
                 userDetailDAO = new UserDetailDAO();
                 result = userDetailDAO.checkAvailability(userDetail.getUserEmail());

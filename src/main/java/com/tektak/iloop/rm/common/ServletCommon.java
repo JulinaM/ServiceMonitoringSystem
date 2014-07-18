@@ -21,6 +21,17 @@ public class ServletCommon {
         return token;
     }
 
+    public static void setErrMsg(HttpServletRequest request,String errMsg){
+        request.setAttribute("errMsg",errMsg);
+    }
+
+    public static String getErrMsg(HttpServletRequest request){
+        String errMsg=(String)request.getAttribute("errMsg");
+        if(errMsg==null)
+            return null;
+        return errMsg;
+    }
+
     public static void setSuccessMsg(String key) {
         success = CommonConfig.getConfig().ReadString(key);
     }

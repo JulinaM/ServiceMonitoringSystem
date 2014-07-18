@@ -2,6 +2,7 @@ package com.tektak.iloop.rm.dao;
 
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
+import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -27,12 +28,11 @@ public class UserDetailDAOTest {
 
     @Test
     public void testPutUser() throws RmodelException.SqlException, SQLException {
-        userDetail.setUserName("Put User Test");
-        userDetail.setUserEmail("put_user@testing.com.ilooprm");
-        userDetail.setUserPassword("putTest");
+        userDetail.setUserName("abc");
+        userDetail.setUserEmail("abc@abc.com");
+        userDetail.setUserPassword("abc");
         userDetail.setUserStatus("1");
-        //TODO
-        //userDetail.setUserRole("2");
+        userDetail.setUserRole("[AddUser, UpdateUser, DeleteUser, DeleteLog]");
         Assert.assertEquals(1, userDetailDAO.putUser(userDetail));
         userDetailDAO.removeUser(userDetail.getUserEmail());
     }
