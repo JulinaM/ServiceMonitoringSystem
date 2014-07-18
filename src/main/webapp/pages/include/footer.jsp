@@ -1,3 +1,5 @@
+<%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
+
 <script src="<%=request.getContextPath()%>/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/bootstrap/js/bootstrap.min.js"></script>
 

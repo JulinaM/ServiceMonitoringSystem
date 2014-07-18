@@ -10,6 +10,7 @@ import com.tektak.iloop.rmodel.RmodelException;
 import com.tektak.iloop.rmodel.driver.MySql;
 import com.tektak.iloop.rmodel.query.MySqlQuery;
 import com.tektak.iloop.util.common.BaseException;
+import org.json.JSONObject;
 import org.junit.*;
 
 import java.sql.PreparedStatement;
@@ -43,11 +44,8 @@ public class Test_UserActivityLogDAO {
 
     @Before
     public void insertDummyData() throws RmodelException.SqlException, RmodelException.CommonException {
-
-
-        uDetail.setUserName("tektak");
-        //TODO
-        //uDetail.setUserRole(new UserRole());
+uDetail.setUserName("tektak");
+        uDetail.setUserRole("[AddUser, UpdateUser, DeleteUser, DeleteLog]");
         uDetail.setUserEmail("anil.bhaila@outlook.com");
         uDetail.setUserPassword("pass");
         uDetail.setUserStatus("1");

@@ -80,20 +80,14 @@ public class UserDetailDAO {
         this.prepare(query);
         try {
             this.statement.setString(1, userDetail.getUserEmail());
-            this.statement.setString(2, userDetail.getUserName());
+            //TODO
+            this.statement.setString(2, userDetail.getUserPassword());
             this.statement.setString(3, encPassword);
             this.statement.setString(4, userDetail.getUserStatus());
-
-            //TODO
-            //this.statement.setString(5, userDetail.getUserRole());
-            this.statement.setString(5, "1");
+            this.statement.setString(5, userDetail.getUserRole());
             this.statement.setTimestamp(6, new Timestamp(date.getTime()));
             int result = mySqlQuery.Dml();
-            //TODO
-            /*if (result == 1) {
-                SendEmail.email(userDetail.getUserEmail(), "User Created", "Email: " + userDetail.getUserEmail() + "<br>Password: " + userDetail.getUserPassword());
-                return result;
-            }*/
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (RmodelException.SqlException e) {
@@ -139,8 +133,7 @@ public class UserDetailDAO {
                 detail.setUserEmail(rs.getString("userEmail"));
                 detail.setUserName(rs.getString("userName"));
                 detail.setUserStatus(rs.getString("userStatus"));
-                //TODO
-                //detail.setUserRole(rs.getString("userRole"));
+                detail.setUserRole(rs.getString("userRole"));
                 detail.setJoinDate(rs.getDate("joinDate"));
             }
             return detail;
@@ -167,8 +160,7 @@ public class UserDetailDAO {
                 detail.setUserEmail(rs.getString("userEmail"));
                 detail.setUserName(rs.getString("userName"));
                 detail.setUserStatus(rs.getString("userStatus"));
-                //TODO
-                //detail.setUserRole(rs.getString("userRole"));
+                detail.setUserRole(rs.getString("userRole"));
                 detail.setJoinDate(rs.getDate("joinDate"));
             }
             return detail;
@@ -202,8 +194,7 @@ public class UserDetailDAO {
                 list[i].setUserEmail(rs.getString("userEmail"));
                 list[i].setUserName(rs.getString("userName"));
                 list[i].setUserStatus(rs.getString("userStatus"));
-                //TODO
-                //list[i].setUserRole(rs.getString("userRole"));
+                list[i].setUserRole(rs.getString("userRole"));
                 list[i].setJoinDate(rs.getDate("joinDate"));
                 i++;
             }
@@ -284,8 +275,7 @@ public class UserDetailDAO {
                         this.userDetail.setUserName(rs.getString("userName"));
                         this.userDetail.setUserEmail(rs.getString("userEmail"));
                         this.userDetail.setUserStatus(rs.getString("userStatus"));
-                        //TODO
-                        //this.userDetail.setUserRole(rs.getString("userRole"));
+                        this.userDetail.setUserRole(rs.getString("userRole"));
                         this.userDetail.setJoinDate(rs.getDate("joinDate"));
                         return 1;
                     }

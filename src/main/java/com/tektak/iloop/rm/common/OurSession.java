@@ -32,8 +32,7 @@ public class OurSession {
         UserDetail userDetail=new UserDetail();
         userDetail.setUserId(jsonObject.getInt("userId"));
         userDetail.setUserName(jsonObject.getString("userName"));
-        //TODO
-        //userDetail.setUserRole(jsonObject.getString("userRole"));
+        userDetail.setUserRole(jsonObject.getString("userRole"));
         userDetail.setJoinDate( new Date(jsonObject.getLong("userJoinDate")));
         userDetail.setUserEmail(jsonObject.getString("userEmail"));
         return userDetail;
