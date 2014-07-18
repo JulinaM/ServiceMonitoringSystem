@@ -28,7 +28,7 @@
 <%@ include file="../include/navTop.jsp" %>
 <%
     JSONArray jsonArray = null;
-    UserDetail ssn= OurSession.getSession(request.getSession());
+    UserDetail ssn= OurSession.getSession(request.getSession(false));
 
 
     LogReportParamater lrParam = (LogReportParamater) request.getAttribute("lrParam");
@@ -153,7 +153,7 @@
         </td>
         <td><%=jsonObject.get("userTimestamp")%>
         </td>
-        <% if(ssn.getUserRole()==1){%>
+        <% if(ssn.getUserRole().equals("1")){%>
         <td>
             <form action="/UserActivitylog" method="post">
                 <input type="hidden" name="token" value="<%=ServletCommon.generateToken(request.getSession(false))%>">
@@ -169,7 +169,15 @@
     %>
     </tbody>
 </table>
-<script src="<%=request.getContextPath()%>/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
+
+<%--<script src="<%=request.getContextPath()%>/assets/bootstrap/js/jquery-1.11.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- bootbox code -->
+<script src="<%=request.getContextPath()%>/assets/bootstrap/js/bootbox.min.js"></script>
+<script>
+    bootbox.alert("Error::<%=ssn.getUserName()%>!!");
+</script>--%>
+<%@ include file="../include/footer.jsp" %>
 </body>
 </html>

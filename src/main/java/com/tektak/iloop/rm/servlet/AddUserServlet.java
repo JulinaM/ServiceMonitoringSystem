@@ -1,6 +1,7 @@
 package com.tektak.iloop.rm.servlet;
 
 import com.tektak.iloop.rm.application.logSystem.LogGenerator;
+import com.tektak.iloop.rm.common.CommonConfig;
 import com.tektak.iloop.rm.common.OurSession;
 import com.tektak.iloop.rm.common.PasswordEnc;
 import com.tektak.iloop.rm.common.ServletCommon;
@@ -22,8 +23,7 @@ import java.io.IOException;
 
 @WebServlet("/adduser")
 public class AddUserServlet extends HttpServlet {
-    String page = null;
-    String error = "";
+    String page = "/adduser";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer result = null;
@@ -35,7 +35,8 @@ public class AddUserServlet extends HttpServlet {
             userDetail.setUserName(request.getParameter("username"));
             userDetail.setUserEmail(request.getParameter("useremail"));
             userDetail.setUserStatus(request.getParameter("userstatus"));
-            userDetail.setUserRole(request.getParameter("userrole"));
+            //TODO
+            //userDetail.setUserRole(request.getParameter("userrole"));
             try {
                 userDetailDAO = new UserDetailDAO();
                 result = userDetailDAO.checkAvailability(userDetail.getUserEmail());
@@ -44,22 +45,20 @@ public class AddUserServlet extends HttpServlet {
                     userDetailDAO.putUser(userDetail);
                     LogGenerator.generateLog(sesObj.getInt("userId"), request.getRemoteAddr(), "User Added Successfully");
                     page = "/allusers";
+                    ServletCommon.setSuccessMsg(CommonConfig.getConfig().ReadString("addUser"));
                 } else {
-                    page = "/adduser";
-                    error = "?err=This email is already registered";
+                    ServletCommon.setErrorMsg(CommonConfig.getConfig().ReadString("emailRegistered"));
                 }
             } catch (Exception e) {
-                page = "/adduser";
-                error = "?err=" + e.toString();
+                ServletCommon.setErrorMsg(CommonConfig.getConfig().ReadString("addfail"));
             } finally {
                 if (userDetailDAO != null)
                     userDetailDAO.closeConnection();
             }
         } else {
-            page = "/adduser";
-            error = "?err=You don't have permission for this process";
+            ServletCommon.setErrorMsg(CommonConfig.getConfig().ReadString("permission"));
         }
-        response.sendRedirect(page + error);
+        response.sendRedirect(page);
         return;
     }
 
@@ -69,7 +68,7 @@ public class AddUserServlet extends HttpServlet {
             return;
         } else {
             request.setAttribute("token", ServletCommon.generateToken(request.getSession()));
-            request.setAttribute("error", request.getParameter("err"));
+            ServletCommon.getMessage(request);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/addUser.jsp");
             dispatcher.forward(request, response);
         }

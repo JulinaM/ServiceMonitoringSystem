@@ -51,7 +51,6 @@ public class UsersDetailServlet extends HttpServlet {
                 }
             }
 
-
             RequestDispatcher dispatch = request.getRequestDispatcher("/pages/user/usersDetail.jsp");
             dispatch.forward(request, response);
         }

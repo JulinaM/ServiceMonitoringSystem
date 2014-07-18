@@ -51,6 +51,20 @@ public class UserDetailDAO {
         }
 
     }
+    //TODO
+    public int getRecentUserId() throws RmodelException.SqlException, RmodelException.CommonException {
+        String query = "SELECT userId FROM `%s` order by userId desc limit 1";
+        query = String.format(query, TABLE_NAME);
+        this.mySqlQuery.setQuery(query);
+        this.mySqlQuery.InitPreparedStatement();
+        ResultSet rs = this.mySqlQuery.Drl();
+        try {
+            rs.next();
+            return rs.getInt("userId");
+        } catch (SQLException e) {
+            throw new RmodelException.SqlException(RmodelException.SQL_EXCEPTION, e);
+        }
+    }
 
     /**
      * Creates new user and send email to the email-ID of new user
@@ -70,7 +84,10 @@ public class UserDetailDAO {
             this.statement.setString(2, userDetail.getUserName());
             this.statement.setString(3, encPassword);
             this.statement.setString(4, userDetail.getUserStatus());
-            this.statement.setString(5, userDetail.getUserRole());
+
+            //TODO
+            //this.statement.setString(5, userDetail.getUserRole());
+            this.statement.setString(5, "1");
             this.statement.setTimestamp(6, new Timestamp(date.getTime()));
             return mySqlQuery.Dml();
             //TODO remove email send from DAO
@@ -121,7 +138,8 @@ public class UserDetailDAO {
                 detail.setUserEmail(rs.getString("userEmail"));
                 detail.setUserName(rs.getString("userName"));
                 detail.setUserStatus(rs.getString("userStatus"));
-                detail.setUserRole(rs.getString("userRole"));
+                //TODO
+                //detail.setUserRole(rs.getString("userRole"));
                 detail.setJoinDate(rs.getDate("joinDate"));
             }
             return detail;
@@ -148,7 +166,8 @@ public class UserDetailDAO {
                 detail.setUserEmail(rs.getString("userEmail"));
                 detail.setUserName(rs.getString("userName"));
                 detail.setUserStatus(rs.getString("userStatus"));
-                detail.setUserRole(rs.getString("userRole"));
+                //TODO
+                //detail.setUserRole(rs.getString("userRole"));
                 detail.setJoinDate(rs.getDate("joinDate"));
             }
             return detail;
@@ -182,7 +201,8 @@ public class UserDetailDAO {
                 list[i].setUserEmail(rs.getString("userEmail"));
                 list[i].setUserName(rs.getString("userName"));
                 list[i].setUserStatus(rs.getString("userStatus"));
-                list[i].setUserRole(rs.getString("userRole"));
+                //TODO
+                //list[i].setUserRole(rs.getString("userRole"));
                 list[i].setJoinDate(rs.getDate("joinDate"));
                 i++;
             }
@@ -263,7 +283,8 @@ public class UserDetailDAO {
                         this.userDetail.setUserName(rs.getString("userName"));
                         this.userDetail.setUserEmail(rs.getString("userEmail"));
                         this.userDetail.setUserStatus(rs.getString("userStatus"));
-                        this.userDetail.setUserRole(rs.getString("userRole"));
+                        //TODO
+                        //this.userDetail.setUserRole(rs.getString("userRole"));
                         this.userDetail.setJoinDate(rs.getDate("joinDate"));
                         return 1;
                     }
@@ -307,5 +328,15 @@ public class UserDetailDAO {
 
     public void setUserDetail(UserDetail userDetail) {
         this.userDetail = userDetail;
+    }
+
+    public int changePass(UserDetail userDetail) throws SQLException, RmodelException.SqlException {
+        this.userDetail = userDetail;
+        query = "UPDATE %s SET userPassword=? WHERE userId=?";
+        query = String.format(query,TABLE_NAME);
+        this.prepare(query);
+        this.statement.setString(1,this.userDetail.getUserPassword());
+        this.statement.setInt(2, this.userDetail.getUserId());
+        return mySqlQuery.Dml();
     }
 }

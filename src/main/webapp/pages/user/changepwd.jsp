@@ -1,3 +1,4 @@
+<%@ page import="com.tektak.iloop.rm.common.ServletCommon" %>
 <%--
   Created by IntelliJ IDEA.
   User: tektak
@@ -19,16 +20,6 @@
 <body>
 <%@ include file="../include/navTop.jsp" %>
 
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <c:if test="${error != null}">
-            <div class="alert alert-danger"><span class="close"
-                                                  data-dismiss="alert">&times;</span><strong>${error}!</strong>
-            </div>
-        </c:if>
-    </div>
-</div>
-
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
@@ -36,8 +27,14 @@
                 <input type="hidden" name="token" value="${token}">
 
                 <div class="form-group">
+                    <label for="oldpsswd">Old Password</label>
+                    <input type="password" name="oldpassword" class="form-control" id="oldpsswd" required>
+                </div>
+
+                <div class="form-group">
                     <label for="psswd">New Password</label>
                     <input type="password" name="password" class="form-control" id="psswd" pattern=".{5,10}" required>
+                    (Minimum 5 characters)
                 </div>
                 <div class="form-group">
                     <label for="psswd1">Retype New Password</label>
@@ -45,7 +42,7 @@
 
                     <div id="msg"></div>
                 </div>
-                <button type="submit" class="btn btn-danger">Change</button>
+                <button type="submit" class="btn btn-danger" id="sbtn" disabled>Change</button>
             </form>
         </div>
     </div>
@@ -62,8 +59,10 @@
                             $pass2 = $("#psswd1").val();
                             if ($pass1 != $pass2) {
                                 $("#msg").html("Passwords do not match");
+                                $("#sbtn").attr("disabled","disabled");
                             } else {
                                 $("#msg").html("Passwords match");
+                                $("#sbtn").removeAttr("disabled");
                             }
                         });
             });

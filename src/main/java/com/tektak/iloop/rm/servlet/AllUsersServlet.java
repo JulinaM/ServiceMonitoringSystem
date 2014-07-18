@@ -1,6 +1,8 @@
 package com.tektak.iloop.rm.servlet;
 
+import com.tektak.iloop.rm.common.CommonConfig;
 import com.tektak.iloop.rm.common.OurSession;
+import com.tektak.iloop.rm.common.ServletCommon;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 
@@ -36,13 +38,12 @@ public class AllUsersServlet extends HttpServlet {
                 list = userDetailDAO.fetchUser();
                 request.setAttribute("ulist", list);
             } catch (Exception e) {
-                request.setAttribute("error", "Error while fetching");
+                ServletCommon.setErrorMsg("fetch");
             } finally {
                 if (userDetailDAO != null)
                     userDetailDAO.closeConnection();
             }
-
-
+            ServletCommon.getMessage(request);
             RequestDispatcher dispatch = request.getRequestDispatcher("/pages/user/allUsers.jsp");
             dispatch.forward(request, response);
         }

@@ -11,7 +11,7 @@ public class UserDetail implements IUserDetail {
     private String userName;
     private String userPassword;
     private String userStatus;
-    private String userRole;
+    private UserRole userRole;
     private Date joinDate;
 
     @Override
@@ -65,12 +65,12 @@ public class UserDetail implements IUserDetail {
     }
 
     @Override
-    public String getUserRole() {
+    public UserRole getUserRole() {
         return this.userRole;
     }
 
     @Override
-    public void setUserRole(String userRole) {
+    public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
     }
 
