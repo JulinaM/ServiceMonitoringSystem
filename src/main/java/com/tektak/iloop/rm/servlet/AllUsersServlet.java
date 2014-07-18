@@ -5,6 +5,7 @@ import com.tektak.iloop.rm.common.OurSession;
 import com.tektak.iloop.rm.common.ServletCommon;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
+import com.tektak.iloop.rmodel.RmodelException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by tektak on 7/8/14.
@@ -32,11 +34,9 @@ public class AllUsersServlet extends HttpServlet {
             return;
         } else {
             UserDetailDAO userDetailDAO = null;
-            UserDetail[] list = null;
             try {
                 userDetailDAO = new UserDetailDAO();
-                list = userDetailDAO.fetchUser();
-                request.setAttribute("ulist", list);
+                request.setAttribute("ulist", userDetailDAO.fetchUser());
             } catch (Exception e) {
                 ServletCommon.setErrorMsg("fetch");
             } finally {

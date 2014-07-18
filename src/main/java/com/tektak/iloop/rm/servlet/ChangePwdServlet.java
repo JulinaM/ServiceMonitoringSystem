@@ -21,9 +21,10 @@ import java.sql.SQLException;
  */
 @WebServlet("/changepwd")
 public class ChangePwdServlet extends HttpServlet {
-    String message = "";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String message = "";
+        UserDetailDAO userDetailDAO = null;
         UserDetail sessData = OurSession.getSession(request.getSession(false));
         if (sessData == null) {
             response.sendRedirect("/login");
@@ -33,8 +34,8 @@ public class ChangePwdServlet extends HttpServlet {
             String pass1 = request.getParameter("password");
             String pass2 = request.getParameter("password1");
             if (pass1 != null && !pass1.isEmpty() && !oldPass.isEmpty() && pass1.equals(pass2) && request.getParameter("token").equals(ServletCommon.generateToken(request.getSession()))) {
-                UserDetailDAO userDetailDAO = new UserDetailDAO();
                 try {
+                    userDetailDAO = new UserDetailDAO();
                     if (userDetailDAO.userAuth(sessData.getUserEmail(), oldPass) == 1) {
                         UserDetail userDetail = new UserDetail();
                         userDetail.setUserId(sessData.getUserId());
@@ -42,11 +43,11 @@ public class ChangePwdServlet extends HttpServlet {
                         if (userDetailDAO.changePass(userDetail) == 1) {
                             ServletCommon.setSuccessMsg("pwdCsuccess");
                             LogGenerator.generateLog(sessData.getUserId(), request.getRemoteAddr(), CommonConfig.getConfig().ReadString("pwdCsuccess"));
-                        }else {
+                        } else {
                             LogGenerator.generateLog(sessData.getUserId(), request.getRemoteAddr(), CommonConfig.getConfig().ReadString("pwdCfail"));
                             throw new SQLException();
                         }
-                    }else {
+                    } else {
                         throw new RmodelException.CommonException(message.toString());
                     }
                 } catch (SQLException e) {

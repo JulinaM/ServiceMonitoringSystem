@@ -3,6 +3,7 @@ package com.tektak.iloop.rm.servlet;
 import com.tektak.iloop.rm.common.OurSession;
 import com.tektak.iloop.rm.dao.UserDetailDAO;
 import com.tektak.iloop.rm.datamodel.UserDetail;
+import com.tektak.iloop.rmodel.RmodelException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Created by tektak on 7/2/14.

@@ -71,7 +71,9 @@ public class LoginServlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                userDetailDAO.closeConnection();
+                if (userDetailDAO != null) {
+                        userDetailDAO.closeConnection();
+                }
             }
         }
     }

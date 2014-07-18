@@ -1,7 +1,9 @@
 package com.tektak.iloop.rm.dao;
 
+import com.tektak.iloop.rm.common.RmException;
 import com.tektak.iloop.rm.datamodel.UserDetail;
 import com.tektak.iloop.rmodel.RmodelException;
+import com.tektak.iloop.util.common.BaseException;
 import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -16,7 +18,17 @@ public class UserDetailDAOTest {
 
     @BeforeClass
     public static void init() {
-        userDetailDAO = new UserDetailDAO();
+        try {
+            userDetailDAO = new UserDetailDAO();
+        } catch (RmException.DBConnectionError dbConnectionError) {
+            dbConnectionError.printStackTrace();
+        } catch (RmodelException.SqlException e) {
+            e.printStackTrace();
+        } catch (RmodelException.CommonException e) {
+            e.printStackTrace();
+        } catch (BaseException.ConfigError configError) {
+            configError.printStackTrace();
+        }
         userDetail = new UserDetail();
     }
 
@@ -27,7 +39,7 @@ public class UserDetailDAOTest {
     }
 
     @Test
-    public void testPutUser() throws RmodelException.SqlException, SQLException {
+    public void testPutUser() throws RmodelException.SqlException, SQLException, RmodelException.CommonException {
         userDetail.setUserName("abc");
         userDetail.setUserEmail("abc@abc.com");
         userDetail.setUserPassword("abc");
@@ -38,7 +50,7 @@ public class UserDetailDAOTest {
     }
 
     @Test
-    public void testEditUser() throws SQLException, RmodelException.SqlException {
+    public void testEditUser() throws SQLException, RmodelException.SqlException, RmodelException.CommonException {
         userDetail.setUserName("Auth Test");
         userDetail.setUserEmail("authtest@testing.com.ilooprm");
         userDetail.setUserPassword("authTest");

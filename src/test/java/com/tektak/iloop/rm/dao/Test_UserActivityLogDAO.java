@@ -50,7 +50,11 @@ uDetail.setUserName("tektak");
         uDetail.setUserPassword("pass");
         uDetail.setUserStatus("1");
 
-        dbUDetail.putUser(uDetail);
+        try {
+            dbUDetail.putUser(uDetail);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         logDM.setUID(dbUDetail.getRecentUserId());
         logDM.setIPaddress("170.0.0.1");

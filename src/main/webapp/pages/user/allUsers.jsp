@@ -18,10 +18,7 @@
 </head>
 <body>
 <%@ include file="../include/navTop.jsp" %>
-<c:if test="${error != null}">
-    <div class="alert alert-danger"><span class="close" data-dismiss="alert">&times;</span><strong>${error}!</strong>
-    </div>
-</c:if>
+
 <table class="table table-bordered">
     <thead>
     <tr>
